@@ -14,7 +14,7 @@
       <div class="frame-top">
 
         <div class="frame-top-left">
-          <img src="/svg-folder/Logo.svg" class="frame-logo" alt="Logo" />
+          <img src="svg-folder/Logo.svg" class="frame-logo" alt="Logo" />
         </div>
 
         <div class="frame-top-right">
@@ -46,11 +46,16 @@
 
           <!-- IKONY PO PRAWEJ -->
           <div class="frame-top-icons">
-            <img src="/svg-folder/_AvatarIcon.svg" />
-            <img src="/svg-folder/_SettingsIcon.svg" />
-            <img src="/svg-folder/_ChatIcon.svg" />
-            <img src="/svg-folder/_CalendarIcon.svg" />
-            <img src="/svg-folder/_NotificationIcon.svg" />
+             <img src="svg-folder/xNotificationIcon.svg" alt="Notification" />
+             <img src="svg-folder/xCalendarIcon.svg" alt="Calendar" />
+             <img src="svg-folder/xChatIcon.svg" alt="Chat" />
+             <img src="svg-folder/xSettingsIcon.svg" alt="Settings" />
+            <img src="svg-folder/xAvatarIcon.svg" alt="Avatar" />
+            
+            
+            
+            
+           
           </div>
 
         </div>
@@ -64,7 +69,7 @@
       <div class="frame-top">
 
         <div class="frame-top-left">
-          <img src="/svg-folder/Logo.svg" class="frame-logo frame-logo--invert" alt="Logo" />
+          <img src="svg-folder/Logo.svg" class="frame-logo frame-logo--invert" alt="Logo" />
         </div>
 
         <div class="frame-top-right">
@@ -96,11 +101,15 @@
 
           <!-- IKONY PO PRAWEJ -->
           <div class="frame-top-icons">
-            <img src="/svg-folder/_AvatarIcon.svg" />
-            <img src="/svg-folder/_SettingsIcon.svg" />
-            <img src="/svg-folder/_ChatIcon.svg" />
-            <img src="/svg-folder/_CalendarIcon.svg" />
-            <img src="/svg-folder/_NotificationIcon.svg" />
+            <img src="svg-folder/xNotificationIcon.svg" alt="Notification" />
+            <img src="svg-folder/xCalendarIcon.svg" alt="Calendar" />
+              <img src="svg-folder/xChatIcon.svg" alt="Chat" />
+              <img src="svg-folder/xSettingsIcon.svg" alt="Settings" />
+            <img src="svg-folder/xAvatarIcon.svg" alt="Avatar" />
+            
+          
+            
+            
           </div>
 
         </div>
@@ -111,12 +120,11 @@
 
   </main>
 
-
 <script>
 /* ---------------------------------------------------------------------
-   PODSTAWOWA LISTA IKON
+   LISTA IKON – teraz w folderze svg-folder
 ------------------------------------------------------------------------*/
-const ICONS_PATH = "svg-folder/";
+const ICONS_PATH = "./svg-folder/";
 
 const svgFiles = [
   "5WhyIcon.svg","8DReportIcon.svg","BookmarksIcon.svg","CalendarIcon.svg",
@@ -134,10 +142,14 @@ const svgFiles = [
   "SettingsIcon.svg","SimpleSubtaskIcon.svg","SortingIcon.svg",
   "SubtaskIcon.svg","SuppliersIcon.svg","TasksIcon.svg","TeamIcon.svg",
   "TechnologyIcon.svg","UsersIcon.svg","ValidationIcon.svg","WorkstationsIcon.svg",
-  "_AvatarIcon.svg","_CalendarIcon.svg","_ChatIcon.svg","_DeleteIcon.svg",
-  "_ExportPDFIcon.svg","_ExportXLSIcon.svg","_FileUploadIcon.svg",
-  "_NotificationIcon.svg","_SettingsIcon.svg","_SettingsListIcon.svg"
+  "xAvatarIcon.svg","xCalendarIcon.svg","xChatIcon.svg","xDeleteIcon.svg",
+  "xExportPDFIcon.svg","xExportXLSIcon.svg","xFileUploadIcon.svg",
+  "xNotificationIcon.svg","xSettingsIcon.svg","xSettingsListIcon.svg"
 ];
+
+/* ---------------------------------------------------------------------
+   GENEROWANIE IKON
+------------------------------------------------------------------------*/
 
 const lightBox = document.getElementById("icons-light");
 const darkBox  = document.getElementById("icons-dark");
@@ -167,6 +179,7 @@ function createCell(fileName, dark) {
 /* ---------------------------------------------------------------------
    ZAZNACZENIE IKONY
 ------------------------------------------------------------------------*/
+
 document.addEventListener("click", e => {
   const cell = e.target.closest(".icon-cell");
   if (!cell) return;
@@ -177,12 +190,11 @@ document.addEventListener("click", e => {
   cell.classList.add("icon-cell--selected");
 });
 
-
 /* ---------------------------------------------------------------------
-   USTAWIENIA CZCIONEK DLA OBU RAM — NIEZALEŻNIE
+   KONTROLKI CZCIONEK
 ------------------------------------------------------------------------*/
-function setupFontControls(sectionId, selectId, sizeId, refreshId, LSFontKey, LSSizeKey) {
 
+function setupFontControls(sectionId, selectId, sizeId, refreshId, LSFontKey, LSSizeKey) {
   const section = document.getElementById(sectionId);
   const select  = document.getElementById(selectId);
   const sizeInp = document.getElementById(sizeId);
@@ -191,20 +203,16 @@ function setupFontControls(sectionId, selectId, sizeId, refreshId, LSFontKey, LS
   const defaultFont = "Roboto, system-ui, sans-serif";
   const defaultSize = 14;
 
-  /* Wczytanie z localStorage */
   let font = localStorage.getItem(LSFontKey) || defaultFont;
   let size = parseInt(localStorage.getItem(LSSizeKey), 10) || defaultSize;
 
   select.value = font;
   sizeInp.value = size;
 
-  /* Zastosowanie */
   section.style.setProperty("--frame-font-family", font);
   section.style.setProperty("--frame-font-size", size + "px");
 
-  /* Obsługa przycisku REFRESH */
   refresh.addEventListener("click", () => {
-
     const newFont = select.value;
     let newSize = parseInt(sizeInp.value, 10);
 
@@ -217,7 +225,6 @@ function setupFontControls(sectionId, selectId, sizeId, refreshId, LSFontKey, LS
     section.style.setProperty("--frame-font-size", newSize + "px");
   });
 }
-
 
 setupFontControls(
   "frame-light",
@@ -236,7 +243,6 @@ setupFontControls(
   "uiFontFamily_dark",
   "uiFontSize_dark"
 );
-
 </script>
 
 </body>
