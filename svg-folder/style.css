@@ -1,0 +1,181 @@
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: #f5f5f5;
+  font-family: system-ui, sans-serif;
+}
+
+/* ---------------- RAMKI ---------------- */
+
+.frame {
+  --frame-font-size: 14px;
+  --frame-font-family: system-ui, sans-serif;
+
+  font-size: var(--frame-font-size);
+  font-family: var(--frame-font-family);
+
+  border-radius: 8px;
+  padding: 1.2em;
+  margin-bottom: 2em;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+.frame--light { background: #ffffff; color: #000; }
+.frame--dark  { background: #000000; color: #fff; }
+
+/* ------------------------------------------------------------------
+   TOPBAR + KONTROLKI
+-------------------------------------------------------------------*/
+
+.frame-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1em;
+}
+
+.frame-top-left { display: flex; align-items: center; gap: 0.8em; }
+.frame-top-right { display: flex; align-items: center; gap: 1.6em; }
+
+.frame-logo { width: 8em; height: auto; }
+.frame-logo--invert { filter: invert(1); }
+
+/* --------- KONTROLKI CZCIONKI --------- */
+
+.font-controls {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  font-size: 0.85em;
+}
+
+.font-control-label { font-size: 0.8em; opacity: 0.7; }
+
+.font-select,
+.font-size-input {
+  font: inherit;
+  padding: .25em .5em;
+  border-radius: 4px;
+  border: 1px solid rgba(0,0,0,0.25);
+  background: #fff;
+}
+
+.font-size-input { width: 4.5em; }
+
+.frame--dark .font-select,
+.frame--dark .font-size-input {
+  background: #111;
+  color: #fff;
+  border-color: rgba(255,255,255,0.3);
+}
+
+/* --------- przycisk REFRESH --------- */
+
+.refresh-button {
+  font: inherit;
+  padding: .35em 1.1em;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,0.25);
+  background: #f0f0f0;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: background-color .15s, opacity .15s;
+}
+
+.refresh-button:hover { background: #e2e2e2; }
+.refresh-button:active { opacity: .7; transform: translateY(1px); }
+
+.frame--dark .refresh-button {
+  background: #111;
+  border-color: rgba(255,255,255,0.3);
+  color: #fff;
+}
+.frame--dark .refresh-button:hover { background: #1b1b1b; }
+
+/* ------------------------------------------------------------------
+   TOP IKONY
+-------------------------------------------------------------------*/
+
+.frame-top-icons {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+
+.frame-top-icons img {
+  width: 1.2em;
+  height: 1.2em;
+  cursor: pointer;
+  transition: opacity .15s;
+}
+
+.frame-top-icons img:hover { opacity: .6; }
+.frame--dark .frame-top-icons img { filter: invert(1); }
+
+/* ------------------------------------------------------------------
+   SIATKA IKON
+-------------------------------------------------------------------*/
+
+.icons-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(12em, 1fr));
+  gap: .8em 1.4em;
+}
+
+/* ------------------------------------------------------------------
+   POJEDYNCZA IKONA
+-------------------------------------------------------------------*/
+
+.icon-cell {
+  display: flex;
+  align-items: center;
+  gap: .8em;
+  padding: .4em .6em;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color .15s, opacity .15s, box-shadow .15s, transform .1s;
+}
+
+.icon-cell--light:hover { background: rgba(0,0,0,0.05); }
+.icon-cell--dark:hover  { background: rgba(255,255,255,0.1); }
+
+.icon-cell--dark img { filter: invert(1); }
+
+.icon-img { width: 1.2em; height: 1.2em; }
+.icon-label { font-size: .85em; }
+
+/* ---------------- HOVER ---------------- */
+
+.icon-cell:hover .icon-img,
+.icon-cell:hover .icon-label {
+  opacity: .5;
+}
+
+/* ------------------------------------------------------------------
+   ⭐ ORYGINALNA MIGAJĄCA RAMKA — TYLKO PODCZAS :active
+-------------------------------------------------------------------*/
+
+/* jasna ramka */
+.icon-cell--light:active {
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.3);   /* FIX */
+}
+
+/* ciemna ramka */
+.icon-cell--dark:active {
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.6); /* FIX */
+}
+
+/* ------------------------------------------------------------------
+   PODŚWIETLONA PO WYBORZE (BEZ RAMKI!)
+-------------------------------------------------------------------*/
+
+/* TŁO zaznaczenia zostaje jak było */
+.icon-cell--selected.icon-cell--light { background: rgba(0,0,0,0.05); }
+.icon-cell--selected.icon-cell--dark  { background: rgba(255,255,255,0.1); }
+
+/* zmniejszone opacity podpisu */
+.icon-cell--selected .icon-img,
+.icon-cell--selected .icon-label {
+  opacity: .5;
+}
