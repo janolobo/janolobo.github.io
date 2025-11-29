@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <title>Podgląd ikon SVG</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <main class="page">
+
+    <!-- ============ GÓRNA RAMKA (JASNA) ============ -->
+    <section id="frame-light" class="frame frame--light">
+      <div class="frame-top">
+
+        <div class="frame-top-left">
+          <img src="Logo.svg" class="frame-logo" alt="Logo" />
+        </div>
+
+        <div class="frame-top-right">
+
+          <!-- KONTROLKI (jasna) -->
+          <div class="font-controls">
+
+            <label>
+              <span class="font-control-label">Czcionka</span>
+              <select id="font-select-light" class="font-select">
+                <option value="Roboto, system-ui, sans-serif">Roboto</option>
+                <option value="Ubuntu, system-ui, sans-serif">Ubuntu</option>
+                <option value="'Helvetica Neue', Helvetica, Arial, sans-serif">Helvetica Neue</option>
+                <option value="'SF Pro Display', -apple-system, BlinkMacSystemFont, system-ui, sans-serif">
+                  SF Pro Display
+                </option>
+                <option value="'Segoe UI', system-ui, sans-serif">Segoe UI</option>
+              </select>
+            </label>
+
+            <label>
+              <span class="font-control-label">Rozmiar</span>
+              <input id="font-size-light" type="number" class="font-size-input"
+                     min="10" max="32" step="1">
+            </label>
+
+            <button id="refresh-light" class="refresh-button">REFRESH</button>
+          </div>
+
+          <!-- IKONY PO PRAWEJ -->
+          <div class="frame-top-icons">
+            <img src="_AvatarIcon.svg" />
+            <img src="_SettingsIcon.svg" />
+            <img src="_ChatIcon.svg" />
+            <img src="_CalendarIcon.svg" />
+            <img src="_NotificationIcon.svg" />
+          </div>
+
+        </div>
+      </div>
+
+      <div id="icons-light" class="icons-grid"></div>
+    </section>
+
+    <!-- ============ DOLNA RAMKA (CIEMNA) ============ -->
+    <section id="frame-dark" class="frame frame--dark">
+      <div class="frame-top">
+
+        <div class="frame-top-left">
+          <img src="Logo.svg" class="frame-logo frame-logo--invert" alt="Logo" />
+        </div>
+
+        <div class="frame-top-right">
+
+          <!-- KONTROLKI (ciemna) -->
+          <div class="font-controls">
+
+            <label>
+              <span class="font-control-label">Czcionka</span>
+              <select id="font-select-dark" class="font-select">
+                <option value="Roboto, system-ui, sans-serif">Roboto</option>
+                <option value="Ubuntu, system-ui, sans-serif">Ubuntu</option>
+                <option value="'Helvetica Neue', Helvetica, Arial, sans-serif">Helvetica Neue</option>
+                <option value="'SF Pro Display', -apple-system, BlinkMacSystemFont, system-ui, sans-serif">
+                  SF Pro Display
+                </option>
+                <option value="'Segoe UI', system-ui, sans-serif">Segoe UI</option>
+              </select>
+            </label>
+
+            <label>
+              <span class="font-control-label">Rozmiar</span>
+              <input id="font-size-dark" type="number" class="font-size-input"
+                     min="10" max="32" step="1">
+            </label>
+
+            <button id="refresh-dark" class="refresh-button">REFRESH</button>
+          </div>
+
+          <!-- IKONY PO PRAWEJ -->
+          <div class="frame-top-icons">
+            <img src="_AvatarIcon.svg" />
+            <img src="_SettingsIcon.svg" />
+            <img src="_ChatIcon.svg" />
+            <img src="_CalendarIcon.svg" />
+            <img src="_NotificationIcon.svg" />
+          </div>
+
+        </div>
+      </div>
+
+      <div id="icons-dark" class="icons-grid"></div>
+    </section>
+
+  </main>
+
+
+<script>
+/* ---------------------------------------------------------------------
+   PODSTAWOWA LISTA IKON
+------------------------------------------------------------------------*/
+const ICONS_PATH = "./";
+
+const svgFiles = [
+  "5WhyIcon.svg","8DReportIcon.svg","BookmarksIcon.svg","CalendarIcon.svg",
+  "ChatIcon.svg","CompetencesIcon.svg","ComponentsIcon.svg","ContractorsIcon.svg",
+  "CostsSummaryIcon.svg","CustomersIcon.svg","DepartmentsIcon.svg",
+  "DescriptionFieldIcon.svg","DocumentsIcon.svg","EmployeesIcon.svg",
+  "EnclosurementAddIcon.svg","EnclosurementIcon.svg","ExcelIcon.svg",
+  "ExclamationIcon.svg","FileIcon.svg","HRIcon.svg","ImprovementIcon.svg",
+  "IshikawaIcon.svg","ListIcon.svg","LocationsIcon.svg","Logo.svg",
+  "MachinesIcon.svg","MaintenanceIcon.svg","MiniCalendarIcon.svg",
+  "NotificationsIcon_mono.svg","OrganisationIcon.svg","PDFIcon.svg",
+  "PictureIcon.svg","PositionsIcon.svg","PrivateTaskIcon.svg",
+  "ProductionIcon.svg","ProgramIcon.svg","PromotIcon.svg","PurposeIcon.svg",
+  "QmsProcessesIcon.svg","QualityAlertIcon.svg","RootcauseIcon.svg",
+  "SettingsIcon.svg","SimpleSubtaskIcon.svg","SortingIcon.svg",
+  "SubtaskIcon.svg","SuppliersIcon.svg","TasksIcon.svg","TeamIcon.svg",
+  "TechnologyIcon.svg","UsersIcon.svg","ValidationIcon.svg","WorkstationsIcon.svg",
+  "_AvatarIcon.svg","_CalendarIcon.svg","_ChatIcon.svg","_DeleteIcon.svg",
+  "_ExportPDFIcon.svg","_ExportXLSIcon.svg","_FileUploadIcon.svg",
+  "_NotificationIcon.svg","_SettingsIcon.svg","_SettingsListIcon.svg"
+];
+
+const lightBox = document.getElementById("icons-light");
+const darkBox  = document.getElementById("icons-dark");
+
+svgFiles.forEach(name => {
+  lightBox.appendChild(createCell(name, false));
+  darkBox.appendChild(createCell(name, true));
+});
+
+function createCell(fileName, dark) {
+  const cell = document.createElement("div");
+  cell.className = "icon-cell " + (dark ? "icon-cell--dark" : "icon-cell--light");
+
+  const icon = document.createElement("img");
+  icon.src = ICONS_PATH + fileName;
+  icon.className = "icon-img";
+
+  const label = document.createElement("span");
+  label.className = "icon-label";
+  label.textContent = fileName.replace(".svg", "");
+
+  cell.appendChild(icon);
+  cell.appendChild(label);
+  return cell;
+}
+
+/* ---------------------------------------------------------------------
+   ZAZNACZENIE IKONY
+------------------------------------------------------------------------*/
+document.addEventListener("click", e => {
+  const cell = e.target.closest(".icon-cell");
+  if (!cell) return;
+
+  document.querySelectorAll(".icon-cell--selected")
+    .forEach(el => el.classList.remove("icon-cell--selected"));
+
+  cell.classList.add("icon-cell--selected");
+});
+
+
+/* ---------------------------------------------------------------------
+   USTAWIENIA CZCIONEK DLA OBU RAM — NIEZALEŻNIE
+------------------------------------------------------------------------*/
+function setupFontControls(sectionId, selectId, sizeId, refreshId, LSFontKey, LSSizeKey) {
+
+  const section = document.getElementById(sectionId);
+  const select  = document.getElementById(selectId);
+  const sizeInp = document.getElementById(sizeId);
+  const refresh = document.getElementById(refreshId);
+
+  const defaultFont = "Roboto, system-ui, sans-serif";
+  const defaultSize = 14;
+
+  /* Wczytanie z localStorage */
+  let font = localStorage.getItem(LSFontKey) || defaultFont;
+  let size = parseInt(localStorage.getItem(LSSizeKey), 10) || defaultSize;
+
+  select.value = font;
+  sizeInp.value = size;
+
+  /* Zastosowanie */
+  section.style.setProperty("--frame-font-family", font);
+  section.style.setProperty("--frame-font-size", size + "px");
+
+  /* Obsługa przycisku REFRESH */
+  refresh.addEventListener("click", () => {
+
+    const newFont = select.value;
+    let newSize = parseInt(sizeInp.value, 10);
+
+    if (isNaN(newSize)) newSize = defaultSize;
+
+    localStorage.setItem(LSFontKey, newFont);
+    localStorage.setItem(LSSizeKey, newSize);
+
+    section.style.setProperty("--frame-font-family", newFont);
+    section.style.setProperty("--frame-font-size", newSize + "px");
+  });
+}
+
+
+setupFontControls(
+  "frame-light",
+  "font-select-light",
+  "font-size-light",
+  "refresh-light",
+  "uiFontFamily_light",
+  "uiFontSize_light"
+);
+
+setupFontControls(
+  "frame-dark",
+  "font-select-dark",
+  "font-size-dark",
+  "refresh-dark",
+  "uiFontFamily_dark",
+  "uiFontSize_dark"
+);
+
+</script>
+
+</body>
+</html>
