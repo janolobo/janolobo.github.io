@@ -25,13 +25,18 @@
             <label>
               <span class="font-control-label">Czcionka</span>
               <select id="font-select-light" class="font-select">
-                <option value="Roboto, system-ui, sans-serif">Roboto</option>
-                <option value="Ubuntu, system-ui, sans-serif">Ubuntu</option>
-                <option value="'Helvetica Neue', Helvetica, Arial, sans-serif">Helvetica Neue</option>
-                <option value="'SF Pro Display', -apple-system, BlinkMacSystemFont, system-ui, sans-serif">
-                  SF Pro Display
-                </option>
-                <option value="'Segoe UI', system-ui, sans-serif">Segoe UI</option>
+                <option value="FrutigerNeue Bold">FrutigerNeue Bold</option>
+                <option value="FrutigerNeue Light">FrutigerNeue Light</option>
+                <option value="Minecraftia">Minecraftia</option>
+                <option value="Nimbus Sans">Nimbus Sans</option>
+                <option value="Inconsolata Condensed">Inconsolata Condensed</option>
+                <option value="Open Sans">Open Sans</option>
+                <option value="Samsung Sans">Samsung Sans</option>
+                <option value="Satoshi">Satoshi</option>
+                <option value="Inter 18pt">Inter 18pt</option>
+                <option value="DieGrotesk">DieGrotesk</option>
+                <option value="Geograph">Geograph</option>
+                <option value="Manrope">Manrope</option>
               </select>
             </label>
 
@@ -46,16 +51,11 @@
 
           <!-- IKONY PO PRAWEJ -->
           <div class="frame-top-icons">
-             <img src="svg-folder/xNotificationIcon.svg" alt="Notification" />
-             <img src="svg-folder/xCalendarIcon.svg" alt="Calendar" />
-             <img src="svg-folder/xChatIcon.svg" alt="Chat" />
-             <img src="svg-folder/xSettingsIcon.svg" alt="Settings" />
+            <img src="svg-folder/xNotificationIcon.svg" alt="Notification" />
+            <img src="svg-folder/xCalendarIcon.svg" alt="Calendar" />
+            <img src="svg-folder/xChatIcon.svg" alt="Chat" />
+            <img src="svg-folder/xSettingsIcon.svg" alt="Settings" />
             <img src="svg-folder/xAvatarIcon.svg" alt="Avatar" />
-            
-            
-            
-            
-           
           </div>
 
         </div>
@@ -80,13 +80,18 @@
             <label>
               <span class="font-control-label">Czcionka</span>
               <select id="font-select-dark" class="font-select">
-                <option value="Roboto, system-ui, sans-serif">Roboto</option>
-                <option value="Ubuntu, system-ui, sans-serif">Ubuntu</option>
-                <option value="'Helvetica Neue', Helvetica, Arial, sans-serif">Helvetica Neue</option>
-                <option value="'SF Pro Display', -apple-system, BlinkMacSystemFont, system-ui, sans-serif">
-                  SF Pro Display
-                </option>
-                <option value="'Segoe UI', system-ui, sans-serif">Segoe UI</option>
+                <option value="FrutigerNeue Bold">FrutigerNeue Bold</option>
+                <option value="FrutigerNeue Light">FrutigerNeue Light</option>
+                <option value="Minecraftia">Minecraftia</option>
+                <option value="Nimbus Sans">Nimbus Sans</option>
+                <option value="Inconsolata Condensed">Inconsolata Condensed</option>
+                <option value="Open Sans">Open Sans</option>
+                <option value="Samsung Sans">Samsung Sans</option>
+                <option value="Satoshi">Satoshi</option>
+                <option value="Inter 18pt">Inter 18pt</option>
+                <option value="DieGrotesk">DieGrotesk</option>
+                <option value="Geograph">Geograph</option>
+                <option value="Manrope">Manrope</option>
               </select>
             </label>
 
@@ -103,13 +108,9 @@
           <div class="frame-top-icons">
             <img src="svg-folder/xNotificationIcon.svg" alt="Notification" />
             <img src="svg-folder/xCalendarIcon.svg" alt="Calendar" />
-              <img src="svg-folder/xChatIcon.svg" alt="Chat" />
-              <img src="svg-folder/xSettingsIcon.svg" alt="Settings" />
+            <img src="svg-folder/xChatIcon.svg" alt="Chat" />
+            <img src="svg-folder/xSettingsIcon.svg" alt="Settings" />
             <img src="svg-folder/xAvatarIcon.svg" alt="Avatar" />
-            
-          
-            
-            
           </div>
 
         </div>
@@ -122,7 +123,7 @@
 
 <script>
 /* ---------------------------------------------------------------------
-   LISTA IKON – teraz w folderze svg-folder
+   LISTA IKON – w folderze svg-folder
 ------------------------------------------------------------------------*/
 const ICONS_PATH = "./svg-folder/";
 
@@ -177,7 +178,7 @@ function createCell(fileName, dark) {
 }
 
 /* ---------------------------------------------------------------------
-   ZAZNACZENIE IKONY
+   ZAZnaczenie
 ------------------------------------------------------------------------*/
 
 document.addEventListener("click", e => {
@@ -200,7 +201,7 @@ function setupFontControls(sectionId, selectId, sizeId, refreshId, LSFontKey, LS
   const sizeInp = document.getElementById(sizeId);
   const refresh = document.getElementById(refreshId);
 
-  const defaultFont = "Roboto, system-ui, sans-serif";
+  const defaultFont = "Open Sans";
   const defaultSize = 14;
 
   let font = localStorage.getItem(LSFontKey) || defaultFont;

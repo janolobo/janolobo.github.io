@@ -1,3 +1,93 @@
+/* ================= CUSTOM FONTS ================= */
+
+@font-face {
+  font-family: "FrutigerNeue Bold";
+  src: url("fonts/FrutigerNeueLTPro-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "FrutigerNeue Light";
+  src: url("fonts/FrutigerNeueLTPro-Light.woff") format("woff");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Minecraftia";
+  src: url("fonts/Minecraftia-Regular.ttf") format("truetype");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Nimbus Sans";
+  src: url("fonts/NimbusSanL-Reg.otf") format("opentype");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Inconsolata Condensed";
+  src: url("fonts/Inconsolata_Condensed-Regular.ttf") format("truetype");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Inconsolata Condensed";
+  src: url("fonts/Inconsolata_Condensed-Medium.ttf") format("truetype");
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: "Inconsolata Condensed";
+  src: url("fonts/Inconsolata_Condensed-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: "Open Sans";
+  src: url("fonts/OpenSans-VariableFont_wdth,wght.ttf") format("truetype");
+  font-weight: 100 900;
+}
+
+@font-face {
+  font-family: "Samsung Sans";
+  src: url("fonts/SamsungSans-Regular.ttf") format("truetype");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Satoshi";
+  src: url("fonts/Satoshi-Variable.ttf") format("truetype");
+  font-weight: 100 900;
+}
+
+@font-face {
+  font-family: "Inter 18pt";
+  src: url("fonts/Inter_18pt-Regular.ttf") format("truetype");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "DieGrotesk";
+  src: url("fonts/TestDieGroteskVF-Roman.ttf") format("truetype");
+  font-weight: 100 900;
+}
+
+@font-face {
+  font-family: "Geograph";
+  src: url("fonts/TestGeographVF-Roman.ttf") format("truetype");
+  font-weight: 100 900;
+}
+
+@font-face {
+  font-family: "Manrope";
+  src: url("fonts/Manrope-Regular.ttf") format("truetype");
+  font-weight: 400;
+}
+
+/* ================== GLOBAL ================== */
+
 * { box-sizing: border-box; }
 
 body {
@@ -16,7 +106,6 @@ body {
 /* ---------------- RAMKI ---------------- */
 
 .frame {
-  /* sterowane z JS, w pikselach */
   --frame-font-size: 14px;
   --frame-font-family: system-ui, sans-serif;
 
@@ -39,7 +128,7 @@ body {
   color: #fff;
 }
 
-/* ---------------- LOGO + TOPBAR ---------------- */
+/* ---------------- TOPBAR ---------------- */
 
 .frame-top {
   display: flex;
@@ -146,7 +235,7 @@ body {
 }
 
 .frame-top-icons img {
-  width: 16px;   /* TU jest twarde 16x16 */
+  width: 16px;
   height: 16px;
   cursor: pointer;
   transition: opacity .15s;
@@ -160,7 +249,7 @@ body {
   filter: invert(1);
 }
 
-/* ----------- IKONY W 5 KOLUMNACH ------------ */
+/* ----------- IKONY GRID ------------ */
 
 .icons-grid {
   display: grid;
@@ -194,7 +283,7 @@ body {
   filter: invert(1);
 }
 
-/* klik – migająca ramka tylko na czas clicka */
+/* klik (mignięcie) */
 
 .icon-cell--light:active {
   box-shadow: 0 0 0 1px rgba(0,0,0,0.3);
@@ -204,29 +293,27 @@ body {
   box-shadow: 0 0 0 1px rgba(255,255,255,0.6);
 }
 
-/* ikona 16x16 */
+/* ikona */
 
 .icon-img {
-  width: 16px;   /* TU też twarde 16x16 */
+  width: 16px;
   height: 16px;
   transition: opacity .15s;
 }
 
-/* podpis – dziedziczy dokładnie rozmiar z ramki */
+/* podpis */
 
 .icon-label {
-  font-size: 1em;    /* 1em = to, co ustawisz w ramce (np. 14, 16, 18 px) */
+  font-size: 1em;
   transition: opacity .15s;
 }
-
-/* hover na zawartości */
 
 .icon-cell:hover .icon-img,
 .icon-cell:hover .icon-label {
   opacity: .5;
 }
 
-/* zaznaczenie po kliknięciu (bez ramki – tylko tło i opacity) */
+/* wybrane */
 
 .icon-cell--selected.icon-cell--light {
   background: rgba(0,0,0,0.05);
@@ -240,3 +327,4 @@ body {
 .icon-cell--selected .icon-label {
   opacity: .5;
 }
+
