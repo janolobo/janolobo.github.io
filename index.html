@@ -9,26 +9,31 @@
 
   <main class="page">
 
-    <!-- ============ GÓRNA RAMKA (JASNA) ============ -->
+    <!-- GÓRNA RAMKA (JASNA) -->
     <section id="frame-light" class="frame frame--light">
       <div class="frame-top">
-
         <div class="frame-top-left">
           <img src="svg-folder/Logo.svg" class="frame-logo" alt="Logo" />
         </div>
 
         <div class="frame-top-right">
-
-          <!-- KONTROLKI (jasna) -->
           <div class="font-controls">
 
             <label>
               <span class="font-control-label">Czcionka</span>
               <select id="font-select-light" class="font-select">
+
+                <!-- NOWA PEŁNA LISTA FONTÓW -->
                 <option value="FrutigerNeue Bold">FrutigerNeue Bold</option>
                 <option value="FrutigerNeue Light">FrutigerNeue Light</option>
-                <option value="Minecraftia">Minecraftia</option>
-                <option value="Nimbus Sans">Nimbus Sans</option>
+
+                <option value="Aileron Light">Aileron Light</option>
+                <option value="Montserrat Light">Montserrat Light</option>
+                <option value="Cantarell">Cantarell</option>
+                <option value="Exo 2">Exo 2</option>
+                <option value="Plus Jakarta Sans">Plus Jakarta Sans</option>
+                <option value="Poppins Light">Poppins Light</option>
+                <option value="Inconsolata VF">Inconsolata VF</option>
                 <option value="Inconsolata Condensed">Inconsolata Condensed</option>
                 <option value="Open Sans">Open Sans</option>
                 <option value="Samsung Sans">Samsung Sans</option>
@@ -37,19 +42,26 @@
                 <option value="DieGrotesk">DieGrotesk</option>
                 <option value="Geograph">Geograph</option>
                 <option value="Manrope">Manrope</option>
+                <option value="Larke Neue Thin">Larke Neue Thin</option>
+                <option value="Liberation Sans">Liberation Sans</option>
+                <option value="Libra Sans">Libra Sans</option>
+                <option value="Opening Hours Sans">Opening Hours Sans</option>
+                <option value="Sora">Sora</option>
+                <option value="Roboto">Roboto</option>
+                <option value="Ubuntu Light">Ubuntu Light</option>
+                <option value="Segoe UI Thin">Segoe UI Thin</option>
+
               </select>
             </label>
 
             <label>
               <span class="font-control-label">Rozmiar</span>
-              <input id="font-size-light" type="number" class="font-size-input"
-                     min="10" max="32" step="1">
+              <input id="font-size-light" type="number" class="font-size-input" min="10" max="32" step="1">
             </label>
 
             <button id="refresh-light" class="refresh-button">REFRESH</button>
           </div>
 
-          <!-- IKONY PO PRAWEJ -->
           <div class="frame-top-icons">
             <img src="svg-folder/xNotificationIcon.svg" alt="Notification" />
             <img src="svg-folder/xCalendarIcon.svg" alt="Calendar" />
@@ -57,33 +69,37 @@
             <img src="svg-folder/xSettingsIcon.svg" alt="Settings" />
             <img src="svg-folder/xAvatarIcon.svg" alt="Avatar" />
           </div>
-
         </div>
       </div>
 
       <div id="icons-light" class="icons-grid"></div>
     </section>
 
-    <!-- ============ DOLNA RAMKA (CIEMNA) ============ -->
+    <!-- DOLNA RAMKA (CIEMNA) -->
     <section id="frame-dark" class="frame frame--dark">
       <div class="frame-top">
-
         <div class="frame-top-left">
           <img src="svg-folder/Logo.svg" class="frame-logo frame-logo--invert" alt="Logo" />
         </div>
 
         <div class="frame-top-right">
-
-          <!-- KONTROLKI (ciemna) -->
           <div class="font-controls">
 
             <label>
               <span class="font-control-label">Czcionka</span>
               <select id="font-select-dark" class="font-select">
+
+                <!-- IDENTYCZNA LISTA -->
                 <option value="FrutigerNeue Bold">FrutigerNeue Bold</option>
                 <option value="FrutigerNeue Light">FrutigerNeue Light</option>
-                <option value="Minecraftia">Minecraftia</option>
-                <option value="Nimbus Sans">Nimbus Sans</option>
+
+                <option value="Aileron Light">Aileron Light</option>
+                <option value="Montserrat Light">Montserrat Light</option>
+                <option value="Cantarell">Cantarell</option>
+                <option value="Exo 2">Exo 2</option>
+                <option value="Plus Jakarta Sans">Plus Jakarta Sans</option>
+                <option value="Poppins Light">Poppins Light</option>
+                <option value="Inconsolata VF">Inconsolata VF</option>
                 <option value="Inconsolata Condensed">Inconsolata Condensed</option>
                 <option value="Open Sans">Open Sans</option>
                 <option value="Samsung Sans">Samsung Sans</option>
@@ -92,19 +108,26 @@
                 <option value="DieGrotesk">DieGrotesk</option>
                 <option value="Geograph">Geograph</option>
                 <option value="Manrope">Manrope</option>
+                <option value="Larke Neue Thin">Larke Neue Thin</option>
+                <option value="Liberation Sans">Liberation Sans</option>
+                <option value="Libra Sans">Libra Sans</option>
+                <option value="Opening Hours Sans">Opening Hours Sans</option>
+                <option value="Sora">Sora</option>
+                <option value="Roboto">Roboto</option>
+                <option value="Ubuntu Light">Ubuntu Light</option>
+                <option value="Segoe UI Thin">Segoe UI Thin</option>
+
               </select>
             </label>
 
             <label>
               <span class="font-control-label">Rozmiar</span>
-              <input id="font-size-dark" type="number" class="font-size-input"
-                     min="10" max="32" step="1">
+              <input id="font-size-dark" type="number" class="font-size-input" min="10" max="32" step="1">
             </label>
 
             <button id="refresh-dark" class="refresh-button">REFRESH</button>
           </div>
 
-          <!-- IKONY PO PRAWEJ -->
           <div class="frame-top-icons">
             <img src="svg-folder/xNotificationIcon.svg" alt="Notification" />
             <img src="svg-folder/xCalendarIcon.svg" alt="Calendar" />
@@ -112,7 +135,6 @@
             <img src="svg-folder/xSettingsIcon.svg" alt="Settings" />
             <img src="svg-folder/xAvatarIcon.svg" alt="Avatar" />
           </div>
-
         </div>
       </div>
 
@@ -122,9 +144,9 @@
   </main>
 
 <script>
-/* ---------------------------------------------------------------------
-   LISTA IKON – w folderze svg-folder
-------------------------------------------------------------------------*/
+
+/* ------------ LISTA IKON ------------ */
+
 const ICONS_PATH = "./svg-folder/";
 
 const svgFiles = [
@@ -147,10 +169,6 @@ const svgFiles = [
   "xExportPDFIcon.svg","xExportXLSIcon.svg","xFileUploadIcon.svg",
   "xNotificationIcon.svg","xSettingsIcon.svg","xSettingsListIcon.svg"
 ];
-
-/* ---------------------------------------------------------------------
-   GENEROWANIE IKON
-------------------------------------------------------------------------*/
 
 const lightBox = document.getElementById("icons-light");
 const darkBox  = document.getElementById("icons-dark");
@@ -177,9 +195,7 @@ function createCell(fileName, dark) {
   return cell;
 }
 
-/* ---------------------------------------------------------------------
-   ZAZnaczenie
-------------------------------------------------------------------------*/
+/* ------------ ZAZNACZENIE ---------- */
 
 document.addEventListener("click", e => {
   const cell = e.target.closest(".icon-cell");
@@ -191,9 +207,7 @@ document.addEventListener("click", e => {
   cell.classList.add("icon-cell--selected");
 });
 
-/* ---------------------------------------------------------------------
-   KONTROLKI CZCIONEK
-------------------------------------------------------------------------*/
+/* ------------ FONT CONTROLS ---------- */
 
 function setupFontControls(sectionId, selectId, sizeId, refreshId, LSFontKey, LSSizeKey) {
   const section = document.getElementById(sectionId);
@@ -244,6 +258,7 @@ setupFontControls(
   "uiFontFamily_dark",
   "uiFontSize_dark"
 );
+
 </script>
 
 </body>

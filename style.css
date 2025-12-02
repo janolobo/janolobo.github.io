@@ -1,89 +1,185 @@
 /* ================= CUSTOM FONTS ================= */
 
+/* Frutiger */
 @font-face {
   font-family: "FrutigerNeue Bold";
   src: url("fonts/FrutigerNeueLTPro-Bold.woff2") format("woff2");
   font-weight: 700;
-  font-style: normal;
 }
-
 @font-face {
   font-family: "FrutigerNeue Light";
   src: url("fonts/FrutigerNeueLTPro-Light.woff") format("woff");
   font-weight: 300;
-  font-style: normal;
 }
 
+/* Aileron */
 @font-face {
-  font-family: "Minecraftia";
-  src: url("fonts/Minecraftia-Regular.ttf") format("truetype");
+  font-family: "Aileron Light";
+  src: url("fonts/Aileron-Light.otf") format("opentype");
+  font-weight: 300;
+}
+
+/* Montserrat */
+@font-face {
+  font-family: "Montserrat Light";
+  src: url("fonts/Montserrat-Light.ttf") format("truetype");
+  font-weight: 300;
+}
+
+/* Cantarell */
+@font-face {
+  font-family: "Cantarell";
+  src: url("fonts/Cantarell-Regular.ttf") format("truetype");
   font-weight: 400;
 }
 
+/* Exo 2 Variable */
 @font-face {
-  font-family: "Nimbus Sans";
-  src: url("fonts/NimbusSanL-Reg.otf") format("opentype");
-  font-weight: 400;
+  font-family: "Exo 2";
+  src: url("fonts/Exo2-VariableFont_wght.ttf") format("truetype");
+  font-weight: 100 900;
 }
 
+/* Plus Jakarta Sans */
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  src: url("fonts/PlusJakartaSans[wght].ttf") format("truetype");
+  font-weight: 100 900;
+}
+
+/* Poppins */
+@font-face {
+  font-family: "Poppins Light";
+  src: url("fonts/Poppins-Light.ttf") format("truetype");
+  font-weight: 300;
+}
+
+/* Inconsolata Variable */
+@font-face {
+  font-family: "Inconsolata VF";
+  src: url("fonts/Inconsolata-VariableFont_wdth,wght.ttf") format("truetype");
+  font-weight: 100 900;
+}
+
+/* Inconsolata Condensed (stałe) */
 @font-face {
   font-family: "Inconsolata Condensed";
   src: url("fonts/Inconsolata_Condensed-Regular.ttf") format("truetype");
   font-weight: 400;
 }
-
 @font-face {
   font-family: "Inconsolata Condensed";
   src: url("fonts/Inconsolata_Condensed-Medium.ttf") format("truetype");
   font-weight: 500;
 }
-
 @font-face {
   font-family: "Inconsolata Condensed";
   src: url("fonts/Inconsolata_Condensed-SemiBold.ttf") format("truetype");
   font-weight: 600;
 }
 
+/* Open Sans Variable */
 @font-face {
   font-family: "Open Sans";
   src: url("fonts/OpenSans-VariableFont_wdth,wght.ttf") format("truetype");
   font-weight: 100 900;
 }
 
+/* Samsung Sans */
 @font-face {
   font-family: "Samsung Sans";
   src: url("fonts/SamsungSans-Regular.ttf") format("truetype");
   font-weight: 400;
 }
 
+/* Satoshi */
 @font-face {
   font-family: "Satoshi";
   src: url("fonts/Satoshi-Variable.ttf") format("truetype");
   font-weight: 100 900;
 }
 
+/* Inter */
 @font-face {
   font-family: "Inter 18pt";
   src: url("fonts/Inter_18pt-Regular.ttf") format("truetype");
-  font-weight: 400;
 }
 
+/* Die Grotesk */
 @font-face {
   font-family: "DieGrotesk";
   src: url("fonts/TestDieGroteskVF-Roman.ttf") format("truetype");
   font-weight: 100 900;
 }
 
+/* Geograph */
 @font-face {
   font-family: "Geograph";
   src: url("fonts/TestGeographVF-Roman.ttf") format("truetype");
   font-weight: 100 900;
 }
 
+/* Manrope */
 @font-face {
   font-family: "Manrope";
   src: url("fonts/Manrope-Regular.ttf") format("truetype");
   font-weight: 400;
+}
+
+/* Larke Neue */
+@font-face {
+  font-family: "Larke Neue Thin";
+  src: url("fonts/Larke Neue Thin.ttf") format("truetype");
+  font-weight: 200;
+}
+
+/* Liberation Sans */
+@font-face {
+  font-family: "Liberation Sans";
+  src: url("fonts/LiberationSans-Regular.ttf") format("truetype");
+  font-weight: 400;
+}
+
+/* Libra Sans */
+@font-face {
+  font-family: "Libra Sans";
+  src: url("fonts/LibraSans.otf") format("opentype");
+  font-weight: 400;
+}
+
+/* Opening Hours Sans */
+@font-face {
+  font-family: "Opening Hours Sans";
+  src: url("fonts/openinghourssans-regular.otf") format("opentype");
+  font-weight: 400;
+}
+
+/* Sora */
+@font-face {
+  font-family: "Sora";
+  src: url("fonts/Sora-Variable.ttf") format("truetype");
+  font-weight: 100 900;
+}
+
+/* Roboto */
+@font-face {
+  font-family: "Roboto";
+  src: url("fonts/Roboto-VariableFont_wdth,wght.ttf") format("truetype");
+  font-weight: 100 900;
+}
+
+/* Ubuntu */
+@font-face {
+  font-family: "Ubuntu Light";
+  src: url("fonts/Ubuntu-Light.ttf") format("truetype");
+  font-weight: 300;
+}
+
+/* Segoe UI */
+@font-face {
+  font-family: "Segoe UI Thin";
+  src: url("fonts/segoeuithis.ttf") format("truetype");
+  font-weight: 200;
 }
 
 /* ================== GLOBAL ================== */
@@ -96,7 +192,6 @@ body {
   font-family: system-ui, sans-serif;
 }
 
-/* Główna strona */
 .page {
   max-width: 1250px;
   margin: 20px auto;
@@ -118,15 +213,8 @@ body {
   box-shadow: 0 1px 4px rgba(0,0,0,0.1);
 }
 
-.frame--light {
-  background: #ffffff;
-  color: #000;
-}
-
-.frame--dark {
-  background: #000000;
-  color: #fff;
-}
+.frame--light { background: #fff; color: #000; }
+.frame--dark { background: #000; color: #fff; }
 
 /* ---------------- TOPBAR ---------------- */
 
@@ -137,26 +225,11 @@ body {
   margin-bottom: 12px;
 }
 
-.frame-top-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
+.frame-top-left { display: flex; align-items: center; gap: 12px; }
+.frame-top-right { display: flex; align-items: center; gap: 24px; }
 
-.frame-top-right {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-}
-
-.frame-logo {
-  width: 124px;
-  height: auto;
-}
-
-.frame-logo--invert {
-  filter: invert(1);
-}
+.frame-logo { width: 124px; height: auto; }
+.frame-logo--invert { filter: invert(1); }
 
 /* --------- KONTROLKI CZCIONKI --------- */
 
@@ -167,10 +240,7 @@ body {
   font-size: 12px;
 }
 
-.font-control-label {
-  font-size: 11px;
-  opacity: 0.7;
-}
+.font-control-label { font-size: 11px; opacity: 0.7; }
 
 .font-select,
 .font-size-input {
@@ -181,9 +251,7 @@ body {
   background: #fff;
 }
 
-.font-size-input {
-  width: 64px;
-}
+.font-size-input { width: 64px; }
 
 .frame--dark .font-select,
 .frame--dark .font-size-input {
@@ -192,8 +260,7 @@ body {
   border-color: rgba(255,255,255,0.3);
 }
 
-/* przycisk REFRESH */
-
+/* REFRESH BUTTON */
 .refresh-button {
   font: inherit;
   padding: 4px 14px;
@@ -207,10 +274,7 @@ body {
   transition: background-color .15s, opacity .15s, transform .1s;
 }
 
-.refresh-button:hover {
-  background: #e2e2e2;
-}
-
+.refresh-button:hover { background: #e2e2e2; }
 .refresh-button:active {
   transform: translateY(1px);
   opacity: .7;
@@ -222,9 +286,7 @@ body {
   color: #fff;
 }
 
-.frame--dark .refresh-button:hover {
-  background: #1b1b1b;
-}
+.frame--dark .refresh-button:hover { background: #1b1b1b; }
 
 /* ---------------- TOP IKONY ---------------- */
 
@@ -241,13 +303,8 @@ body {
   transition: opacity .15s;
 }
 
-.frame-top-icons img:hover {
-  opacity: .6;
-}
-
-.frame--dark .frame-top-icons img {
-  filter: invert(1);
-}
+.frame-top-icons img:hover { opacity: .6; }
+.frame--dark .frame-top-icons img { filter: invert(1); }
 
 /* ----------- IKONY GRID ------------ */
 
@@ -269,39 +326,23 @@ body {
   transition: background-color .15s, box-shadow .15s, transform .1s, opacity .15s;
 }
 
-/* hover */
+.icon-cell--light:hover { background: rgba(0,0,0,0.05); }
+.icon-cell--dark:hover { background: rgba(255,255,255,0.1); }
 
-.icon-cell--light:hover {
-  background: rgba(0,0,0,0.05);
-}
-
-.icon-cell--dark:hover {
-  background: rgba(255,255,255,0.1);
-}
-
-.icon-cell--dark img {
-  filter: invert(1);
-}
-
-/* klik (mignięcie) */
+.icon-cell--dark img { filter: invert(1); }
 
 .icon-cell--light:active {
   box-shadow: 0 0 0 1px rgba(0,0,0,0.3);
 }
-
 .icon-cell--dark:active {
   box-shadow: 0 0 0 1px rgba(255,255,255,0.6);
 }
-
-/* ikona */
 
 .icon-img {
   width: 16px;
   height: 16px;
   transition: opacity .15s;
 }
-
-/* podpis */
 
 .icon-label {
   font-size: 1em;
@@ -312,8 +353,6 @@ body {
 .icon-cell:hover .icon-label {
   opacity: .5;
 }
-
-/* wybrane */
 
 .icon-cell--selected.icon-cell--light {
   background: rgba(0,0,0,0.05);
@@ -327,4 +366,3 @@ body {
 .icon-cell--selected .icon-label {
   opacity: .5;
 }
-
