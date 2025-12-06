@@ -1,154 +1,157 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8" />
-  <title>Podgląd ikon SVG</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8" />
+    <title>IronInsight layout test</title>
+
+    <!-- Główny styl -->
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="layout.css" />
+
+    <style>
+        #content-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: transparent;
+            display: block;
+            overflow: auto;
+        }
+
+        .frame--dark #content-frame {
+            filter: invert(1) hue-rotate(180deg);
+        }
+    </style>
 </head>
 <body>
 
-  <main class="page">
+<main class="page">
 
-    <!-- GÓRNA RAMKA (JASNA) -->
-    <section id="frame-light" class="frame frame--light">
-      <div class="frame-top">
-        <div class="frame-top-left">
-          <img src="svg-folder/Logo.svg" class="frame-logo" alt="Logo" />
+    <section id="frame" class="frame frame--light">
+
+        <!-- SIDEBAR -->
+        <div id="sidebar-main" class="frame-sidebar">
+            <div class="sidebar-logo">
+                <img src="svg-folder/Logo.svg" class="frame-logo" alt="Logo"/>
+            </div>
+            <div class="sidebar-spacer-24"></div>
+
+            <div class="icon-cell icon-cell--light sidebar-fixed" data-src="content.html">
+                <img src="svg-folder/ProgramIcon.svg" class="icon-img" />
+                <span class="icon-label">Program</span>
+            </div>
+
+            <div class="icon-cell icon-cell--light sidebar-fixed" data-src="list.html">
+                <img src="svg-folder/OrganisationIcon.svg" class="icon-img" />
+                <span class="icon-label">Organizacja</span>
+            </div>
+
+            <div class="icon-cell icon-cell--light sidebar-fixed" data-src="pdca.html">
+                <img src="svg-folder/MaintenanceIcon.svg" class="icon-img" />
+                <span class="icon-label">Utrzymanie ruchu</span>
+            </div>
+
+            <div class="icon-cell icon-cell--light sidebar-fixed" data-src="node.html">
+                <img src="svg-folder/ContractorsIcon.svg" class="icon-img" />
+                <span class="icon-label">Kontrahenci</span>
+            </div>
+
+            <div class="icon-cell icon-cell--light sidebar-fixed">
+                <img src="svg-folder/DocumentsIcon.svg" class="icon-img" />
+                <span class="icon-label">Dokumenty</span>
+            </div>
+
+            <div class="icon-cell icon-cell--light sidebar-fixed">
+                <img src="svg-folder/TechnologyIcon.svg" class="icon-img" />
+                <span class="icon-label">Technologia</span>
+            </div>
+
+            <div class="icon-cell icon-cell--light sidebar-fixed">
+                <img src="svg-folder/TasksIcon.svg" class="icon-img" />
+                <span class="icon-label">Zadania</span>
+            </div>
+
         </div>
 
-        <div class="frame-top-right">
-          <div class="font-controls">
+        <!-- RIGHT AREA -->
+        <div class="frame-right">
 
-            <label>
-              <span class="font-control-label">Czcionka</span>
-              <select id="font-select-light" class="font-select">
+            <!-- TOPBAR -->
+            <div class="topbar">
+                <div class="frame-top-right topbar-icons">
+                    <img src="svg-folder/xNotificationIcon.svg" alt="" />
+                    <img src="svg-folder/xCalendarIcon.svg" alt="" />
+                    <img src="svg-folder/xChatIcon.svg" alt="" />
+                    <img src="svg-folder/xMyTasksIcon.svg" alt="" />
+                    <img src="svg-folder/xSettingsIcon.svg" alt="" />
+                    <img src="svg-folder/xAvatarIcon.svg" alt="" />
+                </div>
+            </div>
 
-                <!-- NOWA PEŁNA LISTA FONTÓW -->
-                <option value="FrutigerNeue Bold">FrutigerNeue Bold</option>
-                <option value="FrutigerNeue Light">FrutigerNeue Light</option>
+            <div class="topbar-spacer"></div>
 
-                <option value="Aileron Light">Aileron Light</option>
-                <option value="Montserrat Light">Montserrat Light</option>
-                <option value="Cantarell">Cantarell</option>
-                <option value="Exo 2">Exo 2</option>
-                <option value="Plus Jakarta Sans">Plus Jakarta Sans</option>
-                <option value="Poppins Light">Poppins Light</option>
-                <option value="Inconsolata VF">Inconsolata VF</option>
-                <option value="Inconsolata Condensed">Inconsolata Condensed</option>
-                <option value="Open Sans">Open Sans</option>
-                <option value="Samsung Sans">Samsung Sans</option>
-                <option value="Satoshi">Satoshi</option>
-                <option value="Inter 18pt">Inter 18pt</option>
-                <option value="DieGrotesk">DieGrotesk</option>
-                <option value="Geograph">Geograph</option>
-                <option value="Manrope">Manrope</option>
-                <option value="Larke Neue Thin">Larke Neue Thin</option>
-                <option value="Liberation Sans">Liberation Sans</option>
-                <option value="Libra Sans">Libra Sans</option>
-                <option value="Opening Hours Sans">Opening Hours Sans</option>
-                <option value="Sora">Sora</option>
-                <option value="Roboto">Roboto</option>
-                <option value="Ubuntu Light">Ubuntu Light</option>
-                <option value="Segoe UI Thin">Segoe UI Thin</option>
+            <!-- SUBTOPBAR -->
+            <div id="subtopbar-main" class="subtopbar"></div>
 
-              </select>
-            </label>
+            <!-- CONTENT -->
+            <div class="content">
+                <iframe id="content-frame" src="content.html" allow="input-prompting"></iframe>
+            </div>
 
-            <label>
-              <span class="font-control-label">Rozmiar</span>
-              <input id="font-size-light" type="number" class="font-size-input" min="10" max="32" step="1">
-            </label>
+            <!-- BOTTOM CONTROLS -->
+            <div class="bottom-controls">
+                Czcionka:
+                <select id="font-select" class="font-select"></select>
 
-            <button id="refresh-light" class="refresh-button">REFRESH</button>
-          </div>
+                Rozmiar:
+                <input id="font-size" class="font-size-input" type="number" min="10" max="32"/>
 
-          <div class="frame-top-icons">
-            <img src="svg-folder/xNotificationIcon.svg" alt="Notification" />
-            <img src="svg-folder/xCalendarIcon.svg" alt="Calendar" />
-            <img src="svg-folder/xChatIcon.svg" alt="Chat" />
-            <img src="svg-folder/xSettingsIcon.svg" alt="Settings" />
-            <img src="svg-folder/xAvatarIcon.svg" alt="Avatar" />
-          </div>
+                Szarość:
+                <input id="font-opacity" class="font-opacity-input" type="number" min="0" max="100"/>
+
+                <button id="refresh" class="refresh-button">REFRESH</button>
+                <button id="theme-toggle" class="refresh-button">DARK</button>
+                <button class="layout-toggle" data-frame="frame">LAYOUT</button>
+            </div>
+
         </div>
-      </div>
 
-      <div id="icons-light" class="icons-grid"></div>
+        <!-- LAYOUT OVERLAY -->
+        <div class="layout-overlay"></div>
+
     </section>
 
-    <!-- DOLNA RAMKA (CIEMNA) -->
-    <section id="frame-dark" class="frame frame--dark">
-      <div class="frame-top">
-        <div class="frame-top-left">
-          <img src="svg-folder/Logo.svg" class="frame-logo frame-logo--invert" alt="Logo" />
-        </div>
+</main>
 
-        <div class="frame-top-right">
-          <div class="font-controls">
 
-            <label>
-              <span class="font-control-label">Czcionka</span>
-              <select id="font-select-dark" class="font-select">
 
-                <!-- IDENTYCZNA LISTA -->
-                <option value="FrutigerNeue Bold">FrutigerNeue Bold</option>
-                <option value="FrutigerNeue Light">FrutigerNeue Light</option>
-
-                <option value="Aileron Light">Aileron Light</option>
-                <option value="Montserrat Light">Montserrat Light</option>
-                <option value="Cantarell">Cantarell</option>
-                <option value="Exo 2">Exo 2</option>
-                <option value="Plus Jakarta Sans">Plus Jakarta Sans</option>
-                <option value="Poppins Light">Poppins Light</option>
-                <option value="Inconsolata VF">Inconsolata VF</option>
-                <option value="Inconsolata Condensed">Inconsolata Condensed</option>
-                <option value="Open Sans">Open Sans</option>
-                <option value="Samsung Sans">Samsung Sans</option>
-                <option value="Satoshi">Satoshi</option>
-                <option value="Inter 18pt">Inter 18pt</option>
-                <option value="DieGrotesk">DieGrotesk</option>
-                <option value="Geograph">Geograph</option>
-                <option value="Manrope">Manrope</option>
-                <option value="Larke Neue Thin">Larke Neue Thin</option>
-                <option value="Liberation Sans">Liberation Sans</option>
-                <option value="Libra Sans">Libra Sans</option>
-                <option value="Opening Hours Sans">Opening Hours Sans</option>
-                <option value="Sora">Sora</option>
-                <option value="Roboto">Roboto</option>
-                <option value="Ubuntu Light">Ubuntu Light</option>
-                <option value="Segoe UI Thin">Segoe UI Thin</option>
-
-              </select>
-            </label>
-
-            <label>
-              <span class="font-control-label">Rozmiar</span>
-              <input id="font-size-dark" type="number" class="font-size-input" min="10" max="32" step="1">
-            </label>
-
-            <button id="refresh-dark" class="refresh-button">REFRESH</button>
-          </div>
-
-          <div class="frame-top-icons">
-            <img src="svg-folder/xNotificationIcon.svg" alt="Notification" />
-            <img src="svg-folder/xCalendarIcon.svg" alt="Calendar" />
-            <img src="svg-folder/xChatIcon.svg" alt="Chat" />
-            <img src="svg-folder/xSettingsIcon.svg" alt="Settings" />
-            <img src="svg-folder/xAvatarIcon.svg" alt="Avatar" />
-          </div>
-        </div>
-      </div>
-
-      <div id="icons-dark" class="icons-grid"></div>
-    </section>
-
-  </main>
-
+<!-- ============================================================
+   SCRIPT
+============================================================ -->
 <script>
+/* ============================================================
+   STAŁE IKONY SIDEBAR
+============================================================ */
+document.querySelectorAll(".sidebar-fixed").forEach(cell => {
+    cell.addEventListener("click", () => {
+        document.querySelectorAll(".icon-cell--selected")
+            .forEach(el => el.classList.remove("icon-cell--selected"));
 
-/* ------------ LISTA IKON ------------ */
+        cell.classList.add("icon-cell--selected");
 
-const ICONS_PATH = "./svg-folder/";
+        const file = cell.dataset.src;
+        if (file) document.getElementById("content-frame").src = file;
+    });
+});
 
+const sidebarFixedCells = document.querySelectorAll(".sidebar-fixed");
+if (sidebarFixedCells.length) sidebarFixedCells[0].classList.add("icon-cell--selected");
+
+
+/* ============================================================
+   SUBTOPBAR LOSOWY
+============================================================ */
+const ICONS_PATH = "svg-folder/";
 const svgFiles = [
   "5WhyIcon.svg","8DReportIcon.svg","BookmarksIcon.svg","CalendarIcon.svg",
   "ChatIcon.svg","CompetencesIcon.svg","ComponentsIcon.svg","ContractorsIcon.svg",
@@ -156,108 +159,210 @@ const svgFiles = [
   "DescriptionFieldIcon.svg","DocumentsIcon.svg","EmployeesIcon.svg",
   "EnclosurementAddIcon.svg","EnclosurementIcon.svg","ExcelIcon.svg",
   "ExclamationIcon.svg","FileIcon.svg","HRIcon.svg","ImprovementIcon.svg",
-  "IshikawaIcon.svg","ListIcon.svg","LocationsIcon.svg","Logo.svg",
-  "MachinesIcon.svg","MaintenanceIcon.svg","MiniCalendarIcon.svg",
-  "NotificationsIcon_mono.svg","OrganisationIcon.svg","PDFIcon.svg",
-  "PictureIcon.svg","PositionsIcon.svg","PrivateTaskIcon.svg",
-  "ProductionIcon.svg","ProgramIcon.svg","PromotIcon.svg","PurposeIcon.svg",
-  "QmsProcessesIcon.svg","QualityAlertIcon.svg","RootcauseIcon.svg",
-  "SettingsIcon.svg","SimpleSubtaskIcon.svg","SortingIcon.svg",
-  "SubtaskIcon.svg","SuppliersIcon.svg","TasksIcon.svg","TeamIcon.svg",
-  "TechnologyIcon.svg","UsersIcon.svg","ValidationIcon.svg","WorkstationsIcon.svg",
-  "xAvatarIcon.svg","xCalendarIcon.svg","xChatIcon.svg","xDeleteIcon.svg",
-  "xExportPDFIcon.svg","xExportXLSIcon.svg","xFileUploadIcon.svg",
-  "xNotificationIcon.svg","xSettingsIcon.svg","xSettingsListIcon.svg"
+  "IshikawaIcon.svg","ListIcon.svg","LocationsIcon.svg","MachinesIcon.svg",
+  "MaintenanceIcon.svg","MiniCalendarIcon.svg","NotificationsIcon_mono.svg",
+  "OrganisationIcon.svg","PDFIcon.svg","PictureIcon.svg","PositionsIcon.svg",
+  "PrivateTaskIcon.svg","ProductionIcon.svg","ProgramIcon.svg","PromotIcon.svg",
+  "PurposeIcon.svg","QmsProcessesIcon.svg","QualityAlertIcon.svg",
+  "RootcauseIcon.svg","SettingsIcon.svg","SimpleSubtaskIcon.svg",
+  "SortingIcon.svg","SubtaskIcon.svg","SuppliersIcon.svg","TasksIcon.svg",
+  "TeamIcon.svg","TechnologyIcon.svg","UsersIcon.svg","ValidationIcon.svg",
+  "WorkstationsIcon.svg","xAvatarIcon.svg","xCalendarIcon.svg","xChatIcon.svg",
+  "xDeleteIcon.svg","xExportPDFIcon.svg","xExportXLSIcon.svg",
+  "xFileUploadIcon.svg","xNotificationIcon.svg","xSettingsIcon.svg",
+  "xSettingsListIcon.svg"
 ];
 
-const lightBox = document.getElementById("icons-light");
-const darkBox  = document.getElementById("icons-dark");
+function shuffle(a) {
+  let arr = [...a];
+  for (let i = arr.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i+1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
 
-svgFiles.forEach(name => {
-  lightBox.appendChild(createCell(name, false));
-  darkBox.appendChild(createCell(name, true));
-});
-
-function createCell(fileName, dark) {
+function createCell(iconName, dark) {
   const cell = document.createElement("div");
   cell.className = "icon-cell " + (dark ? "icon-cell--dark" : "icon-cell--light");
 
-  const icon = document.createElement("img");
-  icon.src = ICONS_PATH + fileName;
-  icon.className = "icon-img";
+  const img = document.createElement("img");
+  img.className = "icon-img";
+  img.src = ICONS_PATH + iconName;
 
   const label = document.createElement("span");
   label.className = "icon-label";
-  label.textContent = fileName.replace(".svg", "");
+  label.textContent = iconName.replace(".svg","");
 
-  cell.appendChild(icon);
-  cell.appendChild(label);
+  cell.append(img, label);
   return cell;
 }
 
-/* ------------ ZAZNACZENIE ---------- */
-
-document.addEventListener("click", e => {
-  const cell = e.target.closest(".icon-cell");
-  if (!cell) return;
-
-  document.querySelectorAll(".icon-cell--selected")
-    .forEach(el => el.classList.remove("icon-cell--selected"));
-
-  cell.classList.add("icon-cell--selected");
-});
-
-/* ------------ FONT CONTROLS ---------- */
-
-function setupFontControls(sectionId, selectId, sizeId, refreshId, LSFontKey, LSSizeKey) {
-  const section = document.getElementById(sectionId);
-  const select  = document.getElementById(selectId);
-  const sizeInp = document.getElementById(sizeId);
-  const refresh = document.getElementById(refreshId);
-
-  const defaultFont = "Open Sans";
-  const defaultSize = 14;
-
-  let font = localStorage.getItem(LSFontKey) || defaultFont;
-  let size = parseInt(localStorage.getItem(LSSizeKey), 10) || defaultSize;
-
-  select.value = font;
-  sizeInp.value = size;
-
-  section.style.setProperty("--frame-font-family", font);
-  section.style.setProperty("--frame-font-size", size + "px");
-
-  refresh.addEventListener("click", () => {
-    const newFont = select.value;
-    let newSize = parseInt(sizeInp.value, 10);
-
-    if (isNaN(newSize)) newSize = defaultSize;
-
-    localStorage.setItem(LSFontKey, newFont);
-    localStorage.setItem(LSSizeKey, newSize);
-
-    section.style.setProperty("--frame-font-family", newFont);
-    section.style.setProperty("--frame-font-size", newSize + "px");
-  });
+function loadRandomIconsForSubtopbar(subbar, dark) {
+  const shuffled = shuffle(svgFiles).slice(0, 7);
+  subbar.innerHTML = "";
+  shuffled.forEach(i => subbar.appendChild(createCell(i, dark)));
 }
 
-setupFontControls(
-  "frame-light",
-  "font-select-light",
-  "font-size-light",
-  "refresh-light",
-  "uiFontFamily_light",
-  "uiFontSize_light"
-);
 
-setupFontControls(
-  "frame-dark",
-  "font-select-dark",
-  "font-size-dark",
-  "refresh-dark",
-  "uiFontFamily_dark",
-  "uiFontSize_dark"
-);
+/* ============================================================
+   THEME + FONT CONTROLS
+============================================================ */
+const fontSelect       = document.getElementById("font-select");
+const fontSizeInput    = document.getElementById("font-size");
+const fontOpacityInput = document.getElementById("font-opacity");
+const refreshBtn       = document.getElementById("refresh");
+const themeToggleBtn   = document.getElementById("theme-toggle");
+const frame            = document.getElementById("frame");
+const subtopbarEl      = document.getElementById("subtopbar-main");
+let currentTheme = localStorage.getItem("uiTheme") || "light";
+
+const FRAME_FONTS = [
+    "FrutigerNeue Bold","FrutigerNeue Light",
+    "Inconsolata Condensed Medium","Inconsolata Condensed Regular",
+    "Inconsolata Condensed SemiBold",
+    "Open Sans","Samsung Sans","Satoshi","Inter 18pt",
+    "Geograph","DieGrotesk","Manrope","Larke Neue Thin",
+    "Liberation Sans","Libra Sans","Opening Hours Sans",
+    "Sora","Poppins Light","Plus Jakarta Sans","Nimbus Sans",
+    "Ubuntu Light","Roboto","Segoe UI Thin",
+    "Cantarell","Exo 2","Aileron Light","Montserrat Light"
+];
+
+function fillFontSelect() {
+    fontSelect.innerHTML = FRAME_FONTS
+        .map(f => `<option value="${f}">${f}</option>`).join("");
+}
+
+function applyFrameSettings(settings) {
+    frame.style.setProperty("--frame-font-family", settings.font);
+    frame.style.setProperty("--frame-font-size", settings.size + "px");
+    frame.style.setProperty("--frame-opacity", settings.opacity / 100);
+}
+
+function refreshFrameSettingsFromUI() {
+    const settings = {
+        font: fontSelect.value,
+        size: parseInt(fontSizeInput.value),
+        opacity: parseInt(fontOpacityInput.value)
+    };
+    applyFrameSettings(settings);
+}
+
+function initFrameControls() {
+    fillFontSelect();
+    fontSelect.value = "Open Sans";
+    fontSizeInput.value = 14;
+    fontOpacityInput.value = 100;
+    applyFrameSettings({ font:"Open Sans", size:14, opacity:100 });
+    refreshBtn.addEventListener("click", refreshFrameSettingsFromUI);
+}
+
+function updateThemeClasses() {
+    if (currentTheme === "dark") {
+        frame.classList.remove("frame--light");
+        frame.classList.add("frame--dark");
+        themeToggleBtn.textContent = "LIGHT";
+    } else {
+        frame.classList.remove("frame--dark");
+        frame.classList.add("frame--light");
+        themeToggleBtn.textContent = "DARK";
+    }
+}
+
+themeToggleBtn.addEventListener("click", () => {
+    currentTheme = currentTheme === "dark" ? "light" : "dark";
+    localStorage.setItem("uiTheme", currentTheme);
+    updateThemeClasses();
+    loadRandomIconsForSubtopbar(subtopbarEl, currentTheme === "dark");
+});
+
+
+/* ============================================================
+   LAYOUT — STABILNA WERSJA (zero lagów)
+============================================================ */
+
+const layoutOverlay = document.querySelector(".layout-overlay");
+
+function buildLayoutOverlay() {
+    if (!frame.classList.contains("frame--show-layout")) {
+        layoutOverlay.innerHTML = "";
+        return;
+    }
+
+    layoutOverlay.innerHTML = "";
+    const rect = frame.getBoundingClientRect();
+    const grid = 8;
+
+    const cols = Math.floor(rect.width / grid);
+    const rows = Math.floor(rect.height / grid);
+
+    for (let i = 0; i <= rows; i++) {
+        const h = document.createElement("div");
+        h.className = "layout-grid-line-h";
+        h.style.top = (i * grid) + "px";
+        layoutOverlay.appendChild(h);
+    }
+
+    for (let i = 0; i <= cols; i++) {
+        const v = document.createElement("div");
+        v.className = "layout-grid-line-v";
+        v.style.left = (i * grid) + "px";
+        layoutOverlay.appendChild(v);
+    }
+
+    const highlight = [
+        ".frame-sidebar",
+        ".topbar",
+        ".subtopbar",
+        ".content",
+        ".bottom-controls"
+    ];
+
+    highlight.forEach(sel => {
+        const el = frame.querySelector(sel);
+        if (!el) return;
+
+        const r = el.getBoundingClientRect();
+        const box = document.createElement("div");
+        box.className = "layout-box";
+
+        box.style.left = (r.left - rect.left) + "px";
+        box.style.top = (r.top - rect.top) + "px";
+        box.style.width = r.width + "px";
+        box.style.height = r.height + "px";
+
+        const label = document.createElement("div");
+        label.className = "layout-label";
+        label.textContent = sel.replace(".", "");
+        box.appendChild(label);
+
+        layoutOverlay.appendChild(box);
+    });
+}
+
+new MutationObserver(() => buildLayoutOverlay()).observe(frame, {
+    attributes: true,
+    attributeFilter: ["class"]
+});
+
+document.querySelectorAll(".layout-toggle").forEach(btn => {
+    btn.addEventListener("click", () => {
+        frame.classList.toggle("frame--show-layout");
+        buildLayoutOverlay();
+    });
+});
+
+window.addEventListener("resize", buildLayoutOverlay);
+
+
+/* ============================================================
+   START
+============================================================ */
+updateThemeClasses();
+initFrameControls();
+loadRandomIconsForSubtopbar(subtopbarEl, currentTheme === "dark");
+buildLayoutOverlay();
 
 </script>
 

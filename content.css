@@ -1,0 +1,356 @@
+/* =====================================
+   FONT-FACE (wszystkie czcionki z uploadu)
+===================================== */
+
+@font-face { font-family:"FrutigerNeue Bold"; src:url("fonts/FrutigerNeueLTPro-Bold.woff2") format("woff2"); }
+@font-face { font-family:"FrutigerNeue Light"; src:url("fonts/FrutigerNeueLTPro-Light.woff") format("woff"); }
+@font-face { font-family:"Inconsolata Condensed Medium"; src:url("fonts/Inconsolata_Condensed-Medium.ttf") format("truetype"); }
+@font-face { font-family:"Inconsolata Condensed Regular"; src:url("fonts/Inconsolata_Condensed-Regular.ttf") format("truetype"); }
+@font-face { font-family:"Inconsolata Condensed SemiBold"; src:url("fonts/Inconsolata_Condensed-SemiBold.ttf") format("truetype"); }
+@font-face { font-family:"Open Sans"; src:url("fonts/OpenSans-VariableFont_wdth,wght.ttf") format("truetype"); }
+@font-face { font-family:"Samsung Sans"; src:url("fonts/SamsungSans-Regular.ttf") format("truetype"); }
+@font-face { font-family:"Satoshi"; src:url("fonts/Satoshi-Variable.ttf") format("truetype"); }
+@font-face { font-family:"Inter"; src:url("fonts/Inter_18pt-Regular.ttf") format("truetype"); }
+@font-face { font-family:"Geograph"; src:url("fonts/TestGeographVF-Roman.ttf") format("truetype"); }
+@font-face { font-family:"DieGrotesk"; src:url("fonts/TestDieGroteskVF-Roman.ttf") format("truetype"); }
+@font-face { font-family:"Manrope"; src:url("fonts/Manrope-Regular.ttf") format("truetype"); }
+@font-face { font-family:"Larke Neue Thin"; src:url("fonts/Larke Neue Thin.ttf") format("truetype"); }
+@font-face { font-family:"Liberation Sans"; src:url("fonts/LiberationSans-Regular.ttf") format("truetype"); }
+@font-face { font-family:"Libra Sans"; src:url("fonts/LibraSans.otf") format("opentype"); }
+@font-face { font-family:"Opening Hours Sans"; src:url("fonts/openinghourssans-regular.otf") format("opentype"); }
+@font-face { font-family:"Sora"; src:url("fonts/Sora-Variable.ttf") format("truetype"); }
+@font-face { font-family:"Poppins Light"; src:url("fonts/Poppins-Light.ttf") format("truetype"); }
+@font-face { font-family:"Plus Jakarta Sans"; src:url("fonts/PlusJakartaSans[wght].ttf") format("truetype"); }
+@font-face { font-family:"Nimbus Sans"; src:url("fonts/NimbusSanL-Reg.otf") format("opentype"); }
+@font-face { font-family:"Minecraftia"; src:url("fonts/Minecraftia-Regular.ttf") format("truetype"); }
+@font-face { font-family:"Ubuntu Light"; src:url("fonts/Ubuntu-Light.ttf") format("truetype"); }
+@font-face { font-family:"Roboto"; src:url("fonts/Roboto-VariableFont_wdth,wght.ttf") format("truetype"); }
+@font-face { font-family:"Segoe UI Thin"; src:url("fonts/segoeuithis.ttf") format("truetype"); }
+
+/* =====================================
+   RESET
+===================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+input, select, textarea {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    border: none;
+    outline: none;
+    background: none;
+    font: inherit;
+}
+
+/* =====================================
+   ZMIENNE
+===================================== */
+
+:root {
+    --content-font-family:"Open Sans";
+    --content-font-size:14px;
+    --content-opacity:1;
+}
+
+/* =====================================
+   BODY
+===================================== */
+
+body {
+    padding: 12px;
+    font-family: var(--content-font-family);
+    font-size: var(--content-font-size);
+    color: rgba(0,0,0,var(--content-opacity));
+}
+
+/* =====================================
+   GRID / RAMKI
+===================================== */
+
+.form-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.row-fieldset {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 12px;
+}
+
+.row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+.row-top {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+/* =====================================
+   KOLUMNY
+===================================== */
+
+.cell {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.cell.empty {
+    opacity: .3;
+}
+
+/* =====================================
+   LABEL
+===================================== */
+
+label {
+    opacity: var(--content-opacity);
+}
+
+/* =====================================
+   INPUT / SELECT / TEXTAREA BAZA
+===================================== */
+
+input,
+select,
+textarea {
+    padding: 8px 10px;
+    border: 1px solid #bbb;
+    border-radius: 6px;
+    background: #fff;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* =====================================
+   SELECT – ikona DownIcon dla wszystkich
+===================================== */
+
+select {
+    background-image: url("svg-folder/DownIcon.svg");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 14px;
+    padding-right: 30px;
+}
+
+/* =====================================
+   STATUS ZADANIA – kolory + zachowanie strzałki
+===================================== */
+
+.status-open {
+    background-color: #e6ffe6 !important;
+    border-color: #46c646 !important;
+    color: #0f5a0f !important;
+}
+
+.status-closed {
+    background-color: #ffe6e6 !important;
+    border-color: #d14444 !important;
+    color: #7a0b0b !important;
+}
+
+.status-delete {
+    background-color: #f2f2f2 !important;
+    border-color: #ccc !important;
+    color: #444 !important;
+}
+
+/* upewniamy się, że strzałka jest też widoczna dla kolorowych statusów */
+.status-open,
+.status-closed,
+.status-delete {
+    background-image: url("svg-folder/DownIcon.svg") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 10px center !important;
+    background-size: 14px !important;
+    padding-right: 30px !important;
+}
+
+/* =====================================
+   WAGA – liczba + ramki 4/5
+===================================== */
+
+.weight-input {
+    width: 48px;
+}
+
+.weight-input.weight-4 {
+    border-color:#ffd400;
+    box-shadow:0 0 0 1px rgba(255,212,0,.55);
+}
+
+.weight-input.weight-5 {
+    border-color:#ff3333;
+    box-shadow:0 0 0 1px rgba(255,51,51,.55);
+}
+
+/* =====================================
+   OPIS WAGI – tekst po prawej
+===================================== */
+
+.weight-line {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.weight-desc {
+    font-size: 14px;
+    font-weight: 600;
+    user-select: none;
+    pointer-events: none;
+}
+
+.weight-blue   { color:#004b9a; }
+.weight-yellow { color:#c49b00; }
+.weight-red    { color:#cc0000; }
+
+/* =====================================
+   DATA – kontrolka + usunięcie systemowej ikony
+===================================== */
+
+.date-control {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.date-input {
+    padding: 6px 8px;
+    border: 1px solid #bbb;
+    border-radius: 6px;
+    background: #fff;
+    min-width: 84px;
+}
+
+/* usunięcie systemowej ikonki kalendarza */
+.date-input::-webkit-calendar-picker-indicator {
+    display: none;
+}
+.date-input::-moz-calendar-picker-indicator {
+    display: none;
+}
+
+/* przydatne w niektórych przeglądarkach */
+.date-input::-ms-clear,
+.date-input::-ms-reveal {
+    display:none;
+}
+
+/* przyciski lewo/prawo + ikona kalendarza */
+.date-btn {
+    padding: 4px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.date-btn:hover {
+    background: rgba(0,0,0,0.05);
+}
+
+.date-btn img {
+    width: 16px;
+    height: 16px;
+    display: block;
+}
+
+/* =====================================
+   KONTROLKI FONTÓW
+===================================== */
+
+.content-controls{
+    margin-top:20px;
+    padding-top:12px;
+    border-top:1px solid #ddd;
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+    align-items:center;
+}
+
+/* =====================================
+   PRZYCISKI DOLNE
+===================================== */
+
+.content-buttons{
+    margin-top:28px;
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+}
+
+.content-btn{
+    padding:4px 14px;
+    border-radius:6px;
+    font-weight:600;
+    cursor:pointer;
+    transition:background .15s, transform .1s, opacity .15s;
+}
+
+.content-btn-ok{
+    background:rgba(60,196,74,0.15);
+    border:1px solid rgba(60,196,74,0.05);
+}
+.content-btn-activate{
+    background:rgba(60,140,255,0.15);
+    border:1px solid rgba(60,140,255,0.05);
+}
+.content-btn-stop{
+    background:rgba(255,65,65,0.15);
+    border:1px solid rgba(255,65,65,0.05);
+}
+.content-btn-no{
+    background:rgba(80,80,80,0.15);
+    border:1px solid rgba(80,80,80,0.05);
+}
+.content-btn-cancel{
+    background:rgba(200,200,200,0.20);
+    border:1px solid rgba(200,200,200,0.05);
+}
+.content-btn-add{
+    background:rgba(255,165,70,0.18);
+    border:1px solid rgba(255,165,70,0.05);
+}
+
+/* =====================================
+   FIX: Przywrócenie stylów dla przycisków
+===================================== */
+
+button.content-btn {
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+
+    border-radius: 6px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    transition: background .15s, transform .1s, opacity .15s !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+/* Animacje powrotne */
+button.content-btn:hover {
+    filter: brightness(1.08);
+}
+
+button.content-btn:active {
+    transform: scale(.96);
+    opacity: .7;
+}
+

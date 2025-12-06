@@ -1,185 +1,176 @@
-/* ================= CUSTOM FONTS ================= */
+/* ============================================================
+   GLOBAL VARIABLES
+   ============================================================ */
 
-/* Frutiger */
-@font-face {
-  font-family: "FrutigerNeue Bold";
-  src: url("fonts/FrutigerNeueLTPro-Bold.woff2") format("woff2");
-  font-weight: 700;
+:root {
+    --icon-cell-height: 32px;   /* ← JEDNA ZMIENNA STERUJĄCA WYSOKOŚCIĄ IKON */
+    --icon-size: 16px;          /* ← IKONA ZAWSZE 16x16 */
 }
-@font-face {
-  font-family: "FrutigerNeue Light";
-  src: url("fonts/FrutigerNeueLTPro-Light.woff") format("woff");
-  font-weight: 300;
-}
+
+/* ============================================================
+   FULL FONT FACE PACKAGE — ALL INSTALLED FONTS
+   ============================================================ */
 
 /* Aileron */
 @font-face {
-  font-family: "Aileron Light";
-  src: url("fonts/Aileron-Light.otf") format("opentype");
-  font-weight: 300;
+    font-family: "Aileron Light";
+    src: url("fonts/Aileron-Light.otf") format("opentype");
 }
 
 /* Montserrat */
 @font-face {
-  font-family: "Montserrat Light";
-  src: url("fonts/Montserrat-Light.ttf") format("truetype");
-  font-weight: 300;
+    font-family: "Montserrat Light";
+    src: url("fonts/Montserrat-Light.ttf") format("truetype");
 }
 
 /* Cantarell */
 @font-face {
-  font-family: "Cantarell";
-  src: url("fonts/Cantarell-Regular.ttf") format("truetype");
-  font-weight: 400;
+    font-family: "Cantarell";
+    src: url("fonts/Cantarell-Regular.ttf") format("truetype");
 }
 
-/* Exo 2 Variable */
+/* Nimbus Sans */
 @font-face {
-  font-family: "Exo 2";
-  src: url("fonts/Exo2-VariableFont_wght.ttf") format("truetype");
-  font-weight: 100 900;
+    font-family: "Nimbus Sans";
+    src: url("fonts/NimbusSanL-Reg.otf") format("opentype");
+}
+
+/* Exo 2 */
+@font-face {
+    font-family: "Exo 2";
+    src: url("fonts/Exo2-VariableFont_wght.ttf") format("truetype");
+}
+
+/* Open Sans */
+@font-face {
+    font-family: "Open Sans";
+    src: url("fonts/OpenSans-VariableFont_wdth,wght.ttf") format("truetype");
+}
+
+/* Frutiger Neue */
+@font-face {
+    font-family: "FrutigerNeue Bold";
+    src: url("fonts/FrutigerNeueLTPro-Bold.woff2") format("woff2");
+}
+@font-face {
+    font-family: "FrutigerNeue Light";
+    src: url("fonts/FrutigerNeueLTPro-Light.woff") format("woff");
 }
 
 /* Plus Jakarta Sans */
 @font-face {
-  font-family: "Plus Jakarta Sans";
-  src: url("fonts/PlusJakartaSans[wght].ttf") format("truetype");
-  font-weight: 100 900;
+    font-family: "Plus Jakarta Sans";
+    src: url("fonts/PlusJakartaSans[wght].ttf") format("truetype");
 }
 
 /* Poppins */
 @font-face {
-  font-family: "Poppins Light";
-  src: url("fonts/Poppins-Light.ttf") format("truetype");
-  font-weight: 300;
+    font-family: "Poppins Light";
+    src: url("fonts/Poppins-Light.ttf") format("truetype");
 }
 
-/* Inconsolata Variable */
+/* Inconsolata VF */
 @font-face {
-  font-family: "Inconsolata VF";
-  src: url("fonts/Inconsolata-VariableFont_wdth,wght.ttf") format("truetype");
-  font-weight: 100 900;
+    font-family: "Inconsolata VF";
+    src: url("fonts/Inconsolata-VariableFont_wdth,wght.ttf") format("truetype");
 }
 
-/* Inconsolata Condensed (stałe) */
+/* Inconsolata Condensed */
 @font-face {
-  font-family: "Inconsolata Condensed";
-  src: url("fonts/Inconsolata_Condensed-Regular.ttf") format("truetype");
-  font-weight: 400;
+    font-family: "Inconsolata Condensed";
+    src: url("fonts/Inconsolata_Condensed-Regular.ttf") format("truetype");
 }
 @font-face {
-  font-family: "Inconsolata Condensed";
-  src: url("fonts/Inconsolata_Condensed-Medium.ttf") format("truetype");
-  font-weight: 500;
+    font-family: "Inconsolata Condensed Medium";
+    src: url("fonts/Inconsolata_Condensed-Medium.ttf") format("truetype");
 }
 @font-face {
-  font-family: "Inconsolata Condensed";
-  src: url("fonts/Inconsolata_Condensed-SemiBold.ttf") format("truetype");
-  font-weight: 600;
-}
-
-/* Open Sans Variable */
-@font-face {
-  font-family: "Open Sans";
-  src: url("fonts/OpenSans-VariableFont_wdth,wght.ttf") format("truetype");
-  font-weight: 100 900;
+    font-family: "Inconsolata Condensed SemiBold";
+    src: url("fonts/Inconsolata_Condensed-SemiBold.ttf") format("truetype");
 }
 
 /* Samsung Sans */
 @font-face {
-  font-family: "Samsung Sans";
-  src: url("fonts/SamsungSans-Regular.ttf") format("truetype");
-  font-weight: 400;
+    font-family: "Samsung Sans";
+    src: url("fonts/SamsungSans-Regular.ttf") format("truetype");
 }
 
 /* Satoshi */
 @font-face {
-  font-family: "Satoshi";
-  src: url("fonts/Satoshi-Variable.ttf") format("truetype");
-  font-weight: 100 900;
-}
-
-/* Inter */
-@font-face {
-  font-family: "Inter 18pt";
-  src: url("fonts/Inter_18pt-Regular.ttf") format("truetype");
-}
-
-/* Die Grotesk */
-@font-face {
-  font-family: "DieGrotesk";
-  src: url("fonts/TestDieGroteskVF-Roman.ttf") format("truetype");
-  font-weight: 100 900;
-}
-
-/* Geograph */
-@font-face {
-  font-family: "Geograph";
-  src: url("fonts/TestGeographVF-Roman.ttf") format("truetype");
-  font-weight: 100 900;
-}
-
-/* Manrope */
-@font-face {
-  font-family: "Manrope";
-  src: url("fonts/Manrope-Regular.ttf") format("truetype");
-  font-weight: 400;
-}
-
-/* Larke Neue */
-@font-face {
-  font-family: "Larke Neue Thin";
-  src: url("fonts/Larke Neue Thin.ttf") format("truetype");
-  font-weight: 200;
-}
-
-/* Liberation Sans */
-@font-face {
-  font-family: "Liberation Sans";
-  src: url("fonts/LiberationSans-Regular.ttf") format("truetype");
-  font-weight: 400;
-}
-
-/* Libra Sans */
-@font-face {
-  font-family: "Libra Sans";
-  src: url("fonts/LibraSans.otf") format("opentype");
-  font-weight: 400;
-}
-
-/* Opening Hours Sans */
-@font-face {
-  font-family: "Opening Hours Sans";
-  src: url("fonts/openinghourssans-regular.otf") format("opentype");
-  font-weight: 400;
+    font-family: "Satoshi";
+    src: url("fonts/Satoshi-Variable.ttf") format("truetype");
 }
 
 /* Sora */
 @font-face {
-  font-family: "Sora";
-  src: url("fonts/Sora-Variable.ttf") format("truetype");
-  font-weight: 100 900;
+    font-family: "Sora";
+    src: url("fonts/Sora-Variable.ttf") format("truetype");
+}
+
+/* Inter */
+@font-face {
+    font-family: "Inter 18pt";
+    src: url("fonts/Inter_18pt-Regular.ttf") format("truetype");
+}
+
+/* Larke Neue */
+@font-face {
+    font-family: "Larke Neue Thin";
+    src: url("fonts/Larke Neue Thin.ttf") format("truetype");
+}
+
+/* Liberation Sans */
+@font-face {
+    font-family: "Liberation Sans";
+    src: url("fonts/LiberationSans-Regular.ttf") format("truetype");
+}
+
+/* Libra Sans */
+@font-face {
+    font-family: "Libra Sans";
+    src: url("fonts/LibraSans.otf") format("opentype");
+}
+
+/* Opening Hours Sans */
+@font-face {
+    font-family: "Opening Hours Sans";
+    src: url("fonts/openinghourssans-regular.otf") format("opentype");
+}
+
+/* Manrope */
+@font-face {
+    font-family: "Manrope";
+    src: url("fonts/Manrope-Regular.ttf") format("truetype");
+}
+
+/* Segoe UI Thin */
+@font-face {
+    font-family: "Segoe UI Thin";
+    src: url("fonts/segoeuithis.ttf") format("truetype");
 }
 
 /* Roboto */
 @font-face {
-  font-family: "Roboto";
-  src: url("fonts/Roboto-VariableFont_wdth,wght.ttf") format("truetype");
-  font-weight: 100 900;
+    font-family: "Roboto";
+    src: url("fonts/Roboto-VariableFont_wdth,wght.ttf") format("truetype");
+}
+
+/* Die Grotesk */
+@font-face {
+    font-family: "DieGrotesk";
+    src: url("fonts/TestDieGroteskVF-Roman.ttf") format("truetype");
+}
+
+/* Geograph */
+@font-face {
+    font-family: "Geograph";
+    src: url("fonts/TestGeographVF-Roman.ttf") format("truetype");
 }
 
 /* Ubuntu */
 @font-face {
-  font-family: "Ubuntu Light";
-  src: url("fonts/Ubuntu-Light.ttf") format("truetype");
-  font-weight: 300;
-}
-
-/* Segoe UI */
-@font-face {
-  font-family: "Segoe UI Thin";
-  src: url("fonts/segoeuithis.ttf") format("truetype");
-  font-weight: 200;
+    font-family: "Ubuntu Light";
+    src: url("fonts/Ubuntu-Light.ttf") format("truetype");
 }
 
 /* ================== GLOBAL ================== */
@@ -193,176 +184,251 @@ body {
 }
 
 .page {
-  max-width: 1250px;
-  margin: 20px auto;
-  padding: 0 16px;
+  max-width: 1920px;
+  margin: 0px;
+  padding: 0px;
 }
 
-/* ---------------- RAMKI ---------------- */
+/* ================== FRAME ================== */
 
 .frame {
+  width: 1920px;
+  height: 1080px;
+
   --frame-font-size: 14px;
   --frame-font-family: system-ui, sans-serif;
+  --frame-opacity: 1;
 
+  position: relative;
   font-size: var(--frame-font-size);
   font-family: var(--frame-font-family);
 
   border-radius: 8px;
-  padding: 16px;
-  margin-bottom: 28px;
+  padding: 8px;
+  margin-bottom: 8px;
+
   box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-}
 
-.frame--light { background: #fff; color: #000; }
-.frame--dark { background: #000; color: #fff; }
-
-/* ---------------- TOPBAR ---------------- */
-
-.frame-top {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 12px;
+  flex-direction: row;
+  gap: 16px;
 }
 
-.frame-top-left { display: flex; align-items: center; gap: 12px; }
-.frame-top-right { display: flex; align-items: center; gap: 24px; }
+.frame--light { background: #ffffff; color: #000; }
+.frame--dark  { background: #000000; color: #fff; }
 
-.frame-logo { width: 124px; height: auto; }
-.frame-logo--invert { filter: invert(1); }
+.frame--dark .frame-logo {
+  filter: invert(1);
+}
 
-/* --------- KONTROLKI CZCIONKI --------- */
+/* ================== SIDEBAR ================== */
 
-.font-controls {
+.frame-sidebar {
+
+  width: 208px;
+  display: grid;
+  grid-template-columns: 1fr;
+
+  /* Używa zmiennej */
+  grid-auto-rows: var(--icon-cell-height);
+  grid-row-gap: 0px;   /* odstep między polami sidebaru */
+  flex-shrink: 0;
+}
+
+/* === Logo: 32px wysokości + 8px góra/dół/lewo === */
+.sidebar-logo {
+    height: 48px;             /* 8px + 32px + 8px */
+    display: flex;
+    align-items: center;
+    padding: 8px 0 8px 8px;   /* góra 8px, dół 8px, LEWA 8px */
+    margin: 0;
+}
+
+.sidebar-logo .frame-logo {
+    height: 48px;             /* faktyczna wysokość logo */
+    width: auto;              /* proporcje zostają */
+}
+
+.sidebar-spacer-24 {
+  height: 0px;
+  width: 100%;
+}
+
+/* ================== RIGHT AREA ================== */
+
+.frame-right {
+  flex: 1;
   display: flex;
+  flex-direction: column;
+  gap: 0px;
+}
+
+/* ================== TOPBAR ================== */
+
+.topbar {
+  height: var(--icon-cell-height);
+  display: flex;
+  justify-content: flex-end;
   align-items: center;
-  gap: 12px;
-  font-size: 12px;
 }
 
-.font-control-label { font-size: 11px; opacity: 0.7; }
-
-.font-select,
-.font-size-input {
-  font: inherit;
-  padding: 3px 6px;
-  border-radius: 4px;
-  border: 1px solid rgba(0,0,0,0.25);
-  background: #fff;
-}
-
-.font-size-input { width: 64px; }
-
-.frame--dark .font-select,
-.frame--dark .font-size-input {
-  background: #111;
-  color: #fff;
-  border-color: rgba(255,255,255,0.3);
-}
-
-/* REFRESH BUTTON */
-.refresh-button {
-  font: inherit;
-  padding: 4px 14px;
-  border-radius: 999px;
-  border: 1px solid rgba(0,0,0,0.25);
-  background: #f0f0f0;
-  cursor: pointer;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  font-weight: 600;
-  transition: background-color .15s, opacity .15s, transform .1s;
-}
-
-.refresh-button:hover { background: #e2e2e2; }
-.refresh-button:active {
-  transform: translateY(1px);
-  opacity: .7;
-}
-
-.frame--dark .refresh-button {
-  background: #111;
-  border-color: rgba(255,255,255,0.3);
-  color: #fff;
-}
-
-.frame--dark .refresh-button:hover { background: #1b1b1b; }
-
-/* ---------------- TOP IKONY ---------------- */
-
-.frame-top-icons {
+.frame-top-right {
   display: flex;
   align-items: center;
   gap: 16px;
 }
 
-.frame-top-icons img {
-  width: 16px;
-  height: 16px;
+.topbar-icons img {
+  width: var(--icon-size);
+  height: var(--icon-size);
   cursor: pointer;
+  padding: 0;
+  margin: 0;
   transition: opacity .15s;
 }
+.topbar-icons img:hover { opacity: .6; }
+.frame--dark .topbar-icons img { filter: invert(1); }
 
-.frame-top-icons img:hover { opacity: .6; }
-.frame--dark .frame-top-icons img { filter: invert(1); }
+/* ================== TOPBAR SPACER ================== */
 
-/* ----------- IKONY GRID ------------ */
-
-.icons-grid {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(180px, 1fr));
-  gap: 10px 20px;
+.topbar-spacer {
+    width: 100%;
+    height: 48px;
+    display: block;
 }
 
-/* ----------- POJEDYNCZA IKONA ------------ */
+/* ================== SUBTOPBAR ================== */
 
-.icon-cell {
+.subtopbar {
+  height: calc(var(--icon-cell-height) + 12px); /* zachowuje proporcje */
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 6px 10px;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 0;
+}
+
+/* ================== CONTENT ================== */
+
+.content {
+  flex: 1;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid rgba(0,0,0,0.15);
+  background: rgba(0,0,0,0.03);
+}
+
+.frame--dark .content {
+  border-color: rgba(255,255,255,0.3);
+  background: #111;
+}
+
+/* ================== BOTTOM CONTROLS ================== */
+
+.bottom-controls {
+  display: flex;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(0,0,0,0.15);
+}
+
+.frame--dark .bottom-controls {
+  border-color: rgba(255,255,255,0.3);
+}
+
+.font-select,
+.font-size-input,
+.font-opacity-input {
+  padding: 4px 6px;
+  border-radius: 4px;
+  border: 1px solid rgba(0,0,0,0.3);
+  background: #fff;
+}
+
+.frame--dark .font-select,
+.frame--dark .font-size-input,
+.frame--dark .font-opacity-input {
+  background: #111;
+  color: #fff;
+  border-color: rgba(255,255,255,0.3);
+}
+
+.font-size-input,
+.font-opacity-input { width: 64px; }
+
+.refresh-button {
+  padding: 4px 14px;
+  border-radius: 4px;
+  border: 1px solid rgba(0,0,0,0.3);
+  background: #eee;
+  cursor: pointer;
+  font-weight: 600;
+  transition: opacity .15s, background-color .15s, transform .1s;
+}
+.refresh-button:hover { background: #e2e2e2; }
+.refresh-button:active { transform: scale(0.97); opacity: 0.7; }
+.frame--dark .refresh-button {
+  background: #111;
+  color: #fff;
+  border-color: rgba(255,255,255,0.3);
+}
+
+/* ================== UNIVERSAL ICON CELL (SIDEBAR / TOPBAR / SUBTOPBAR) ================== */
+
+.icon-cell {
+  height: var(--icon-cell-height);   /* RAMKA KLIKALNA */
+  display: flex;
+  align-items: center;
+  gap: 8px;
   border-radius: 6px;
   cursor: pointer;
-  transition: background-color .15s, box-shadow .15s, transform .1s, opacity .15s;
-}
-
-.icon-cell--light:hover { background: rgba(0,0,0,0.05); }
-.icon-cell--dark:hover { background: rgba(255,255,255,0.1); }
-
-.icon-cell--dark img { filter: invert(1); }
-
-.icon-cell--light:active {
-  box-shadow: 0 0 0 1px rgba(0,0,0,0.3);
-}
-.icon-cell--dark:active {
-  box-shadow: 0 0 0 1px rgba(255,255,255,0.6);
+  transition: background-color .15s, opacity .15s, box-shadow .15s;
 }
 
 .icon-img {
-  width: 16px;
-  height: 16px;
+  width: var(--icon-size);
+  height: var(--icon-size);
+  opacity: var(--frame-opacity);
   transition: opacity .15s;
+  flex-shrink: 0;
 }
 
 .icon-label {
-  font-size: 1em;
+  opacity: var(--frame-opacity);
   transition: opacity .15s;
 }
 
-.icon-cell:hover .icon-img,
-.icon-cell:hover .icon-label {
-  opacity: .5;
-}
+/* Hovers */
 
-.icon-cell--selected.icon-cell--light {
-  background: rgba(0,0,0,0.05);
-}
+.icon-cell--light:hover  { background: rgba(0,0,0,0.05); }
+.icon-cell--dark:hover   { background: rgba(255,255,255,0.15); }
 
-.icon-cell--selected.icon-cell--dark {
-  background: rgba(255,255,255,0.1);
-}
+.icon-cell:active { box-shadow: 0 0 0 1px rgba(0,0,0,0.3); }
+.frame--dark .icon-cell:active { box-shadow: 0 0 0 1px rgba(255,255,255,0.5); }
+
+.icon-cell--selected { background: rgba(0,0,0,0.08); }
+.frame--dark .icon-cell--selected { background: rgba(255,255,255,0.2); }
 
 .icon-cell--selected .icon-img,
 .icon-cell--selected .icon-label {
-  opacity: .5;
+  opacity: calc(var(--frame-opacity) * .5);
+}
+
+.frame--dark .icon-img { filter: invert(1); }
+/* WIĘKSZY ODJAZD PODŚWIETLENIA OD LEWEJ W SIDEBARZE */
+.frame-sidebar .icon-cell {
+    padding-left: 8px;   /* zmień na 12 / 16 / 20 */
+}
+/* WIĘKSZY ODJAZD PODŚWIETLENIA OD LEWEJ W SUBTOPBARZE */
+.subtopbar .icon-cell {
+    padding-left: 8px;   /* możesz zwiększyć do 14 / 16 */
+}
+/* WIĘKSZY ODSTĘP PO NAPISIE W SIDEBARZE */
+.frame-sidebar .icon-label {
+    margin-right: 8px;     /* ustaw np. 12 / 16 / 20 */
+}
+
+/* WIĘKSZY ODSTĘP PO NAPISIE W SUBTOPBARZE */
+.subtopbar .icon-label {
+    margin-right: 8px;     /* ustaw np. 12 / 16 / 20 */
 }
