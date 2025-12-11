@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <title>IronInsight layout test</title>
+    <link rel="icon" type="image/svg+xml" href="svg-folder/TasksIcon.svg" />
 
     <!-- Główny styl -->
     <link rel="stylesheet" href="style.css" />
@@ -21,6 +22,63 @@
         .frame--dark #content-frame {
             filter: invert(1) hue-rotate(180deg);
         }
+
+        .sidebar-logo-btn {
+            padding: 0;
+            margin: 0;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        /* Sidebar hover spójne z subtopbar */
+        .frame-sidebar .icon-cell--light:hover { background: rgba(0,0,0,0.05); }
+        .frame-sidebar .icon-cell--dark:hover  { background: rgba(255,255,255,0.15); }
+
+        /* Subtopbar view buttons */
+        .subtopbar {
+            display: flex;
+            align-items: center;
+        }
+        .subtopbar-view {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .view-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border: 1px solid rgba(0,0,0,0.12);
+            border-radius: 8px;
+            background: rgba(255,255,255,0.85);
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color .15s ease, transform .1s ease, box-shadow .15s ease;
+        }
+        .view-btn:hover { background: rgba(0,0,0,0.05); }
+        .view-btn:active { transform: scale(.98); box-shadow: 0 0 0 1px rgba(0,0,0,0.15) inset; }
+        .view-btn img { width: 16px; height: 16px; display: block; }
+        .view-btn.is-active {
+            background: #000;
+            color: #fff;
+            border-color: #000;
+        }
+        .view-btn.is-active img { filter: invert(1) brightness(2); }
+
+        /* Topbar ikony */
+        .topbar-icons img {
+            width: 24px;
+            height: 24px;
+        }
+        .frame-logo {
+            transition: opacity .2s ease;
+        }
+        .logo-pulse {
+            opacity: 0.4;
+        }
     </style>
 </head>
 <body>
@@ -32,16 +90,53 @@
         <!-- SIDEBAR -->
         <div id="sidebar-main" class="frame-sidebar">
             <div class="sidebar-logo">
-                <img src="svg-folder/Logo.svg" class="frame-logo" alt="Logo"/>
+                <button id="logo-button" class="sidebar-logo-btn">
+                    <img id="sidebar-logo-img" src="svg-folder/Logo3.svg" class="frame-logo" alt="Logo"/>
+                </button>
             </div>
             <div class="sidebar-spacer-24"></div>
+
+            <div class="icon-cell icon-cell--light sidebar-fixed" data-src="IconTable.html">
+                <img src="svg-folder/ProgramIcon.svg" class="icon-img" />
+                <span class="icon-label">IronInsight</span>
+            </div>
+
+            <div class="icon-cell icon-cell--light sidebar-fixed">
+                <img src="svg-folder/OrganisationIcon.svg" class="icon-img" />
+                <span class="icon-label">Organizacja</span>
+            </div>
+
+            <div class="icon-cell icon-cell--light sidebar-fixed" data-src="list.html">
+                <img src="svg-folder/MaintenanceIcon.svg" class="icon-img" />
+                <span class="icon-label">Utrzymanie ruchu</span>
+            </div>
+
+            <div class="icon-cell icon-cell--light sidebar-fixed">
+                <img src="svg-folder/ContractorsIcon.svg" class="icon-img" />
+                <span class="icon-label">Kontrahenci</span>
+            </div>
+
+            <div class="icon-cell icon-cell--light sidebar-fixed">
+                <img src="svg-folder/DocumentsIcon.svg" class="icon-img" />
+                <span class="icon-label">Dokumenty</span>
+            </div>
+
+            <div class="icon-cell icon-cell--light sidebar-fixed">
+                <img src="svg-folder/TechnologyIcon.svg" class="icon-img" />
+                <span class="icon-label">Technologia</span>
+            </div>
+
+            <div class="icon-cell icon-cell--light sidebar-fixed">
+                <img src="svg-folder/TasksIcon.svg" class="icon-img" />
+                <span class="icon-label">Zadania</span>
+            </div>
 
             <div class="icon-cell icon-cell--light sidebar-fixed" data-src="content.html">
                 <img src="svg-folder/ProgramIcon.svg" class="icon-img" />
                 <span class="icon-label">Program</span>
             </div>
 
-            <div class="icon-cell icon-cell--light sidebar-fixed" data-src="list.html">
+            <div class="icon-cell icon-cell--light sidebar-fixed" data-src="card.html">
                 <img src="svg-folder/OrganisationIcon.svg" class="icon-img" />
                 <span class="icon-label">Organizacja</span>
             </div>
@@ -95,7 +190,7 @@
 
             <!-- CONTENT -->
             <div class="content">
-                <iframe id="content-frame" src="content.html" allow="input-prompting"></iframe>
+                <iframe id="content-frame" src="dashboard.html" allow="input-prompting"></iframe>
             </div>
 
             <!-- BOTTOM CONTROLS -->
@@ -138,14 +233,41 @@ document.querySelectorAll(".sidebar-fixed").forEach(cell => {
             .forEach(el => el.classList.remove("icon-cell--selected"));
 
         cell.classList.add("icon-cell--selected");
+        pulseLogo();
 
         const file = cell.dataset.src;
-        if (file) document.getElementById("content-frame").src = file;
+        if (file) {
+            const frameEl = document.getElementById("content-frame");
+            if (file === "pdca.html") {
+                frameEl.src = "List.html";
+                const wrap = subtopbarEl.querySelector(".subtopbar-view");
+                const btnList = wrap?.querySelector('.view-btn[data-src="List.html"]');
+                if (btnList) {
+                    wrap.querySelectorAll(".view-btn").forEach(b => b.classList.remove("is-active"));
+                    btnList.classList.add("is-active");
+                }
+            } else {
+                frameEl.src = file;
+                const wrap = subtopbarEl.querySelector(".subtopbar-view");
+                if (wrap) wrap.querySelectorAll(".view-btn").forEach(b => b.classList.remove("is-active"));
+            }
+        }
+
+        loadRandomIconsForSubtopbar(subtopbarEl, currentTheme === "dark");
+        initViewButtons(subtopbarEl.querySelector(".subtopbar-view"));
     });
 });
 
 const sidebarFixedCells = document.querySelectorAll(".sidebar-fixed");
-if (sidebarFixedCells.length) sidebarFixedCells[0].classList.add("icon-cell--selected");
+const logoImg = document.getElementById("sidebar-logo-img");
+
+function pulseLogo() {
+    if (!logoImg) return;
+    logoImg.classList.remove("logo-pulse");
+    void logoImg.offsetWidth; // restart animation
+    logoImg.classList.add("logo-pulse");
+    setTimeout(() => logoImg.classList.remove("logo-pulse"), 200);
+}
 
 
 /* ============================================================
@@ -198,10 +320,74 @@ function createCell(iconName, dark) {
   return cell;
 }
 
+function createViewOptions() {
+  const wrap = document.createElement("div");
+  wrap.className = "subtopbar-view";
+  wrap.innerHTML = `
+    <button class="view-btn" type="button" data-src="List.html">
+      <img src="${ICONS_PATH}ListViewIcon.svg" alt="">
+      <span>Lista</span>
+    </button>
+    <button class="view-btn" type="button" data-src="scheme.html">
+      <img src="${ICONS_PATH}SchemeViewIcon.svg" alt="">
+      <span>Schemat</span>
+    </button>
+    <button class="view-btn" type="button" data-src="Card.html">
+      <img src="${ICONS_PATH}CardViewIcon.svg" alt="">
+      <span>Karta</span>
+    </button>
+  `;
+  return wrap;
+}
+function initViewButtons(wrap) {
+  const frameEl = document.getElementById("content-frame");
+  if (!wrap || !frameEl) return;
+  const btns = Array.from(wrap.querySelectorAll(".view-btn"));
+  function setActive(target) {
+    btns.forEach(b => b.classList.remove("is-active"));
+    target.classList.add("is-active");
+  }
+  btns.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const src = btn.dataset.src;
+      if (src) frameEl.src = src;
+      setActive(btn);
+    });
+  });
+}
+
+/* ============================================================
+   LOGO BUTTON CYCLE
+============================================================ */
+const logoButton = document.getElementById("logo-button");
+const logoFiles = ["Logo1.svg", "Logo2.svg", "Logo3.svg"];
+let logoIndex = 0;
+
+if (logoButton && logoImg) {
+  logoButton.addEventListener("click", () => {
+    logoIndex = (logoIndex + 1) % logoFiles.length;
+    logoImg.src = "svg-folder/" + logoFiles[logoIndex];
+    const frameEl = document.getElementById("content-frame");
+    if (frameEl) frameEl.src = "dashboard.html";
+  });
+}
+
 function loadRandomIconsForSubtopbar(subbar, dark) {
-  const shuffled = shuffle(svgFiles).slice(0, 7);
+  const pool = svgFiles.filter(name => !name.startsWith("x"));
+  const shuffled = shuffle(pool).slice(0, 7);
   subbar.innerHTML = "";
   shuffled.forEach(i => subbar.appendChild(createCell(i, dark)));
+
+  const cells = subbar.querySelectorAll(".icon-cell");
+  cells.forEach(cell => {
+    cell.addEventListener("click", () => {
+      cells.forEach(c => c.classList.remove("icon-cell--selected"));
+      cell.classList.add("icon-cell--selected");
+    });
+  });
+
+  subbar.appendChild(createViewOptions());
+  initViewButtons(subbar.querySelector(".subtopbar-view"));
 }
 
 
@@ -292,7 +478,7 @@ function buildLayoutOverlay() {
 
     layoutOverlay.innerHTML = "";
     const rect = frame.getBoundingClientRect();
-    const grid = 8;
+    const grid = 16;
 
     const cols = Math.floor(rect.width / grid);
     const rows = Math.floor(rect.height / grid);
@@ -301,6 +487,7 @@ function buildLayoutOverlay() {
         const h = document.createElement("div");
         h.className = "layout-grid-line-h";
         h.style.top = (i * grid) + "px";
+        if (i % 2 === 0) h.classList.add("thick");
         layoutOverlay.appendChild(h);
     }
 
@@ -308,6 +495,7 @@ function buildLayoutOverlay() {
         const v = document.createElement("div");
         v.className = "layout-grid-line-v";
         v.style.left = (i * grid) + "px";
+        if (i % 2 === 0) v.classList.add("thick");
         layoutOverlay.appendChild(v);
     }
 
@@ -332,9 +520,10 @@ function buildLayoutOverlay() {
         box.style.width = r.width + "px";
         box.style.height = r.height + "px";
 
+        const cs = getComputedStyle(el);
         const label = document.createElement("div");
         label.className = "layout-label";
-        label.textContent = sel.replace(".", "");
+        label.textContent = `${sel.replace(".", "")} | ${Math.round(r.width)}x${Math.round(r.height)} | p:${cs.paddingTop}/${cs.paddingRight}/${cs.paddingBottom}/${cs.paddingLeft} | m:${cs.marginTop}/${cs.marginRight}/${cs.marginBottom}/${cs.marginLeft}`;
         box.appendChild(label);
 
         layoutOverlay.appendChild(box);

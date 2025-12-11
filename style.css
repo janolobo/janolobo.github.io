@@ -279,15 +279,20 @@ body {
 }
 
 .topbar-icons img {
-  width: var(--icon-size);
-  height: var(--icon-size);
+  width: 16px;
+  height: 16px;
+  box-sizing: content-box;
   cursor: pointer;
-  padding: 0;
+  padding: 4px;
   margin: 0;
-  transition: opacity .15s;
+  border-radius: 6px;
+  transition: opacity .15s, background-color .15s, transform .1s, box-shadow .15s;
 }
-.topbar-icons img:hover { opacity: .6; }
+.topbar-icons img:hover { opacity: .65; background: rgba(0,0,0,0.05); }
+.topbar-icons img:active { transform: scale(.97); box-shadow: 0 0 0 1px rgba(0,0,0,0.3); }
 .frame--dark .topbar-icons img { filter: invert(1); }
+.frame--dark .topbar-icons img:hover { background: rgba(255,255,255,0.12); opacity: .8; }
+.frame--dark .topbar-icons img:active { box-shadow: 0 0 0 1px rgba(255,255,255,0.35); }
 
 /* ================== TOPBAR SPACER ================== */
 
@@ -312,14 +317,14 @@ body {
 
 .content {
   flex: 1;
-  padding: 12px;
-  border-radius: 6px;
-  border: 1px solid rgba(0,0,0,0.15);
+  padding: 0;
+  border-radius: 0;
+  border: none;
   background: rgba(0,0,0,0.03);
 }
 
 .frame--dark .content {
-  border-color: rgba(255,255,255,0.3);
+  border: none;
   background: #111;
 }
 
@@ -431,4 +436,14 @@ body {
 /* WIĘKSZY ODSTĘP PO NAPISIE W SUBTOPBARZE */
 .subtopbar .icon-label {
     margin-right: 8px;     /* ustaw np. 12 / 16 / 20 */
+}
+
+/* Spójne hover (jaśniejsze niż stan kliknięty) w sidebarze i subtopbarze */
+.frame-sidebar .icon-cell--light:hover,
+.subtopbar .icon-cell--light:hover {
+    background: rgba(0,0,0,0.05);
+}
+.frame--dark .frame-sidebar .icon-cell--dark:hover,
+.frame--dark .subtopbar .icon-cell--dark:hover {
+    background: rgba(255,255,255,0.15);
 }

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Content Controls Form</title>
+    <link rel="stylesheet" href="content.css">
+    <style>
+        body {
+            background: #f8f9fb;
+            padding: 24px 28px;
+        }
+
+        .page {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .header-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 24px;
+            margin-bottom: 18px;
+        }
+
+        .machine-name {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1f73ff;
+            letter-spacing: -0.2px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 2px;
+        }
+
+        .tab {
+            padding: 10px 14px;
+            border-radius: 12px;
+            border: 1px solid transparent;
+            background: transparent;
+            font-weight: 600;
+            color: #1a1a1a;
+            cursor: pointer;
+            transition: background .15s ease, border-color .15s ease, color .15s ease;
+        }
+
+        .tab:hover {
+            background: rgba(31, 115, 255, 0.08);
+            border-color: rgba(31, 115, 255, 0.25);
+        }
+
+        .tab.is-active {
+            background: #ecf3ff;
+            border-color: #aecaff;
+            color: #1f73ff;
+        }
+
+        .page-title {
+            text-align: center;
+            font-size: 28px;
+            font-weight: 800;
+            color: #0f1b2d;
+            margin: 0 0 18px;
+            letter-spacing: 0.3px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: 1.05fr 1fr;
+            gap: 18px;
+        }
+
+        .card {
+            background: #fff;
+            border: 1px solid #e5e8ee;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+            padding: 14px 16px 18px;
+        }
+
+        .card-header {
+            font-weight: 700;
+            color: #2e3650;
+            font-size: 16px;
+            margin: 0 0 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #eef1f5;
+        }
+
+        .fields-column {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .fields-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px 14px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .field label {
+            font-weight: 700;
+            color: #1f73ff;
+            font-size: 13px;
+        }
+
+        .field input,
+        .field select {
+            padding: 10px 12px;
+            border: 1px solid #d8deea;
+            border-radius: 10px;
+            background: #fff;
+            font-size: 14px;
+            color: #1a1a1a;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.8);
+        }
+
+        .field select {
+            background-image: url("svg-folder/DownIcon.svg");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 14px;
+            padding-right: 36px;
+        }
+
+        .placeholder {
+            color: #9aa2b5;
+        }
+
+        .actions {
+            margin-top: 10px;
+        }
+
+        .btn-primary {
+            min-width: 96px;
+            padding: 10px 16px;
+            border-radius: 10px;
+            border: none;
+            background: #1f73ff;
+            color: #fff;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(31, 115, 255, 0.35);
+            transition: transform .1s ease, box-shadow .15s ease;
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 4px 12px rgba(31, 115, 255, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 6px rgba(31, 115, 255, 0.35);
+        }
+    </style>
+</head>
+<body>
+
+<div class="page">
+    <div class="header-row">
+        <div class="machine-name">Duża Maszyna (DM)</div>
+        <div class="tabs">
+            <button class="tab is-active">Ogólne</button>
+            <button class="tab">Parametry techniczne</button>
+            <button class="tab">Powiązania</button>
+            <button class="tab">Dokumentacja</button>
+            <button class="tab">Przeglądy</button>
+            <button class="tab">Awarie</button>
+            <button class="tab">Nadzór</button>
+            <button class="tab">Części zamienne</button>
+            <button class="tab">Ustawienia</button>
+        </div>
+    </div>
+
+    <h1 class="page-title">KARTA MASZYNY</h1>
+
+    <div class="cards">
+        <div class="card">
+            <div class="card-header">Dane ogólne</div>
+            <div class="fields-column">
+                <div class="field">
+                    <label>Nazwa maszyny *</label>
+                    <input type="text" value="Duża Maszyna">
+                </div>
+                <div class="field">
+                    <label>Skrót</label>
+                    <input type="text" value="DM">
+                </div>
+                <div class="field">
+                    <label>Nr inwentarzowy</label>
+                    <input type="text" value="12345">
+                </div>
+                <div class="field">
+                    <label>Lokalizacja</label>
+                    <select>
+                        <option class="placeholder">— wybierz —</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>Wydział</label>
+                    <select>
+                        <option class="placeholder">— wybierz —</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>Maszyna nadrzędna</label>
+                    <select>
+                        <option>Emag (EM1)</option>
+                    </select>
+                </div>
+                <div class="actions">
+                    <button class="btn-primary">Zapisz</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">Szczegóły</div>
+            <div class="fields-grid">
+                <div class="field">
+                    <label>Producent</label>
+                    <input type="text">
+                </div>
+                <div class="field">
+                    <label>Model</label>
+                    <input type="text">
+                </div>
+                <div class="field">
+                    <label>Nr seryjny</label>
+                    <input type="text">
+                </div>
+                <div class="field">
+                    <label>Rok produkcji</label>
+                    <input type="text" value="YYYY">
+                </div>
+                <div class="field">
+                    <label>Kategoria</label>
+                    <input type="text">
+                </div>
+                <div class="field">
+                    <label>Status operacyjny</label>
+                    <select>
+                        <option>Operacyjna</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>Własność</label>
+                    <select>
+                        <option class="placeholder">— brak —</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>Właściciel</label>
+                    <input type="text">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

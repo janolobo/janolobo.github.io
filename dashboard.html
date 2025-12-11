@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>IronInsight Dashboard</title>
+    <link rel="stylesheet" href="content.css">
+    <style>
+        :root {
+            --dash-bg: #f5f6f8;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 24px;
+            background: var(--dash-bg);
+            font-family: "FrutigerNeue LTW1G Regular", "FrutigerNeue Light", system-ui, sans-serif;
+        }
+        .dash-card {
+            display: grid;
+            place-items: center;
+            gap: 12px;
+            padding: 24px 28px;
+            background: #fff;
+            border: 1px solid #d7d9df;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+        }
+        .dash-card img {
+            width: 280px;
+            height: auto;
+            display: block;
+            border-radius: 10px;
+        }
+        .dash-title {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 300;
+            letter-spacing: 0.2px;
+            text-align: center;
+            color: #1f2530;
+            font-family: "FrutigerNeue LTW1G Regular", "FrutigerNeue Light", system-ui, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div class="dash-card">
+        <img src="pictures/iron1.png" alt="IronInsight">
+        <p class="dash-title">IronInsight, UI Paleo 0.1</p>
+    </div>
+</body>
+</html>

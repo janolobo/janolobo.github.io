@@ -17,13 +17,13 @@
 }
 
 /* ------------------------------------------------------------
-   SIATKA 8 px
+   SIATKA 16 px (cienkie) + 32 px (grubsze) – żółta
    ------------------------------------------------------------ */
 
 .layout-grid-line-h,
 .layout-grid-line-v {
   position: absolute;
-  background: rgba(255, 255, 0, 0.15);
+  background: rgba(255, 213, 0, 0.2);
   pointer-events: none;
 }
 
@@ -39,36 +39,46 @@
   height: 100%;
 }
 
+.layout-grid-line-h.thick {
+  height: 2px;
+  background: rgba(255, 213, 0, 0.35);
+}
+
+.layout-grid-line-v.thick {
+  width: 2px;
+  background: rgba(255, 213, 0, 0.35);
+}
+
 /* ------------------------------------------------------------
    RAMKI ELEMENTÓW
    ------------------------------------------------------------ */
 
 .layout-box {
   position: absolute;
-  border: 1px solid rgba(255, 255, 0, 0.75); /* żółta ramka */
+  border: 1px solid rgba(210, 34, 34, 0.7); /* czerwona ramka */
   border-radius: 4px;
-  box-shadow: 0 0 0 1px rgba(255, 255, 0, 0.35);
+  box-shadow: 0 0 0 1px rgba(210, 34, 34, 0.4);
   pointer-events: none;
 }
 
-/* Etykieta z nazwą + wymiarami + paddingami + pozycją */
+/* Etykieta z nazwą + wymiarami + paddingami + pozycją (wewnątrz ramki) */
 .layout-label {
   position: absolute;
-  background: rgba(255, 255, 0, 0.88);
-  color: #000;
+  top: 4px;
+  left: 4px;
+  background: rgba(210, 34, 34, 0.85);
+  color: #fff;
   font-size: 10px;
   line-height: 1.3;
   padding: 2px 4px;
   border-radius: 3px;
   white-space: nowrap;
-  transform: translateY(-100%);
-  margin-top: -2px;
   pointer-events: none;
 }
 
 .frame--dark .layout-label {
-  background: rgba(255, 255, 0, 0.95);
-  color: #000;
+  background: rgba(210, 34, 34, 0.9);
+  color: #fff;
 }
 
 /* Opcjonalnie: panel info w rogu (nie używane teraz, ale możesz aktywować) */

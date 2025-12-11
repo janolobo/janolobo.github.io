@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8" />
+    <title>Card Layout</title>
+    <link rel="stylesheet" href="content.css" />
+    <style>
+        :root {
+            --panel-radius: 6px;
+            --panel-border: 1px solid #c6c9d1;
+            --panel-bg: #fff;
+            --panel-text: #1a1a1a;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 12px;
+            background: #fff;
+            font-family: "FrutigerNeue Light", system-ui, sans-serif;
+            color: var(--panel-text);
+        }
+
+        .card-layout {
+            display: grid;
+            grid-template-rows: auto auto auto 1fr;
+            gap: 12px;
+        }
+
+        .row-split-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            justify-items: start;
+        }
+
+        .row-fixed-panels {
+            display: grid;
+            grid-template-columns: 320px 496px 496px;
+            gap: 8px;
+            align-items: stretch;
+        }
+
+        .row-fixed-panels .panel {
+            height: 100%;
+        }
+
+        .panel {
+            position: relative;
+            background: var(--panel-bg);
+            border: var(--panel-border);
+            border-radius: var(--panel-radius);
+            min-height: 96px;
+            padding: 16px;
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .panel-label {
+            position: absolute;
+            top: -10px;
+            left: 16px;
+            padding: 0 8px;
+            background: var(--panel-bg);
+            display: inline-block;
+            font-weight: 700;
+            font-size: 14px;
+            line-height: 1.2;
+            color: #444;
+        }
+
+        .panel-content {
+            padding-top: 8px;
+        }
+
+        .is-editing .panel {
+            border-color: rgba(210,34,34,0.5);
+            box-shadow: none;
+        }
+
+        .panel--tall { min-height: 240px; }
+
+        .panel-gallery {
+            width: 288px;
+            max-width: 100%;
+        }
+
+        .panel--narrow {
+            width: 320px;
+        }
+
+        /* MENU CARD */
+        .menu {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            padding: 8px 0;
+        }
+
+        .menu-btn {
+            position: relative;
+            border: none;
+            background: transparent;
+            padding: 6px 0;
+            font: inherit;
+            font-weight: 700;
+            cursor: pointer;
+            color: #0f1b2d;
+        }
+
+        .menu-btn::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 4px;
+            background: transparent;
+            transition: background-color .15s ease;
+        }
+
+        .menu-btn:hover::after { background: #b0b0b0; }
+        .menu-btn.is-active::after { background: #000; }
+
+        /* CARDHEADER FORM */
+        .cardheader-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .op-top-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .op-top-inline {
+            display: flex;
+            align-items: flex-end;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .field label {
+            font-weight: 700;
+            font-size: 12px;
+            color: rgba(0,0,0,0.8);
+        }
+
+        .status-select {
+            padding: 8px 10px;
+            border-radius: 8px;
+        }
+
+        .number-control {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .number-input {
+            width: 100%;
+            padding: 10px 40px 10px 12px;
+            border: 1px solid #d2d8e5;
+            border-radius: 8px;
+            background: #fff;
+           
+        }
+        .number-input::-webkit-inner-spin-button,
+        .number-input::-webkit-outer-spin-button {
+            appearance: none;
+            margin: 0;
+        }
+
+        .number-spin {
+            position: absolute;
+            right: 6px;
+            width: 26px;
+            height: 18px;
+            padding: 0;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .number-spin img { width: 14px; height: 14px; display: block; }
+        .number-spin.up { top: 6px; }
+        .number-spin.down { bottom: 6px; }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .warranty-line {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .warranty-note {
+            font-size: 14px;
+            color: #444;
+        }
+
+        /* CUSTOM DATE NAV INPUTS */
+        .date-nav-wrap {
+            position: relative;
+            display: inline-flex;
+            width: 180px;
+        }
+
+        .date-nav-wrap.date-nav-wrap--year { width: 140px; }
+        .date-nav-wrap.date-nav-wrap--date { width: 180px; }
+
+        .date-nav-input {
+            width: 100%;
+            padding: 10px 60px 10px 38px;
+            border: 1px solid #d2d8e5;
+            border-radius: 8px;
+            background: #fff;
+            font: inherit;
+        }
+
+        .date-nav-input::-webkit-inner-spin-button,
+        .date-nav-input::-webkit-outer-spin-button,
+        .date-nav-input::-webkit-calendar-picker-indicator {
+            appearance: none;
+            display: none;
+        }
+        .date-nav-input::-moz-calendar-picker-indicator { display: none; }
+
+        .date-nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 24px;
+            border: none;
+            background: transparent;
+            padding: 0;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .date-nav-btn img {
+            width: 16px;
+            height: 16px;
+            display: block;
+        }
+
+        .date-nav-btn--left { left: 6px; }
+        .date-nav-btn--right { right: 6px; }
+        .date-nav-btn--calendar { right: 34px; }
+
+        .main-panels {
+            display: grid;
+            grid-template-columns: minmax(0, 2fr) auto;
+            gap: 12px;
+            align-items: start;
+        }
+
+        .main-left {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        /* Cardheader & menu wrapper */
+        .cardheader-box {
+            background: #f5f6f8;
+            border: 1px solid #c6c9d1;
+            border-radius: 8px 8px 0 0;
+            padding: 12px 16px 10px;
+            margin-bottom: 0;
+        }
+
+        .menu-box {
+            background: transparent;
+            border: none;
+            padding: 8px 0 0;
+            margin: 0;
+            border-radius: 0;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .data-table th,
+        .data-table td {
+            border: 1px solid #d2d8e5;
+            padding: 8px 10px;
+            text-align: left;
+        }
+
+        .data-table th {
+            background: #f5f6f8;
+            font-weight: 700;
+            color: #0f1b2d;
+        }
+
+        /* Jednolita wysokość pól list i inputów */
+        .panel-content input[type="text"],
+        .panel-content input[type="number"],
+        .panel-content input[type="date"],
+        .panel-content select {
+            height: 32px;
+            min-height: 32px;
+        }
+
+        .panel-content select {
+            font-size: 14px;
+        }
+
+        /* Nie szarzeć pól w trybie nieaktywnym */
+        .panel-content input:disabled,
+        .panel-content select:disabled,
+        .panel-content textarea:disabled {
+            background: #fff;
+            color: inherit;
+            -webkit-text-fill-color: inherit;
+            opacity: 1;
+        }
+        .panel-content textarea:disabled {
+            background: #fafafa;
+        }
+
+        /* GALERIA – pojedynczy widok */
+        .gallery-view {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .gallery-filename {
+            font-weight: 700;
+            color: #0f1b2d;
+            font-size: 14px;
+            align-self: flex-start;
+        }
+
+        .gallery-frame {
+            width: 256px;
+            height: 256px;
+            padding: 8px;
+            border: none;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+        }
+
+        .gallery-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 12px;
+            display: block;
+        }
+
+        .gallery-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .gallery-counter {
+            font-size: 14px;
+            color: #0f1b2d;
+        }
+
+        .edit-only { display: none !important; }
+        .is-editing .edit-only { display: inline-flex !important; }
+
+        #discardBtn { display: none !important; }
+
+
+        .content-btn-danger {
+            background: #ffe5e5;
+            border: 1px solid #d22;
+            color: #b00000;
+        }
+    </style>
+</head>
+<body>
+<div class="card-layout">
+
+    <div class="cardheader-box">
+        <div class="panel-content">
+            <div class="cardheader-grid" style="grid-template-columns: 1fr;">
+                <div class="field">
+                    <label for="nameSelect" style="font-weight: 800; font-family: 'FrutigerNeue LTW1G Regular', 'FrutigerNeue Light', system-ui, sans-serif;">Karta Maszyny</label>
+                        <div style="display:flex; align-items:center; justify-content:flex-start; gap:8px;">
+                        <button id="namePrev" class="content-btn content-btn-activate" type="button" style="width: 24px; height:24px; display:flex; align-items:center; justify-content:center; padding:0;">
+                            <img src="svg-folder/LeftIcon.svg" alt="poprzednia" style="width:16px;height:16px;">
+                        </button>
+                            <select id="nameSelect" style="width: 240px; text-align:center; font-weight:800; font-family: 'FrutigerNeue LTW1G Regular', 'FrutigerNeue Light', system-ui, sans-serif;">
+                                <option>Maszyna skrawająca 01</option>
+                            <option>Maszyna nieskrawająca 02</option>
+                            <option>Robot 1</option>
+                            <option>Robot 2</option>
+                            <option>Wózek widłowy</option>
+                        </select>
+                        <button id="nameNext" class="content-btn content-btn-activate" type="button" style="width: 24px; height:24px; display:flex; align-items:center; justify-content:center; padding:0;">
+                            <img src="svg-folder/RightIcon.svg" alt="następna" style="width:16px;height:16px;">
+                        </button>
+                        <div style="display:flex; align-items:center; gap:8px; margin-left:12px;">
+                            <button id="editToggleBtn" class="content-btn content-btn-activate" type="button" style="padding:6px 12px; display:flex; align-items:center; gap:8px; font-family: 'FrutigerNeue LTW1G Regular', 'FrutigerNeue Light', system-ui, sans-serif;">
+                                <img id="editToggleIcon" src="svg-folder/EditIcon.svg" alt="" style="width:16px;height:16px;">
+                                <span id="editToggleLabel">Edytuj</span>
+                            </button>
+                            <button id="discardBtn" class="content-btn content-btn-danger" type="button" style="display:none; padding:6px 12px; align-items:center; gap:8px; font-family: 'FrutigerNeue LTW1G Regular', 'FrutigerNeue Light', system-ui, sans-serif;">
+                                <img src="svg-folder/DontSaveIcon.svg" alt="" style="width:16px;height:16px;">
+                                <span>Nie zapisuj</span>
+                            </button>
+                            <button class="content-btn content-btn-activate" type="button" style="padding:6px 12px; display:flex; align-items:center; gap:8px; font-family: 'FrutigerNeue LTW1G Regular', 'FrutigerNeue Light', system-ui, sans-serif;">
+                                <img src="svg-folder/DuplicateIcon.svg" alt="" style="width:16px;height:16px;">
+                                <span>Duplikuj</span>
+                            </button>
+                            <button id="deleteMachineBtn" class="content-btn content-btn-danger" type="button" style="padding:6px 12px; display:flex; align-items:center; gap:8px; font-family: 'FrutigerNeue LTW1G Regular', 'FrutigerNeue Light', system-ui, sans-serif;">
+                                <img src="svg-folder/DeleteIcon.svg" alt="" style="width:16px;height:16px;">
+                                <span>Usuń maszynę</span>
+                            </button>
+                            <span style="display:inline-block; width:1px; height:28px; background:#c6c9d1; margin:0 8px;"></span>
+                            <button class="content-btn content-btn-add" type="button" style="padding:6px 12px; display:flex; align-items:center; gap:8px; font-family: 'FrutigerNeue LTW1G Regular', 'FrutigerNeue Light', system-ui, sans-serif;">
+                                <img src="svg-folder/AddIcon.svg" alt="" style="width:16px;height:16px;">
+                                <span>Dodaj nową maszynę</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="menu-box">
+            <div class="menu" id="menu">
+                <button class="menu-btn" data-name="Ogólne">Ogólne</button>
+                <button class="menu-btn" data-name="Parametry techniczne">Parametry techniczne</button>
+                <button class="menu-btn" data-name="Powiązania">Powiązania</button>
+                <button class="menu-btn" data-name="Dokumentacja">Dokumentacja</button>
+                <button class="menu-btn" data-name="Przeglądy">Przeglądy</button>
+                <button class="menu-btn" data-name="Awarie">Awarie</button>
+                <button class="menu-btn" data-name="Nadzór">Nadzór</button>
+                <button class="menu-btn" data-name="Części zamienne">Części zamienne</button>
+                <button class="menu-btn" data-name="Ustawienia">Ustawienia</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-panels">
+        <div class="main-left">
+            <div class="row-fixed-panels">
+                <div class="panel panel--tall">
+                    <span class="panel-label">Akcja</span>
+                    <div class="panel-content">
+                        <div class="field" style="margin-bottom:12px;">
+                            <label for="statusSelect">Status</label>
+                            <select id="statusSelect" class="status-select status-open" style="width:224px;">
+                                <option value="aktywny" class="status-open">Aktywny</option>
+                                <option value="nieaktywny" class="status-closed">Nieaktywny</option>
+                                <option value="usun" class="status-delete">usuń</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label for="opStatusSelect">Status operacyjny</label>
+                            <select id="opStatusSelect" style="width:224px;">
+                                <option>Zakupiona</option>
+                                <option selected>Operacyjna</option>
+                                <option>Rezerwa</option>
+                                <option>Serwis</option>
+                                <option>Wycofana</option>
+                            </select>
+                        </div>
+                        <div class="field" style="margin-top:12px;">
+                            <label for="statuteStatus">Status statutu</label>
+                            <select id="statuteStatus" style="width:224px;">
+                                <option>Statut obowiązuje</option>
+                                <option>Statut nie obowiązuje</option>
+                            </select>
+                        </div>
+                        <div class="field" style="margin-top:12px;">
+                            <label for="notesPanel0" style="font-weight:700;">Uwagi</label>
+                            <textarea id="notesPanel0" style="width:100%; min-height:160px; font: 14px 'FrutigerNeue Light', system-ui, sans-serif; line-height:1.5; padding:12px; border:1px solid #d1d1d1; border-radius:10px; background:#FAFAFA; resize: vertical;">Tutaj możesz dodać notatki dotyczące statusów lub zmian formalnych. Umieść krótkie uzasadnienie, datę obowiązywania i osobę odpowiedzialną za akceptację.</textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel--tall">
+                    <span class="panel-label">Dane operacyjne</span>
+                    <div class="panel-content">
+                        <div class="cardheader-grid" style="grid-template-columns: 1fr; margin-top: 0;">
+                            <div class="field">
+                                <label for="opParent">Maszyna nadrzędna</label>
+                                <div style="display:flex; align-items:center; gap:8px;">
+                                    <select id="opParent" style="width:200px;">
+                                        <option>Robot A</option>
+                                        <option>Robot B</option>
+                                    </select>
+                                    <button class="content-btn content-btn-activate" type="button" style="width: 160px; display:flex; align-items:center; justify-content:flex-start; gap:8px; font-family: 'FrutigerNeue LTW1G Regular', 'FrutigerNeue Light', system-ui, sans-serif; padding:6px 10px;">
+                                        <img src="svg-folder/MachinesIcon.svg" alt="" style="width:16px;height:16px;">
+                                        <span>Maszyna</span>
+                                        <img src="svg-folder/RightIcon.svg" alt="" style="width:14px;height:14px; margin-left:auto;">
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label for="opLocation">Lokalizacja</label>
+                                <div style="display:flex; align-items:center; gap:8px;">
+                                    <select id="opLocation" style="width:200px;">
+                                        <option>Hala 1</option>
+                                        <option>Hala 2</option>
+                                    </select>
+                                    <button class="content-btn content-btn-activate" type="button" style="width: 160px; display:flex; align-items:center; justify-content:flex-start; gap:8px; font-family: 'FrutigerNeue LTW1G Regular', 'FrutigerNeue Light', system-ui, sans-serif; padding:6px 10px;">
+                                        <img src="svg-folder/LocationsIcon.svg" alt="" style="width:16px;height:16px;">
+                                        <span>Lokalizacja</span>
+                                        <img src="svg-folder/RightIcon.svg" alt="" style="width:14px;height:14px; margin-left:auto;">
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label for="opDept">Wydział</label>
+                                <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+                                    <select id="opDept" style="width:200px;">
+                                        <option>Wydział maszyn</option>
+                                        <option>Wydział robotów</option>
+                                    </select>
+                                    <button class="content-btn content-btn-activate" type="button" style="width: 160px; display:flex; align-items:center; justify-content:flex-start; gap:8px; font-family: 'FrutigerNeue LTW1G Regular', 'FrutigerNeue Light', system-ui, sans-serif; padding:6px 10px;">
+                                        <img src="svg-folder/DepartmentsIcon.svg" alt="" style="width:16px;height:16px;">
+                                        <span>Wydział</span>
+                                        <img src="svg-folder/RightIcon.svg" alt="" style="width:14px;height:14px; margin-left:auto;">
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label for="notes" style="font-weight:700;">Uwagi</label>
+                                <textarea id="notes" style="width:100%; max-width:700px; min-height:180px; font: 14px 'FrutigerNeue Light', system-ui, sans-serif; line-height:1.5; padding:12px; border:1px solid #d1d1d1; border-radius:10px; background:#FAFAFA; resize: vertical;">
+Przykładowe uwagi dotyczące aktualizacji danych operacyjnych. Możesz tu wpisać dodatkowe informacje, które wymagają przekazania zespołowi lub zachowania w historii zmian. Tekst może być dowolnej długości, pole pozwala na wielowierszowy opis i można je swobodnie przewijać.</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel--tall">
+                    <span class="panel-label">Dane techniczne</span>
+                    <div class="panel-content">
+                        <div class="tech-grid">
+                            <div class="field">
+                                <label for="prodManufacturer">Producent</label>
+                                <input id="prodManufacturer" type="text" value="Mazak" />
+                            </div>
+                            <div class="field">
+                                <label for="prodModel">Model</label>
+                                <input id="prodModel" type="text" value="Integrex i-200" />
+                            </div>
+                            <div class="field">
+                                <label for="serialNumber">Numer seryjny</label>
+                                <input id="serialNumber" type="number" value="SN-2024-001" />
+                            </div>
+                            <div class="field">
+                                <label for="prodYear">Rok produkcji</label>
+                                <div class="date-nav-wrap date-nav-wrap--year">
+                                    <button class="date-nav-btn date-nav-btn--left" type="button" aria-label="Poprzedni rok">
+                                        <img src="svg-folder/LeftIcon.svg" alt="">
+                                    </button>
+                                    <input id="prodYear" class="date-nav-input" type="number" min="1900" max="2100" step="1" value="2023" placeholder="rrrr" />
+                                    <button class="date-nav-btn date-nav-btn--calendar" type="button" aria-label="Wybierz rok">
+                                        <img src="svg-folder/CalendarIcon.svg" alt="">
+                                    </button>
+                                    <button class="date-nav-btn date-nav-btn--right" type="button" aria-label="Następny rok">
+                                        <img src="svg-folder/RightIcon.svg" alt="">
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label for="category">Kategoria</label>
+                                <input id="category" type="text" value="Centrum obróbcze" />
+                            </div>
+                            <div class="field">
+                                <label for="warrantyDate">Data gwarancji</label>
+                                <div class="warranty-line">
+                                    <div class="date-nav-wrap date-nav-wrap--date">
+                                        <button class="date-nav-btn date-nav-btn--left" type="button" aria-label="Poprzednia data">
+                                            <img src="svg-folder/LeftIcon.svg" alt="">
+                                        </button>
+                                        <input id="warrantyDate" type="date" class="date-nav-input" value="2025-12-31" />
+                                        <button class="date-nav-btn date-nav-btn--calendar" type="button" aria-label="Wybierz datę">
+                                            <img src="svg-folder/CalendarIcon.svg" alt="">
+                                        </button>
+                                        <button class="date-nav-btn date-nav-btn--right" type="button" aria-label="Następna data">
+                                            <img src="svg-folder/RightIcon.svg" alt="">
+                                        </button>
+                                    </div>
+                                    <span class="warranty-note">Do gwarancji pozostało: 2 miesiące, 6 dni</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel--tall panel-gallery">
+            <span class="panel-label">Galeria</span>
+            <div class="panel-content">
+                <div class="gallery-view">
+                    <div class="gallery-filename" id="galleryFilename">m1_thumb.jpg</div>
+                    <div class="gallery-frame">
+                        <img id="galleryImage" src="pictures/m1_thumb.jpg" alt="Galeria">
+                    </div>
+                    <div class="gallery-controls">
+                        <button id="galleryPrev" class="content-btn content-btn-activate" type="button" style="width:24px; height:24px; display:flex; align-items:center; justify-content:center; padding:0;">
+                            <img src="svg-folder/LeftIcon.svg" alt="poprzednie" style="width:16px;height:16px;">
+                        </button>
+                        <span class="gallery-counter" id="galleryCounter">1 z 5</span>
+                        <button id="galleryNext" class="content-btn content-btn-activate" type="button" style="width:24px; height:24px; display:flex; align-items:center; justify-content:center; padding:0;">
+                            <img src="svg-folder/RightIcon.svg" alt="następne" style="width:16px;height:16px;">
+                        </button>
+                        <button class="content-btn content-btn-activate" type="button" style="padding:6px 12px; display:flex; align-items:center; gap:8px;">
+                            <img src="svg-folder/SaveJPGIcon.svg" alt="" style="width:16px;height:16px;">
+                            <span>Pobierz</span>
+                        </button>
+                        <button id="galleryAddBtn" class="content-btn content-btn-add edit-only" type="button" style="padding:6px 12px; display:flex; align-items:center; gap:8px;">
+                            <img src="svg-folder/PictureIcon.svg" alt="" style="width:16px;height:16px;">
+                            <span>Dodaj</span>
+                        </button>
+                        <button id="galleryDeleteBtn" class="content-btn content-btn-danger edit-only" type="button" style="padding:6px 12px; display:flex; align-items:center; gap:8px;">
+                            <img src="svg-folder/DeleteIcon.svg" alt="" style="width:16px;height:16px;">
+                            <span>Usuń</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row-split-2">
+        <div class="panel panel--tall panel--narrow">
+            <span class="panel-label">Ewidencja</span>
+            <div class="panel-content">
+                <div class="field" style="margin-bottom:10px;">
+                    <label for="opOwnership">Własność</label>
+                    <select id="opOwnership" style="width: 100%;">
+                        <option>Leasing</option>
+                        <option>Własność</option>
+                    </select>
+                </div>
+                <div class="field" style="margin-bottom:10px;">
+                    <label for="owner">Właściciel</label>
+                    <input id="owner" type="text" style="width: 100%;" />
+                </div>
+                <div class="field">
+                    <label for="inventoryInput">Numer inwentarzowy</label>
+                    <div class="number-control" style="max-width: 100%;">
+                        <input id="inventoryInput" class="number-input" type="number" value="1001" />
+                        <button class="number-spin up" type="button" aria-label="Więcej">
+                            <img src="svg-folder/UpIcon.svg" alt="">
+                        </button>
+                        <button class="number-spin down" type="button" aria-label="Mniej">
+                            <img src="svg-folder/DownIcon.svg" alt="">
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel--tall">
+            <span class="panel-label">panel E</span>
+            <div class="panel-content"></div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+const menu = document.getElementById("menu");
+if (menu) {
+    const buttons = Array.from(menu.querySelectorAll(".menu-btn"));
+    function activate(btn) {
+        buttons.forEach(b => b.classList.remove("is-active"));
+        btn.classList.add("is-active");
+    }
+    buttons.forEach(btn => {
+        btn.addEventListener("click", () => activate(btn));
+    });
+    const defaultBtn = buttons.find(b => b.dataset.name === "Ogólne");
+    if (defaultBtn) activate(defaultBtn);
+}
+
+// Nawigacja nazwą (select + strzałki)
+const nameSelect = document.getElementById("nameSelect");
+const namePrev = document.getElementById("namePrev");
+const nameNext = document.getElementById("nameNext");
+function shiftName(delta) {
+    if (!nameSelect) return;
+    const len = nameSelect.options.length;
+    if (len === 0) return;
+    const idx = Math.max(0, Math.min(len - 1, nameSelect.selectedIndex));
+    let next = idx + delta;
+    if (next < 0) next = 0;
+    if (next > len - 1) next = len - 1;
+    nameSelect.selectedIndex = next;
+    nameSelect.dispatchEvent(new Event("change", { bubbles: true }));
+}
+if (namePrev) namePrev.addEventListener("click", () => shiftName(-1));
+if (nameNext) nameNext.addEventListener("click", () => shiftName(1));
+
+const statusSelect = document.getElementById("statusSelect");
+const opStatusSelect = document.getElementById("opStatusSelect");
+function syncStatusClass() {
+    if (!statusSelect) return;
+    statusSelect.classList.remove("status-open","status-closed","status-delete");
+    const val = statusSelect.value;
+    if (val === "aktywny") statusSelect.classList.add("status-open");
+    else if (val === "nieaktywny") statusSelect.classList.add("status-closed");
+    else if (val === "usun") statusSelect.classList.add("status-delete");
+}
+if (statusSelect) {
+    statusSelect.addEventListener("change", syncStatusClass);
+    syncStatusClass();
+}
+
+// Powiązanie statusu operacyjnego ze statusem głównym
+if (statusSelect && opStatusSelect) {
+    opStatusSelect.addEventListener("change", () => {
+        const opVal = opStatusSelect.value.toLowerCase();
+        if (opVal === "operacyjna") {
+            statusSelect.value = "aktywny";
+        } else if (opVal === "rezerwa" || opVal === "serwis" || opVal === "wycofana") {
+            statusSelect.value = "nieaktywny";
+        }
+        syncStatusClass();
+    });
+}
+
+// Po wyborze statusu pokaż wymaganie wyboru statusu operacyjnego
+if (statusSelect && opStatusSelect) {
+    statusSelect.addEventListener("change", () => {
+        if (opStatusSelect.scrollIntoView) {
+            opStatusSelect.focus();
+            opStatusSelect.size = Math.min(opStatusSelect.options.length, 5);
+        }
+    });
+
+    opStatusSelect.addEventListener("change", () => {
+        opStatusSelect.size = 0;
+    });
+}
+
+const invInput = document.getElementById("inventoryInput");
+const btnUp = document.querySelector(".number-spin.up");
+const btnDown = document.querySelector(".number-spin.down");
+function adjustInventory(delta) {
+    if (!invInput) return;
+    const current = parseInt(invInput.value, 10) || 0;
+    invInput.value = current + delta;
+}
+if (btnUp) btnUp.addEventListener("click", () => adjustInventory(1));
+if (btnDown) btnDown.addEventListener("click", () => adjustInventory(-1));
+
+// Date/Year nav buttons
+function attachNav(inputId, leftSel, rightSel, step = 1, isDate = false) {
+    const input = document.getElementById(inputId);
+    const left = document.querySelector(leftSel);
+    const right = document.querySelector(rightSel);
+    if (!input) return;
+
+    function shift(delta) {
+        if (isDate) {
+            const val = input.value || new Date().toISOString().slice(0,10);
+            const d = new Date(val);
+            if (isNaN(d)) return;
+            d.setDate(d.getDate() + delta);
+            input.value = d.toISOString().slice(0,10);
+        } else {
+            const v = parseInt(input.value, 10) || 0;
+            input.value = v + delta;
+        }
+    }
+
+    if (left) left.addEventListener("click", () => shift(-step));
+    if (right) right.addEventListener("click", () => shift(step));
+}
+
+attachNav("prodYear", ".date-nav-btn--left[aria-label='Poprzedni rok']", ".date-nav-btn--right[aria-label='Następny rok']", 1, false);
+attachNav("warrantyDate", ".date-nav-btn--left[aria-label='Poprzednia data']", ".date-nav-btn--right[aria-label='Następna data']", 1, true);
+
+// Galeria – prosta nawigacja
+const galleryImages = [
+    "pictures/m1_thumb.jpg",
+    "pictures/m2_thumb.jpg",
+    "pictures/m3_thumb.jpg",
+    "pictures/m4_thumb.jpg",
+    "pictures/m5_thumb.jpg"
+];
+let galleryIndex = 0;
+
+const galleryImgEl = document.getElementById("galleryImage");
+const galleryFileEl = document.getElementById("galleryFilename");
+const galleryCounterEl = document.getElementById("galleryCounter");
+const galleryPrev = document.getElementById("galleryPrev");
+const galleryNext = document.getElementById("galleryNext");
+const galleryAddBtn = document.getElementById("galleryAddBtn");
+const galleryDeleteBtn = document.getElementById("galleryDeleteBtn");
+
+function renderGallery() {
+    if (!galleryImgEl || !galleryFileEl || !galleryCounterEl) return;
+    const src = galleryImages[galleryIndex];
+    galleryImgEl.src = src;
+    galleryImgEl.alt = src;
+    galleryFileEl.textContent = src.replace("pictures/", "");
+    galleryCounterEl.textContent = `${galleryIndex + 1} z ${galleryImages.length}`;
+}
+
+function shiftGallery(delta) {
+    galleryIndex = (galleryIndex + delta + galleryImages.length) % galleryImages.length;
+    renderGallery();
+}
+
+if (galleryPrev) galleryPrev.addEventListener("click", () => shiftGallery(-1));
+if (galleryNext) galleryNext.addEventListener("click", () => shiftGallery(1));
+renderGallery();
+
+function setGalleryActionsEnabled(on) {
+    if (galleryAddBtn) galleryAddBtn.disabled = !on;
+    if (galleryDeleteBtn) galleryDeleteBtn.disabled = !on;
+}
+
+// Tryb edycji – blokada / odblokowanie pól
+const editBtn = document.getElementById("editToggleBtn");
+const editIcon = document.getElementById("editToggleIcon");
+const editLabel = document.getElementById("editToggleLabel");
+const discardBtn = document.getElementById("discardBtn");
+let isEditing = false;
+
+function setEditing(on) {
+    isEditing = on;
+    document.body.classList.toggle("is-editing", on);
+
+    const controls = document.querySelectorAll(".panel-content input, .panel-content select, .panel-content textarea, .panel-content button.number-spin, .panel-content .date-nav-btn, .panel-content .edit-only");
+    controls.forEach(el => {
+        if (el.id === "editToggleBtn" || el.id === "nameSelect") return;
+        el.disabled = !on;
+    });
+
+    if (on) {
+        editLabel.textContent = "Zapisz";
+        editIcon.src = "svg-folder/SaveIcon.svg";
+        editBtn.classList.add("content-btn-danger");
+    } else {
+        editLabel.textContent = "Edytuj";
+        editIcon.src = "svg-folder/EditIcon.svg";
+        editBtn.classList.remove("content-btn-danger");
+    }
+
+    setGalleryActionsEnabled(on);
+}
+
+if (editBtn) {
+    editBtn.addEventListener("click", () => setEditing(!isEditing));
+}
+
+setGalleryActionsEnabled(isEditing);
+
+// Usuwanie maszyny - popup
+const deleteMachineBtn = document.getElementById("deleteMachineBtn");
+if (deleteMachineBtn) {
+    deleteMachineBtn.addEventListener("click", () => {
+        const confirmed = window.confirm("Czy na pewno chcesz usunąć maszynę, wariacie?");
+        if (confirmed) {
+            // Tutaj można dodać logikę usuwania
+            console.log("Maszyna została usunięta (logika do zaimplementowania).");
+        }
+    });
+}
+
+// domyślnie wyłącz edycję
+const params = new URLSearchParams(window.location.search);
+const initialEdit = params.get("edit") === "1";
+setEditing(initialEdit);
+</script>
+</body>
+</html>
