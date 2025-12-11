@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8" />
+    <title>Node Layout</title>
+    <link rel="stylesheet" href="content.css" />
+    <style>
+        :root {
+            --panel-radius: 6px;
+            --panel-border: 1px solid #c6c9d1;
+            --panel-bg: #fff;
+            --panel-text: #1a1a1a;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 12px;
+            background: #fff;
+            font-family: "FrutigerNeue Light", system-ui, sans-serif;
+            color: var(--panel-text);
+            font-size: 13px;
+        }
+
+        .card-layout {
+            display: grid;
+            grid-template-rows: auto auto 1fr;
+            gap: 12px;
+        }
+
+        /* MENU CHECKBOXES */
+        .menu {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            padding: 8px 0;
+        }
+
+        .menu-check {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font: inherit;
+            font-weight: 600;
+            color: #0f1b2d;
+        }
+        .menu-check input {
+            width: 16px;
+            height: 16px;
+            appearance: auto;
+            -webkit-appearance: auto;
+            -moz-appearance: auto;
+            accent-color: #1f2937;
+            cursor: pointer;
+        }
+
+        /* HEADER */
+        .cardheader-box {
+            background: #f5f6f8;
+            border: 1px solid #c6c9d1;
+            border-radius: 8px 8px 0 0;
+            padding: 12px 16px 10px;
+            margin-bottom: 0;
+        }
+
+        .menu-box {
+            background: transparent;
+            border: none;
+            padding: 8px 0 0;
+            margin: 0;
+            border-radius: 0;
+        }
+
+        .cardheader-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        /* SCHEMA GRID */
+        .schema-groups {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .group {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .schema-card {
+            position: relative;
+            background: var(--panel-bg);
+            border: var(--panel-border);
+            border-radius: var(--panel-radius);
+            padding: 20px 12px 12px;
+            width: 280px;
+            height: 260px;
+        }
+
+        .schema-title {
+            position: absolute;
+            top: -10px;
+            left: 12px;
+            padding: 0 8px;
+            background: var(--panel-bg);
+            display: inline-block;
+            font-weight: 700;
+            font-size: 13px;
+            color: #444;
+            z-index: 2;
+        }
+
+        .schema-thumb {
+            width: 110px;
+            height: 110px;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 1px solid #d2d8e5;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .schema-info {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            column-gap: 12px;
+            row-gap: 4px;
+            font-size: 11px;
+            color: #0f1b2d;
+        }
+
+        .schema-info strong {
+            font-weight: 700;
+            color: #0f1b2d;
+        }
+
+        .group {
+            display: flex;
+            align-items: flex-start;
+            gap: 24px;
+            position: relative;
+        }
+        .parent-col {
+            position: relative;
+            padding-right: 24px;
+        }
+        .child-col {
+            position: relative;
+            padding-left: 24px;
+            flex: 1;
+        }
+        .group::before {
+            content: "";
+            position: absolute;
+            left: calc(280px + 12px);
+            top: 50%;
+            width: 24px;
+            height: 1px;
+            background: #c6c9d1;
+            transform: translateY(-50%);
+        }
+        .child-col::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 16px;
+            bottom: 16px;
+            width: 1px;
+            background: #c6c9d1;
+        }
+        .child-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            position: relative;
+        }
+        .child-card {
+            position: relative;
+            margin-left: 12px;
+        }
+        .child-card::before {
+            content: "";
+            position: absolute;
+            left: -12px;
+            top: 50%;
+            width: 12px;
+            height: 1px;
+            background: #c6c9d1;
+        }
+    </style>
+</head>
+<body>
+<div class="card-layout">
+
+    <div class="cardheader-box">
+        <div class="panel-content">
+            <div class="cardheader-grid">
+                <div class="field">
+                    <label style="font-weight: 800; font-family: 'FrutigerNeue LTW1G Regular', 'FrutigerNeue Light', system-ui, sans-serif;">Schemat maszyn</label>
+                </div>
+            </div>
+        </div>
+        <div class="menu-box">
+            <div class="menu">
+                <label class="menu-check"><input type="checkbox" checked />Nazwa</label>
+                <label class="menu-check"><input type="checkbox" checked />Skrót</label>
+                <label class="menu-check"><input type="checkbox" checked />Nr Inwetarzowy</label>
+                <label class="menu-check"><input type="checkbox" checked />Wydział</label>
+                <label class="menu-check"><input type="checkbox" checked />Lokalizacja</label>
+                <label class="menu-check"><input type="checkbox" checked />Producent</label>
+                <label class="menu-check"><input type="checkbox" checked />Model</label>
+                <label class="menu-check"><input type="checkbox" checked />Data upływu gwarancji</label>
+                <label class="menu-check"><input type="checkbox" checked />Status</label>
+                <label class="menu-check"><input type="checkbox" checked />Status operacyjny</label>
+                <label class="menu-check"><input type="checkbox" checked />Maszyna nadrzędna</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="schema-groups">
+        <div class="group">
+            <div class="parent-col">
+                <div class="schema-card parent-card">
+                    <span class="schema-title">Robot A</span>
+                    <img class="schema-thumb" src="pictures/m3_thumb.jpg" alt="Robot A">
+                    <div class="schema-info">
+                        <div><strong>Skrót:</strong> RB-01</div>
+                        <div><strong>Nr Inwetarzowy:</strong> 2001</div>
+                        <div><strong>Wydział:</strong> Wydział robotów</div>
+                        <div><strong>Lokalizacja:</strong> Hala 1</div>
+                        <div><strong>Producent:</strong> ABB</div>
+                        <div><strong>Model:</strong> IRB 6700</div>
+                        <div><strong>Data upływu gwarancji:</strong> 2026-03-05</div>
+                        <div><strong>Status:</strong> aktywny</div>
+                        <div><strong>Status operacyjny:</strong> Operacyjna</div>
+                    </div>
+                </div>
+            </div>
+            <div class="child-col">
+                <div class="child-row">
+                    <div class="schema-card child-card">
+                        <span class="schema-title">Maszyna skrawająca 01</span>
+                        <img class="schema-thumb" src="pictures/m1_thumb.jpg" alt="Maszyna skrawająca 01">
+                        <div class="schema-info">
+                            <div><strong>Skrót:</strong> MS-01</div>
+                            <div><strong>Nr Inwetarzowy:</strong> 1001</div>
+                            <div><strong>Wydział:</strong> Wydział maszyn</div>
+                            <div><strong>Lokalizacja:</strong> Hala 1</div>
+                            <div><strong>Producent:</strong> Mazak</div>
+                            <div><strong>Model:</strong> Integrex i-200</div>
+                            <div><strong>Data upływu gwarancji:</strong> 2025-12-31</div>
+                            <div><strong>Status:</strong> aktywny</div>
+                            <div><strong>Status operacyjny:</strong> Operacyjna</div>
+                            <div><strong>Maszyna nadrzędna:</strong> Robot A</div>
+                        </div>
+                    </div>
+                    <div class="schema-card child-card">
+                        <span class="schema-title">Robot 1</span>
+                        <img class="schema-thumb" src="pictures/m3_thumb.jpg" alt="Robot 1">
+                        <div class="schema-info">
+                            <div><strong>Skrót:</strong> RB-01</div>
+                            <div><strong>Nr Inwetarzowy:</strong> 2001</div>
+                            <div><strong>Wydział:</strong> Wydział robotów</div>
+                            <div><strong>Lokalizacja:</strong> Hala 1</div>
+                            <div><strong>Producent:</strong> ABB</div>
+                            <div><strong>Model:</strong> IRB 6700</div>
+                            <div><strong>Data upływu gwarancji:</strong> 2026-03-05</div>
+                            <div><strong>Status:</strong> aktywny</div>
+                            <div><strong>Status operacyjny:</strong> Operacyjna</div>
+                            <div><strong>Maszyna nadrzędna:</strong> Robot A</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="group">
+            <div class="parent-col">
+                <div class="schema-card parent-card">
+                    <span class="schema-title">Robot B</span>
+                    <img class="schema-thumb" src="pictures/m4_thumb.jpg" alt="Robot B">
+                    <div class="schema-info">
+                        <div><strong>Skrót:</strong> RB-02</div>
+                        <div><strong>Nr Inwetarzowy:</strong> 2002</div>
+                        <div><strong>Wydział:</strong> Wydział robotów</div>
+                        <div><strong>Lokalizacja:</strong> Hala 2</div>
+                        <div><strong>Producent:</strong> Fanuc</div>
+                        <div><strong>Model:</strong> M-20iA</div>
+                        <div><strong>Data upływu gwarancji:</strong> 2025-06-20</div>
+                        <div><strong>Status:</strong> aktywny</div>
+                        <div><strong>Status operacyjny:</strong> Operacyjna</div>
+                    </div>
+                </div>
+            </div>
+            <div class="child-col">
+                <div class="child-row">
+                    <div class="schema-card child-card">
+                        <span class="schema-title">Maszyna nieskrawająca 02</span>
+                        <img class="schema-thumb" src="pictures/m2_thumb.jpg" alt="Maszyna nieskrawająca 02">
+                        <div class="schema-info">
+                            <div><strong>Skrót:</strong> MN-02</div>
+                            <div><strong>Nr Inwetarzowy:</strong> 1002</div>
+                            <div><strong>Wydział:</strong> Wydział robotów</div>
+                            <div><strong>Lokalizacja:</strong> Hala 2</div>
+                            <div><strong>Producent:</strong> KUKA</div>
+                            <div><strong>Model:</strong> KR 10</div>
+                            <div><strong>Data upływu gwarancji:</strong> 2024-09-15</div>
+                            <div><strong>Status:</strong> aktywny</div>
+                            <div><strong>Status operacyjny:</strong> Operacyjna</div>
+                            <div><strong>Maszyna nadrzędna:</strong> Robot B</div>
+                        </div>
+                    </div>
+                    <div class="schema-card child-card">
+                        <span class="schema-title">Robot 2</span>
+                        <img class="schema-thumb" src="pictures/m4_thumb.jpg" alt="Robot 2">
+                        <div class="schema-info">
+                            <div><strong>Skrót:</strong> RB-02</div>
+                            <div><strong>Nr Inwetarzowy:</strong> 2002</div>
+                            <div><strong>Wydział:</strong> Wydział robotów</div>
+                            <div><strong>Lokalizacja:</strong> Hala 2</div>
+                            <div><strong>Producent:</strong> Fanuc</div>
+                            <div><strong>Model:</strong> M-20iA</div>
+                            <div><strong>Data upływu gwarancji:</strong> 2025-06-20</div>
+                            <div><strong>Status:</strong> aktywny</div>
+                            <div><strong>Status operacyjny:</strong> Operacyjna</div>
+                            <div><strong>Maszyna nadrzędna:</strong> Robot B</div>
+                        </div>
+                    </div>
+                    <div class="schema-card child-card">
+                        <span class="schema-title">Wózek widłowy</span>
+                        <img class="schema-thumb" src="pictures/m5_thumb.jpg" alt="Wózek widłowy">
+                        <div class="schema-info">
+                            <div><strong>Skrót:</strong> WW-01</div>
+                            <div><strong>Nr Inwetarzowy:</strong> 3001</div>
+                            <div><strong>Wydział:</strong> Wydział maszyn</div>
+                            <div><strong>Lokalizacja:</strong> Magazyn</div>
+                            <div><strong>Producent:</strong> Linde</div>
+                            <div><strong>Model:</strong> E16</div>
+                            <div><strong>Data upływu gwarancji:</strong> 2024-11-30</div>
+                            <div><strong>Status:</strong> nieaktywny</div>
+                            <div><strong>Status operacyjny:</strong> Serwis</div>
+                            <div><strong>Maszyna nadrzędna:</strong> Robot B</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

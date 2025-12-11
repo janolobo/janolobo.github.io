@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8" />
+    <title>Icon Table 2</title>
+    <link rel="stylesheet" href="content.css" />
+    <style>
+        body {
+            background: #f6f7fb;
+            padding: 0;
+        }
+
+        .page {
+            max-width: 1320px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .control-label {
+            font-weight: 700;
+            color: #1c2436;
+        }
+
+        .gap-control {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .gap-input {
+            width: 44px;
+            padding: 8px 24px 8px 10px;
+            border: 1px solid #d2d8e5;
+            border-radius: 8px;
+            background: #fff;
+            font-weight: 700;
+            text-align: center;
+            -moz-appearance: textfield;
+        }
+
+        .gap-input::-webkit-inner-spin-button,
+        .gap-input::-webkit-outer-spin-button {
+            appearance: none;
+            margin: 0;
+        }
+
+        .gap-spin {
+            position: absolute;
+            right: 6px;
+            width: 24px;
+            height: 16px;
+            padding: 0;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gap-spin img {
+            width: 14px;
+            height: 14px;
+            display: block;
+        }
+
+        .gap-spin--up { top: 6px; }
+        .gap-spin--down { bottom: 6px; }
+
+        .title {
+            margin: 0;
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: -0.3px;
+            color: #0f1b2d;
+        }
+
+        .shuffle-btn {
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 1px solid #d2d8e5;
+            background: #fff;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .icon-frame {
+            border: 1px solid #d2d8e5; /* jedna wspólna ramka */
+            border-radius: 12px;
+            padding: 16px 18px;
+            background: #fff;
+        }
+
+        .icon-rows {
+            --icon-gap: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px; /* odstęp między rzędami */
+        }
+
+        .icon-row {
+            display: grid;
+            grid-auto-flow: column;
+            grid-auto-columns: max-content;
+            column-gap: var(--icon-gap); /* odstęp między ikonami */
+            align-items: center;
+            overflow-x: auto;
+        }
+
+        .icon-tile {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 16px;
+            height: 16px;
+        }
+
+        .icon-image {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+    <div class="header">
+        <h1 class="title">Tablica ikon — losowe rzędy (3–15)</h1>
+        <div class="controls">
+            <span class="control-label">Gap (px):</span>
+            <div class="gap-control">
+                <input id="gapInput" class="gap-input" type="number" min="0" max="64" step="1" value="8" />
+                <button id="gapUp" class="gap-spin gap-spin--up" title="Zwiększ odstęp" type="button">
+                    <img src="svg-folder/UpIcon.svg" alt="Up">
+                </button>
+                <button id="gapDown" class="gap-spin gap-spin--down" title="Zmniejsz odstęp" type="button">
+                    <img src="svg-folder/DownIcon.svg" alt="Down">
+                </button>
+            </div>
+            <button id="shuffle" class="shuffle-btn">Przelosuj układ</button>
+        </div>
+    </div>
+
+    <div class="icon-frame">
+        <div id="iconRows" class="icon-rows"></div>
+    </div>
+</div>
+
+<script>
+const ICONS = [
+  "5WhyIcon.svg","8DReportIcon.svg","BookmarksIcon.svg","CalendarIcon.svg",
+  "ChatIcon.svg","CompetencesIcon.svg","ComponentsIcon.svg","ContractorsIcon.svg",
+  "CostsSummaryIcon.svg","CustomersIcon.svg","DepartmentsIcon.svg",
+  "DescriptionFieldIcon.svg","DocumentsIcon.svg","EmployeesIcon.svg",
+  "EnclosurementAddIcon.svg","EnclosurementIcon.svg","ExcelIcon.svg",
+  "ExclamationIcon.svg","FileIcon.svg","HRIcon.svg","ImprovementIcon.svg",
+  "IshikawaIcon.svg","ListIcon.svg","LocationsIcon.svg","MachinesIcon.svg",
+  "MaintenanceIcon.svg","MiniCalendarIcon.svg","NotificationsIcon_mono.svg",
+  "OrganisationIcon.svg","PDFIcon.svg","PictureIcon.svg","PositionsIcon.svg",
+  "PrivateTaskIcon.svg","ProductionIcon.svg","ProgramIcon.svg","PromotIcon.svg",
+  "PurposeIcon.svg","QmsProcessesIcon.svg","QualityAlertIcon.svg",
+  "RootcauseIcon.svg","SettingsIcon.svg","SimpleSubtaskIcon.svg",
+  "SortingIcon.svg","SubtaskIcon.svg","SuppliersIcon.svg","TasksIcon.svg",
+  "TeamIcon.svg","TechnologyIcon.svg","UsersIcon.svg","ValidationIcon.svg",
+  "WorkstationsIcon.svg"
+];
+
+const ROW_MIN = 3;
+const ROW_MAX = 15;
+const TOTAL_ROWS = 25;
+const container = document.getElementById("iconRows");
+const shuffleBtn = document.getElementById("shuffle");
+const gapInput = document.getElementById("gapInput");
+const gapUp = document.getElementById("gapUp");
+const gapDown = document.getElementById("gapDown");
+
+function randomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function shuffle(list) {
+  const arr = [...list];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function splitIntoRows(icons) {
+  const rows = [];
+  let index = 0;
+
+  while (index < icons.length) {
+    const remaining = icons.length - index;
+    const maxLen = Math.min(ROW_MAX, remaining);
+    const minLen = Math.min(ROW_MIN, maxLen);
+
+    let len = randomInt(minLen, maxLen);
+    let leftover = remaining - len;
+
+    if (leftover > 0 && leftover < ROW_MIN) {
+      if (len < ROW_MAX) {
+        const extra = Math.min(ROW_MAX - len, leftover);
+        len += extra;
+        leftover = remaining - len;
+      }
+      if (leftover > 0 && leftover < ROW_MIN) {
+        const need = ROW_MIN - leftover;
+        if (len - need >= ROW_MIN) {
+          len -= need;
+          leftover = remaining - len;
+        }
+      }
+    }
+
+    rows.push(icons.slice(index, index + len));
+    index += len;
+  }
+
+  return rows;
+}
+
+function createRow(icons) {
+  const row = document.createElement("div");
+  row.className = "icon-row";
+
+  icons.forEach(name => {
+    const tile = document.createElement("div");
+    tile.className = "icon-tile";
+
+    const img = document.createElement("img");
+    img.src = `svg-folder/${name}`;
+    img.alt = name;
+    img.className = "icon-image";
+
+    tile.append(img);
+    row.appendChild(tile);
+  });
+
+  return row;
+}
+
+function buildPool(count) {
+  const base = ICONS.filter(name => !name.startsWith("x"));
+  const pool = [];
+  while (pool.length < count) {
+    pool.push(...shuffle(base));
+  }
+  return pool.slice(0, count);
+}
+
+function render() {
+  const rowsConfig = [];
+  while (rowsConfig.length < TOTAL_ROWS) {
+    const len = randomInt(ROW_MIN, ROW_MAX);
+    rowsConfig.push(len);
+  }
+
+  const neededIcons = rowsConfig.reduce((acc, len) => acc + len, 0);
+  const pool = buildPool(neededIcons);
+
+  container.innerHTML = "";
+  let cursor = 0;
+
+  rowsConfig.forEach(len => {
+    const rowIcons = pool.slice(cursor, cursor + len);
+    cursor += len;
+    container.appendChild(createRow(rowIcons));
+  });
+}
+
+function applyGap(value) {
+  const gap = Math.max(0, Math.min(64, value));
+  container.style.setProperty("--icon-gap", `${gap}px`);
+  gapInput.value = gap;
+}
+
+gapInput.addEventListener("input", () => applyGap(parseInt(gapInput.value, 10) || 0));
+gapUp.addEventListener("click", () => applyGap((parseInt(gapInput.value, 10) || 0) + 1));
+gapDown.addEventListener("click", () => applyGap((parseInt(gapInput.value, 10) || 0) - 1));
+shuffleBtn.addEventListener("click", render);
+render();
+applyGap(parseInt(gapInput.value, 10) || 8);
+</script>
+</body>
+</html>
