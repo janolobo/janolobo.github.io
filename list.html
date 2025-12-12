@@ -1,1547 +1,1220 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <meta charset="UTF-8">
-    <title>Lista Zadań</title>
-    <link rel="stylesheet" href="content.css">
-
+    <meta charset="UTF-8" />
+    <title>Card Layout</title>
+    <link rel="stylesheet" href="content.css" />
     <style>
-        .task-table-wrapper {
+        :root {
+            --panel-radius: 6px;
+            --panel-border: 1px solid #c6c9d1;
+            --panel-bg: #fff;
+            --panel-text: #1a1a1a;
+        }
+        /* tabelę styli dopasowujemy niżej */
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 12px;
+            background: #fff;
+            font-family: "FrutigerNeue Light", system-ui, sans-serif;
+            color: var(--panel-text);
+        }
+
+        .card-layout {
+            display: grid;
+            grid-template-rows: auto auto auto 1fr;
+            gap: 12px;
+        }
+
+        .row-split-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            justify-items: start;
+        }
+
+        .panel {
+            position: relative;
+            background: var(--panel-bg);
+            border: var(--panel-border);
+            border-radius: var(--panel-radius);
+            min-height: 96px;
+            padding: 16px;
             width: 100%;
-            max-height: 100%;
+            max-width: 100%;
+        }
+
+        .panel-label {
+            position: absolute;
+            top: -10px;
+            left: 16px;
+            padding: 0 8px;
+            background: var(--panel-bg);
+            display: inline-block;
+            font-weight: 700;
+            font-size: 14px;
+            line-height: 1.2;
+            color: #444;
+        }
+
+        .panel-content {
+            padding-top: 8px;
+        }
+
+        .panel--tall { min-height: 240px; }
+
+        .panel-gallery {
+            width: 360px;
+            max-width: 100%;
+        }
+
+        /* MENU CARD */
+        .menu {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            padding: 8px 0;
+        }
+
+        .menu-btn {
+            position: relative;
+            border: none;
+            background: transparent;
+            padding: 6px 0;
+            font: inherit;
+            font-weight: 700;
+            cursor: pointer;
+            color: #0f1b2d;
+        }
+
+        .menu-btn::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 4px;
+            background: transparent;
+            transition: background-color .15s ease;
+        }
+
+        .menu-btn:hover::after { background: #b0b0b0; }
+        .menu-btn.is-active::after { background: #000; }
+
+        .menu-check {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font: inherit;
+            font-weight: 600;
+            color: #0f1b2d;
+        }
+        .menu-check input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            margin: 0;
+            appearance: checkbox;
+            -webkit-appearance: checkbox;
+            -moz-appearance: checkbox;
+            accent-color: #1f2937;
+            cursor: pointer;
+        }
+        .filter-checkbox {
+            width: 16px;
+            height: 16px;
+            margin: 0;
+            appearance: checkbox;
+            -webkit-appearance: checkbox;
+            -moz-appearance: checkbox;
+            accent-color: #1f2937;
+            cursor: pointer;
+        }
+        .button-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .button-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .icon-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-left: auto;
+        }
+        .icon-btn {
+            border: none;
+            background: transparent;
+            border-radius: 4px;
+            width: 24px;
+            height: 24px;
+            padding: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform .1s ease, background-color .15s ease;
+        }
+        .icon-btn:hover { background: rgba(0,0,0,0.05); }
+        .icon-btn:active { transform: scale(.97); box-shadow: 0 0 0 1px rgba(0,0,0,0.3); }
+        .icon-btn img {
+            width: 16px;
+            height: 16px;
+            display: block;
+            transition: opacity .15s ease;
+        }
+        .icon-btn:hover img { opacity: .6; }
+        .icon-divider {
+            width: 1px;
+            height: 24px;
+            background: #c6c9d1;
+        }
+        .search-input {
+            height: 32px;
+            padding: 6px 10px;
+            border: 1px solid #c6c9d1;
+            border-radius: 6px;
+            font-size: 13px;
+            min-width: 180px;
+        }
+        .sort-btn {
+            border: none;
+            background: transparent;
+            padding: 2px;
+            margin-left: 4px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            height: 18px;
+            vertical-align: middle;
+        }
+        .sort-btn img {
+            width: 12px;
+            height: 12px;
+            display: block;
+        }
+        .sort-btn.is-active {
+            background: rgba(0,0,0,0.08);
+            border-radius: 4px;
+        }
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(15,27,45,0.36);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            z-index: 1000;
+        }
+        .modal-backdrop.is-visible { display: flex; }
+        .modal {
+            background: #fff;
+            border: 1px solid #c6c9d1;
+            border-radius: 12px;
+            max-width: 480px;
+            width: 100%;
+            box-shadow: 0 12px 36px rgba(0,0,0,0.18);
+            padding: 16px;
+        }
+        .modal-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        .modal-title {
+            font-size: 16px;
+            font-weight: 800;
+            color: #0f1b2d;
+        }
+        .modal-close {
+            border: none;
+            background: transparent;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 4px;
+            line-height: 1;
+        }
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 8px 12px;
+        }
+
+        /* CARDHEADER FORM */
+        .cardheader-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .op-top-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .op-top-inline {
+            display: flex;
+            align-items: flex-end;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .field label {
+            font-weight: 700;
+            font-size: 14px;
+            color: #0f1b2d;
+        }
+
+        .status-select {
+            padding: 10px 12px;
+            border-radius: 8px;
+        }
+
+        .number-control {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .number-input {
+            width: 100%;
+            padding: 10px 40px 10px 12px;
+            border: 1px solid #d2d8e5;
+            border-radius: 8px;
+            background: #fff;
+           
+        }
+        .number-input::-webkit-inner-spin-button,
+        .number-input::-webkit-outer-spin-button {
+            appearance: none;
+            margin: 0;
+        }
+
+        .number-spin {
+            position: absolute;
+            right: 6px;
+            width: 26px;
+            height: 18px;
+            padding: 0;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .number-spin img { width: 14px; height: 14px; display: block; }
+        .number-spin.up { top: 6px; }
+        .number-spin.down { bottom: 6px; }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .warranty-line {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .warranty-note {
+            font-size: 14px;
+            color: #444;
+        }
+
+        /* GALERIA */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        /* CUSTOM DATE NAV INPUTS */
+        .date-nav-wrap {
+            position: relative;
+            display: inline-flex;
+            width: 180px;
+        }
+
+        .date-nav-wrap.date-nav-wrap--year { width: 140px; }
+        .date-nav-wrap.date-nav-wrap--date { width: 180px; }
+
+        .date-nav-input {
+            width: 100%;
+            padding: 10px 60px 10px 38px;
+            border: 1px solid #d2d8e5;
+            border-radius: 8px;
+            background: #fff;
+            font: inherit;
+        }
+
+        .date-nav-input::-webkit-inner-spin-button,
+        .date-nav-input::-webkit-outer-spin-button,
+        .date-nav-input::-webkit-calendar-picker-indicator {
+            appearance: none;
+            display: none;
+        }
+        .date-nav-input::-moz-calendar-picker-indicator { display: none; }
+
+        .date-nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 28px;
+            height: 28px;
+            border: none;
+            background: transparent;
+            padding: 0;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .date-nav-btn img {
+            width: 16px;
+            height: 16px;
+            display: block;
+        }
+
+        .date-nav-btn--left { left: 6px; }
+        .date-nav-btn--right { right: 6px; }
+        .date-nav-btn--calendar { right: 34px; }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .gallery-item {
+            border: var(--panel-border);
+            border-radius: var(--panel-radius);
+            overflow: hidden;
+            background: #fff;
+            width: 160px;
+            height: 160px;
+        }
+
+        .gallery-item img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .main-panels {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 12px;
+            align-items: start;
+        }
+
+        .main-left {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* Cardheader & menu wrapper */
+        .cardheader-box {
+            background: #f5f6f8;
+            border: 1px solid #c6c9d1;
+            border-radius: 8px 8px 0 0;
+            padding: 12px 16px 10px;
+            margin-bottom: 0;
+        }
+
+        .menu-box {
+            background: transparent;
+            border: none;
+            padding: 8px 0 0;
+            margin: 0;
+            border-radius: 0;
+        }
+
+        .table-scroll {
+            max-height: 480px;
             overflow-y: auto;
             overflow-x: auto;
         }
-
-        table.task-table {
+        .list-table {
             width: 100%;
-            border-collapse: collapse;
-            font-size: var(--content-font-size);
-            font-family: var(--content-font-family);
-            color: rgba(0,0,0,var(--content-opacity));
+            border-collapse: separate;
+            border-spacing: 0 8px;
+            font-size: 14px;
         }
 
-        table.task-table th,
-        table.task-table td {
-            border: 1px solid #bbb;
-            padding: 6px 8px;
+        .list-table th,
+        .list-table td {
+            border: none;
+            padding: 8px 10px;
             text-align: left;
-            vertical-align: middle;
+            background: #fff;
         }
 
-        table.task-table th {
-            background: #eaeaea;
-            font-weight: 600;
-            position: sticky;
-            top: 0;
-            z-index: 5;
+        .list-table th {
+            background: #f5f6f8;
+            font-weight: 700;
+            color: #0f1b2d;
         }
-
-        /* Wersja mini kontrolki daty w tabeli list */
-        .task-table .date-control {
-            display: inline-flex;
-            align-items: center;
-            gap: 2px;
-            font-size: 10px;
-        }
-
-        .task-table .date-input {
-            font-size: 10px;
-            height: 20px;
-            padding: 0 2px;
-        }
-
-        .task-table .date-btn {
-            padding: 0 2px;
-            height: 20px;
-            min-width: 18px;
-        }
-
-        .task-table .date-btn img {
-            width: 12px;
-            height: 12px;
-        }
-
-        /* Kontrolki wagi – mini (10px), bez opisów w tabeli */
-        .task-table .weight-line {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            font-size: 10px;
-        }
-
-        .task-table .weight-input {
-            width: 40px;
-            font-size: 10px;
-            height: 20px;
-            padding: 0 2px;
-        }
-
-        .task-table .weight-desc {
-            display: none; /* brak podpisów po prawej w tabeli */
-        }
-
-        /* Kontrolki fontu na dole */
-        .content-controls {
-            margin-top: 16px;
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 8px;
-            font-size: 12px;
-        }
-
-        .content-controls select,
-        .content-controls input[type="number"] {
-            padding: 2px 4px;
-        }
-
-        .content-refresh-button {
-            padding: 4px 8px;
+        .list-table tbody tr {
             cursor: pointer;
-        }
-
-        .content-buttons {
-            margin-top: 12px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        .content-btn {
-            min-width: 80px;
-            padding: 6px 10px;
+            transition: background-color .12s ease, box-shadow .12s ease;
+            background: #fff;
+            border: none;
             border-radius: 6px;
-            border: 1px solid rgba(0,0,0,0.15);
-            background: rgba(0,0,0,0.03);
+            overflow: hidden;
+        }
+        .list-table tbody td {
+            background: transparent;
+            border: none;
+            padding: 8px 10px;
+        }
+        .list-table tbody td:first-child {
+            border-top-left-radius: 6px;
+            border-bottom-left-radius: 6px;
+        }
+        .list-table tbody td:last-child {
+            border-top-right-radius: 6px;
+            border-bottom-right-radius: 6px;
+        }
+        .list-table tbody tr:hover {
+            background: #eef2fb;
+            box-shadow: 0 0 0 1px #d2d8e5;
+        }
+        .list-table tbody tr:hover td { background: #eef2fb; }
+        .list-table tbody tr.is-selected {
+            background: #dfe7ff;
+            box-shadow: 0 0 0 1px #9bb7ff inset;
+        }
+        .list-table tbody tr.is-selected td { background: #dfe7ff; }
+        .list-table tbody td { background: #fff; }
+        .list-table tbody tr.editing-row {
+            background: #fff0f0;
+            box-shadow: 0 0 0 1px rgba(210,34,34,0.6);
+        }
+        .list-table tbody tr.editing-row td { background: #fff0f0; }
+        .list-table tbody input,
+        .list-table tbody select {
+            width: 100%;
+            padding: 6px 10px;
+            border: 1px solid var(--frame-gray);
+            border-radius: 6px;
+            font: inherit;
+            background: #fff url("svg-folder/DownIcon.svg") no-repeat right 10px center;
+            background-size: 12px;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+        }
+        .list-table tbody select.status-open {
+            border-color: #2fa44f;
+            background-color: rgba(47,164,79,0.08);
+            color: #0b5b2e;
+        }
+        .list-table tbody input[type="date"] {
+            background-image: none;
+        }
+        .list-table tbody input {
+            background-image: none;
+        }
+        .list-table tbody .number-control {
+            max-width: 180px;
+        }
+        .list-table tbody .number-input {
+            padding: 8px 40px 8px 10px;
+        }
+        .list-table tbody .date-nav-wrap {
+            position: relative;
+            display: inline-flex;
+            width: 220px;
+        }
+        .list-table tbody .date-nav-input {
+            width: 100%;
+            padding: 8px 60px 8px 34px;
+            border: 1px solid var(--frame-gray);
+            border-radius: 6px;
+            background: #fff;
+        }
+        .list-table tbody .date-nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 24px;
+            border: none;
+            background: transparent;
+            padding: 0;
             cursor: pointer;
-            transition: background 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
-            font-size: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
-
-        .content-btn:hover {
-            background: rgba(0,0,0,0.06);
-            box-shadow: 0 0 4px rgba(0,0,0,0.15);
-        }
-
-        .content-btn:active {
-            transform: translateY(1px);
-            box-shadow: none;
+        .list-table tbody .date-nav-btn img { width: 16px; height: 16px; }
+        .list-table tbody .date-nav-btn--left { left: 6px; }
+        .list-table tbody .date-nav-btn--right { right: 6px; }
+        .list-table tbody .date-nav-btn--calendar { right: 34px; }
+        .list-table tbody select {
+            background-position: right 8px center;
+            padding-right: 28px;
         }
     </style>
 </head>
 <body>
+<div class="card-layout">
 
-<h1>Lista Zadań</h1>
+    <div class="cardheader-box">
+        <div class="panel-content">
+            <div class="cardheader-grid" style="grid-template-columns: 1fr;">
+                <div class="field">
+                    <label style="font-weight: 800; font-family: 'FrutigerNeue LTW1G Regular', 'FrutigerNeue Light', system-ui, sans-serif;">Lista maszyn</label>
+                    <div class="button-bar" style="margin-top:4px;">
+                        <div class="button-group">
+                            <button id="openCardBtn" class="content-btn content-btn-activate" type="button" style="padding:6px 12px; display:flex; align-items:center; gap:8px; font-family: 'FrutigerNeue LTW1G Regular', 'FrutigerNeue Light', system-ui, sans-serif;">
+                                <img src="svg-folder/CardViewIcon.svg" alt="" style="width:16px;height:16px;">
+                                <span>Otwórz</span>
+                            </button>
+                            <button id="editCardBtn" class="content-btn content-btn-activate" type="button" style="padding:6px 12px; display:flex; align-items:center; gap:8px; font-family: 'FrutigerNeue LTW1G Regular', 'FrutigerNeue Light', system-ui, sans-serif;">
+                                <img src="svg-folder/EditIcon.svg" alt="" style="width:16px;height:16px;">
+                                <span>Edytuj</span>
+                            </button>
+                            <button class="content-btn content-btn-activate" type="button" style="padding:6px 12px; display:flex; align-items:center; gap:8px; font-family: 'FrutigerNeue LTW1G Regular', 'FrutigerNeue Light', system-ui, sans-serif;">
+                                <img src="svg-folder/DuplicateIcon.svg" alt="" style="width:16px;height:16px;">
+                                <span>Duplikuj</span>
+                            </button>
+                            <button id="deleteMachineBtnList" class="content-btn content-btn-danger" type="button" style="padding:6px 12px; display:flex; align-items:center; gap:8px; font-family: 'FrutigerNeue LTW1G Regular', 'FrutigerNeue Light', system-ui, sans-serif; background:#ffe5e5; border:1px solid #d22; color:#b00000;">
+                                <img src="svg-folder/DeleteIcon.svg" alt="" style="width:16px;height:16px;">
+                                <span>Usuń maszynę</span>
+                            </button>
+                            <span style="display:inline-block; width:1px; height:28px; background:#c6c9d1; margin:0 8px;"></span>
+                            <button class="content-btn content-btn-add" type="button" style="padding:6px 12px; display:flex; align-items:center; gap:8px; font-family: 'FrutigerNeue LTW1G Regular', 'FrutigerNeue Light', system-ui, sans-serif;">
+                                <img src="svg-folder/AddIcon.svg" alt="" style="width:16px;height:16px;">
+                                <span>Dodaj nową maszynę</span>
+                            </button>
+                        </div>
+                        <div class="icon-actions">
+                            <input id="listSearch" class="search-input" type="search" placeholder="Szukaj..." aria-label="Szukaj w tabeli">
+                            <button id="filterToggle" class="icon-btn" type="button" aria-label="Filtruj">
+                                <img src="svg-folder/FilterIcon.svg" alt="Filtruj">
+                            </button>
+                            <button id="settingsToggle" class="icon-btn settings-btn" type="button" aria-label="Ustawienia kolumn">
+                                <img src="svg-folder/SettingsIcon.svg" alt="Ustawienia">
+                            </button>
+                            <span class="icon-divider" aria-hidden="true"></span>
+                            <button class="icon-btn" type="button" aria-label="Eksport do XLS">
+                                <img src="svg-folder/xExportXlsIcon.svg" alt="XLS">
+                            </button>
+                            <button class="icon-btn" type="button" aria-label="Eksport do PDF">
+                                <img src="svg-folder/xExportPdfIcon.svg" alt="PDF">
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="menu-box"></div>
+    </div>
 
-<div class="task-table-wrapper">
-<table class="task-table">
-    <thead>
-        <tr>
-            <th>Dodano</th>
-            <th>Tytuł</th>
-            <th>Odpowiedzialny</th>
-            <th>Termin(z)</th>
-            <th>Waga(z)</th>
-            <th>Termin(w)</th>
-            <th>Waga(w)</th>
-            <th>P</th>
-            <th>D</th>
-            <th>C</th>
-            <th>A</th>
-        </tr>
-    </thead>
+    <div class="modal-backdrop" id="settingsModal">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+            <div class="modal-head">
+                <div class="modal-title" id="settingsTitle">Widoczne kolumny</div>
+                <button class="modal-close" type="button" aria-label="Zamknij" id="settingsClose">✕</button>
+            </div>
+            <div class="checkbox-grid">
+                <label class="menu-check"><input type="checkbox" checked />Nazwa</label>
+                <label class="menu-check"><input type="checkbox" checked />Skrót</label>
+                <label class="menu-check"><input type="checkbox" checked />Nr Inwetarzowy</label>
+                <label class="menu-check"><input type="checkbox" checked />Wydział</label>
+                <label class="menu-check"><input type="checkbox" checked />Lokalizacja</label>
+                <label class="menu-check"><input type="checkbox" checked />Producent</label>
+                <label class="menu-check"><input type="checkbox" checked />Model</label>
+                <label class="menu-check"><input type="checkbox" checked />Data upływu gwarancji</label>
+                <label class="menu-check"><input type="checkbox" checked />Status</label>
+                <label class="menu-check"><input type="checkbox" checked />Status operacyjny</label>
+                <label class="menu-check"><input type="checkbox" checked />Maszyna nadrzędna</label>
+            </div>
+        </div>
+    </div>
 
-    <tbody>
+    <div class="modal-backdrop" id="filterModal">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="filterTitle">
+            <div class="modal-head">
+                <div class="modal-title" id="filterTitle">Wyświetl maszyny:</div>
+                <button class="modal-close" type="button" aria-label="Zamknij" id="filterClose">✕</button>
+            </div>
+            <div class="checkbox-grid" style="margin-bottom:12px;">
+                <label class="menu-check"><input type="checkbox" class="filter-checkbox" />Aktywne</label>
+                <label class="menu-check"><input type="checkbox" class="filter-checkbox" />Nieaktywne</label>
+                <label class="menu-check"><input type="checkbox" class="filter-checkbox" />Operacyjne</label>
+                <label class="menu-check"><input type="checkbox" class="filter-checkbox" />Wycofane</label>
+                <label class="menu-check"><input type="checkbox" class="filter-checkbox" />Tylko pod moim nadzorem</label>
+                <label class="menu-check"><input type="checkbox" class="filter-checkbox" />W serwisie</label>
+                <label class="menu-check"><input type="checkbox" class="filter-checkbox" />Zepsute</label>
+                <label class="menu-check"><input type="checkbox" class="filter-checkbox" />Do wyrzucenia</label>
+                <label class="menu-check"><input type="checkbox" class="filter-checkbox" />Bez zdjęć</label>
+                <label class="menu-check"><input type="checkbox" class="filter-checkbox" />Po gwarancji</label>
+                <label class="menu-check"><input type="checkbox" class="filter-checkbox" />W Leasingu</label>
+            </div>
+            <div class="field" style="margin-bottom:10px;">
+                <label style="display:flex; align-items:center; gap:8px;">
+                    <input type="checkbox" class="filter-checkbox" />
+                    <span>Powiązane z zadaniem:</span>
+                </label>
+                <select class="status-select">
+                    <option>Zadanie A</option>
+                    <option>Zadanie B</option>
+                    <option>Zadanie C</option>
+                </select>
+            </div>
+            <div class="field" style="margin-bottom:10px;">
+                <label style="display:flex; align-items:center; gap:8px;">
+                    <input type="checkbox" class="filter-checkbox" />
+                    <span>Odpowiedzialny:</span>
+                </label>
+                <select class="status-select">
+                    <option>Ja</option>
+                    <option>Jan</option>
+                    <option>Janek</option>
+                </select>
+            </div>
+            <div class="field">
+                <label style="display:flex; align-items:center; gap:8px;">
+                    <input type="checkbox" class="filter-checkbox" />
+                    <span>Z etykietą:</span>
+                </label>
+                <select class="status-select">
+                    <option>E1</option>
+                    <option>E2</option>
+                    <option>E3</option>
+                </select>
+            </div>
+        </div>
+    </div>
 
-        <!-- 1 -->
-        <tr>
-            <td>12.02.2024</td>
-            <td>Ogłoszenie alarmu jakościowego (działanie powstrzymujące)</td>
-            <td>Kowalski</td>
-            <td>
-                <div class="date-control date-control-small">
-                    <button class="date-btn date-btn-left">
-                        <img src="svg-folder/LeftIcon.svg" alt="Poprzedni dzień">
-                    </button>
-                    <input type="date" class="date-input">
-                    <button class="date-btn date-btn-calendar">
-                        <img src="svg-folder/CalendarIcon.svg" alt="Kalendarz">
-                    </button>
-                    <button class="date-btn date-btn-right">
-                        <img src="svg-folder/RightIcon.svg" alt="Następny dzień">
-                    </button>
-                </div>
-            </td>
-            <td>
-                <div class="weight-line list-weight">
-                    <input type="number" min="1" max="5" class="weight-input" value="1">
-                    <span class="weight-desc"></span>
-                </div>
-            </td>
-            <td>
-                <div class="date-control date-control-small">
-                    <button class="date-btn date-btn-left">
-                        <img src="svg-folder/LeftIcon.svg" alt="Poprzedni dzień">
-                    </button>
-                    <input type="date" class="date-input">
-                    <button class="date-btn date-btn-calendar">
-                        <img src="svg-folder/CalendarIcon.svg" alt="Kalendarz">
-                    </button>
-                    <button class="date-btn date-btn-right">
-                        <img src="svg-folder/RightIcon.svg" alt="Następny dzień">
-                    </button>
-                </div>
-            </td>
-            <td>
-                <div class="weight-line list-weight">
-                    <input type="number" min="1" max="5" class="weight-input" value="1">
-                    <span class="weight-desc"></span>
-                </div>
-            </td>
-            <td></td><td></td><td></td><td></td>
-        </tr>
+    <div class="panel panel--tall">
+        <span class="panel-label">Lista</span>
+        <div class="panel-content">
+            <div class="table-scroll">
+            <table class="list-table">
+                <thead>
+                    <tr>
+                        <th>Nazwa <button class="sort-btn" type="button" data-col="0" data-dir="asc" aria-label="Sortuj Nazwa"><img src="svg-folder/UpIcon.svg" alt=""></button></th>
+                        <th>Skrót <button class="sort-btn" type="button" data-col="1" data-dir="asc" aria-label="Sortuj Skrót"><img src="svg-folder/UpIcon.svg" alt=""></button></th>
+                        <th>Nr Inwetarzowy <button class="sort-btn" type="button" data-col="2" data-dir="asc" aria-label="Sortuj Nr Inwetarzowy"><img src="svg-folder/UpIcon.svg" alt=""></button></th>
+                        <th>Wydział <button class="sort-btn" type="button" data-col="3" data-dir="asc" aria-label="Sortuj Wydział"><img src="svg-folder/UpIcon.svg" alt=""></button></th>
+                        <th>Lokalizacja <button class="sort-btn" type="button" data-col="4" data-dir="asc" aria-label="Sortuj Lokalizacja"><img src="svg-folder/UpIcon.svg" alt=""></button></th>
+                        <th>Producent <button class="sort-btn" type="button" data-col="5" data-dir="asc" aria-label="Sortuj Producent"><img src="svg-folder/UpIcon.svg" alt=""></button></th>
+                        <th>Model <button class="sort-btn" type="button" data-col="6" data-dir="asc" aria-label="Sortuj Model"><img src="svg-folder/UpIcon.svg" alt=""></button></th>
+                        <th>Data upływu gwarancji <button class="sort-btn" type="button" data-col="7" data-dir="asc" aria-label="Sortuj Data gwarancji"><img src="svg-folder/UpIcon.svg" alt=""></button></th>
+                        <th>Status <button class="sort-btn" type="button" data-col="8" data-dir="asc" aria-label="Sortuj Status"><img src="svg-folder/UpIcon.svg" alt=""></button></th>
+                        <th>Status operacyjny <button class="sort-btn" type="button" data-col="9" data-dir="asc" aria-label="Sortuj Status operacyjny"><img src="svg-folder/UpIcon.svg" alt=""></button></th>
+                        <th>Maszyna nadrzędna <button class="sort-btn" type="button" data-col="10" data-dir="asc" aria-label="Sortuj Maszyna nadrzędna"><img src="svg-folder/UpIcon.svg" alt=""></button></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Maszyna skrawająca 01</td><td>MS-01</td><td>1001</td><td>Wydział maszyn</td><td>Hala 1</td><td>Mazak</td><td>Integrex i-200</td><td>2025-12-31</td><td>aktywny</td><td>Operacyjna</td><td>Robot A</td>
+                    </tr>
+                    <tr>
+                        <td>Maszyna nieskrawająca 02</td><td>MN-02</td><td>1002</td><td>Wydział robotów</td><td>Hala 2</td><td>KUKA</td><td>KR 10</td><td>2024-09-15</td><td>aktywny</td><td>Operacyjna</td><td>Robot B</td>
+                    </tr>
+                    <tr>
+                        <td>Robot 1</td><td>RB-01</td><td>2001</td><td>Wydział robotów</td><td>Hala 1</td><td>ABB</td><td>IRB 6700</td><td>2026-03-05</td><td>aktywny</td><td>Operacyjna</td><td>Robot A</td>
+                    </tr>
+                    <tr>
+                        <td>Robot 2</td><td>RB-02</td><td>2002</td><td>Wydział robotów</td><td>Hala 2</td><td>Fanuc</td><td>M-20iA</td><td>2025-06-20</td><td>aktywny</td><td>Operacyjna</td><td>Robot B</td>
+                    </tr>
+                    <tr>
+                        <td>Wózek widłowy</td><td>WW-01</td><td>3001</td><td>Wydział maszyn</td><td>Magazyn</td><td>Linde</td><td>E16</td><td>2024-11-30</td><td>nieaktywny</td><td>Serwis</td><td>Robot B</td>
+                    </tr>
+                    <tr><td>Tokarka precyzyjna</td><td>TP-03</td><td>3002</td><td>Wydział maszyn</td><td>Hala 3</td><td>Haas</td><td>ST-20Y</td><td>2026-02-10</td><td>aktywny</td><td>Operacyjna</td><td>Robot C</td></tr>
+                    <tr><td>Frezarka CNC</td><td>FC-04</td><td>3003</td><td>Wydział maszyn</td><td>Hala 3</td><td>DMG Mori</td><td>DMU 50</td><td>2025-07-18</td><td>aktywny</td><td>Operacyjna</td><td>Robot C</td></tr>
+                    <tr><td>Prasa hydrauliczna</td><td>PH-05</td><td>3004</td><td>Wydział pras</td><td>Hala 4</td><td>Schuler</td><td>PX 100</td><td>2024-12-01</td><td>aktywny</td><td>Rezerwa</td><td>Robot D</td></tr>
+                    <tr><td>Szlifierka</td><td>SZ-06</td><td>3005</td><td>Wydział maszyn</td><td>Hala 2</td><td>Okamoto</td><td>ACC-63</td><td>2027-03-22</td><td>aktywny</td><td>Operacyjna</td><td>Robot A</td></tr>
+                    <tr><td>Wiertarka kolumnowa</td><td>WK-07</td><td>3006</td><td>Wydział narzędzi</td><td>Hala 1</td><td>Bosch</td><td>GSM 25</td><td>2025-01-12</td><td>aktywny</td><td>Operacyjna</td><td>Robot B</td></tr>
+                    <tr><td>Piła taśmowa</td><td>PT-08</td><td>3007</td><td>Wydział maszyn</td><td>Hala 5</td><td>Bomar</td><td>Workline 410</td><td>2026-09-14</td><td>aktywny</td><td>Operacyjna</td><td>Robot C</td></tr>
+                    <tr><td>Laser tnący</td><td>LT-09</td><td>3008</td><td>Wydział blach</td><td>Hala 6</td><td>Trumpf</td><td>TruLaser 3030</td><td>2025-04-30</td><td>aktywny</td><td>Operacyjna</td><td>Robot D</td></tr>
+                    <tr><td>Giętarka</td><td>GT-10</td><td>3009</td><td>Wydział blach</td><td>Hala 6</td><td>Amada</td><td>HFE 3i</td><td>2026-11-20</td><td>aktywny</td><td>Operacyjna</td><td>Robot D</td></tr>
+                    <tr><td>Robot spawalniczy</td><td>RS-11</td><td>3010</td><td>Wydział spaw</td><td>Hala 7</td><td>Fanuc</td><td>ARC Mate 120i</td><td>2027-05-05</td><td>aktywny</td><td>Operacyjna</td><td>Robot E</td></tr>
+                    <tr><td>Robot malarski</td><td>RM-12</td><td>3011</td><td>Wydział lakierni</td><td>Hala 8</td><td>KUKA</td><td>KR AGILUS</td><td>2025-08-19</td><td>aktywny</td><td>Operacyjna</td><td>Robot F</td></tr>
+                    <tr><td>Pakowarka</td><td>PK-13</td><td>3012</td><td>Wydział pakowania</td><td>Hala 9</td><td>Multivac</td><td>T 300</td><td>2026-01-01</td><td>aktywny</td><td>Operacyjna</td><td>Robot G</td></tr>
+                    <tr><td>Etykieciarka</td><td>ET-14</td><td>3013</td><td>Wydział pakowania</td><td>Hala 9</td><td>Markem</td><td>9400</td><td>2025-06-06</td><td>aktywny</td><td>Operacyjna</td><td>Robot G</td></tr>
+                    <tr><td>Taśmociąg</td><td>TC-15</td><td>3014</td><td>Wydział logistyczny</td><td>Hala 10</td><td>Interroll</td><td>Light 60</td><td>2027-02-14</td><td>aktywny</td><td>Operacyjna</td><td>Robot H</td></tr>
+                    <tr><td>Sorter</td><td>SR-16</td><td>3015</td><td>Wydział logistyczny</td><td>Hala 10</td><td>Siemens</td><td>SRT-200</td><td>2026-10-01</td><td>aktywny</td><td>Operacyjna</td><td>Robot H</td></tr>
+                    <tr><td>Podnośnik nożycowy</td><td>PN-17</td><td>3016</td><td>Wydział utrzymania</td><td>Magazyn</td><td>JLG</td><td>3246ES</td><td>2025-03-03</td><td>aktywny</td><td>Rezerwa</td><td>Robot I</td></tr>
+                    <tr><td>Wózek AGV</td><td>AGV-18</td><td>3017</td><td>Wydział logistyczny</td><td>Hala 11</td><td>MiR</td><td>MiR200</td><td>2026-04-25</td><td>aktywny</td><td>Operacyjna</td><td>Robot H</td></tr>
+                    <tr><td>Chłodnia</td><td>CH-19</td><td>3018</td><td>Wydział spożywczy</td><td>Hala 12</td><td>Carrier</td><td>UltraCool</td><td>2025-09-09</td><td>aktywny</td><td>Operacyjna</td><td>Robot J</td></tr>
+                    <tr><td>Suszarnia</td><td>SS-20</td><td>3019</td><td>Wydział chemiczny</td><td>Hala 13</td><td>Bosch</td><td>DryX</td><td>2026-07-07</td><td>aktywny</td><td>Operacyjna</td><td>Robot K</td></tr>
+                    <tr><td>Pompa próżniowa</td><td>PP-21</td><td>3020</td><td>Wydział chemiczny</td><td>Hala 13</td><td>Busch</td><td>RA 0630</td><td>2025-12-24</td><td>aktywny</td><td>Operacyjna</td><td>Robot K</td></tr>
+                    <tr><td>Separator</td><td>SP-22</td><td>3021</td><td>Wydział chemiczny</td><td>Hala 13</td><td>GEA</td><td>Westfalia</td><td>2026-08-08</td><td>aktywny</td><td>Operacyjna</td><td>Robot K</td></tr>
+                    <tr><td>Mieszalnik</td><td>MS-23</td><td>3022</td><td>Wydział chemiczny</td><td>Hala 14</td><td>IKA</td><td>Mixomat</td><td>2025-05-15</td><td>aktywny</td><td>Operacyjna</td><td>Robot L</td></tr>
+                    <tr><td>Pakowarka próżniowa</td><td>PP-24</td><td>3023</td><td>Wydział spożywczy</td><td>Hala 12</td><td>Ulma</td><td>Atlantis</td><td>2026-12-12</td><td>aktywny</td><td>Operacyjna</td><td>Robot J</td></tr>
+                    <tr><td>Robot paletyzujący</td><td>RP-25</td><td>3024</td><td>Wydział logistyczny</td><td>Hala 10</td><td>ABB</td><td>IRB 460</td><td>2025-11-11</td><td>aktywny</td><td>Operacyjna</td><td>Robot H</td></tr>
+                    <tr><td>Skaner 3D</td><td>SK-26</td><td>3025</td><td>Wydział kontroli</td><td>Laboratorium</td><td>Zeiss</td><td>ATOS</td><td>2026-01-30</td><td>aktywny</td><td>Operacyjna</td><td>Robot M</td></tr>
+                    <tr><td>Koordynatograf</td><td>KO-27</td><td>3026</td><td>Wydział kontroli</td><td>Laboratorium</td><td>Hexagon</td><td>Global S</td><td>2025-10-02</td><td>aktywny</td><td>Operacyjna</td><td>Robot M</td></tr>
+                    <tr><td>Kompresor</td><td>KM-28</td><td>3027</td><td>Wydział utrzymania</td><td>Magazyn</td><td>Atlas Copco</td><td>GA 18</td><td>2026-06-16</td><td>aktywny</td><td>Operacyjna</td><td>Robot I</td></tr>
+                    <tr><td>Agregat prądotwórczy</td><td>AP-29</td><td>3028</td><td>Wydział utrzymania</td><td>Magazyn</td><td>Cummins</td><td>C90D5</td><td>2025-08-01</td><td>aktywny</td><td>Rezerwa</td><td>Robot I</td></tr>
+                    <tr><td>Wentylator przemysłowy</td><td>WP-30</td><td>3029</td><td>Wydział wentylacji</td><td>Hala 15</td><td>Systemair</td><td>DV 600</td><td>2026-09-09</td><td>aktywny</td><td>Operacyjna</td><td>Robot N</td></tr>
+                    <tr><td>Klimatyzator</td><td>KL-31</td><td>3030</td><td>Wydział wentylacji</td><td>Hala 15</td><td>Daikin</td><td>VRV IV</td><td>2025-04-18</td><td>aktywny</td><td>Operacyjna</td><td>Robot N</td></tr>
+                    <tr><td>Podajnik śrub</td><td>PS-32</td><td>3031</td><td>Wydział montażu</td><td>Hala 16</td><td>DEPRAG</td><td>AutoFeed</td><td>2026-10-25</td><td>aktywny</td><td>Operacyjna</td><td>Robot O</td></tr>
+                    <tr><td>Wkrętak elektryczny</td><td>WK-33</td><td>3032</td><td>Wydział montażu</td><td>Hala 16</td><td>Atlas Copco</td><td>Tensor</td><td>2025-07-07</td><td>aktywny</td><td>Operacyjna</td><td>Robot O</td></tr>
+                    <tr><td>Tester szczelności</td><td>TS-34</td><td>3033</td><td>Wydział montażu</td><td>Hala 16</td><td>ATEQ</td><td>F620</td><td>2026-03-19</td><td>aktywny</td><td>Operacyjna</td><td>Robot O</td></tr>
+                    <tr><td>Stanowisko testowe</td><td>ST-35</td><td>3034</td><td>Wydział montażu</td><td>Hala 16</td><td>Siemens</td><td>TestBench</td><td>2025-02-14</td><td>aktywny</td><td>Operacyjna</td><td>Robot O</td></tr>
+                    <tr><td>Myjka ultradźwiękowa</td><td>MU-36</td><td>3035</td><td>Wydział czyszczeń</td><td>Hala 17</td><td>Elma</td><td>X-tra 450</td><td>2026-11-11</td><td>aktywny</td><td>Operacyjna</td><td>Robot P</td></tr>
+                    <tr><td>Wanna odtłuszczająca</td><td>WO-37</td><td>3036</td><td>Wydział czyszczeń</td><td>Hala 17</td><td>Pero</td><td>R1</td><td>2025-05-05</td><td>aktywny</td><td>Operacyjna</td><td>Robot P</td></tr>
+                    <tr><td>Wyważarka</td><td>WW-38</td><td>3037</td><td>Wydział serwisu</td><td>Hala 18</td><td>Schenck</td><td>Pasio</td><td>2026-08-28</td><td>aktywny</td><td>Operacyjna</td><td>Robot Q</td></tr>
+                    <tr><td>Stanowisko kalibracji</td><td>SK-39</td><td>3038</td><td>Wydział serwisu</td><td>Hala 18</td><td>Keysight</td><td>CalPro</td><td>2025-09-30</td><td>aktywny</td><td>Operacyjna</td><td>Robot Q</td></tr>
+                    <tr><td>Drukarka 3D</td><td>D3-40</td><td>3039</td><td>Wydział prototypów</td><td>Lab 1</td><td>Ultimaker</td><td>S5</td><td>2026-07-17</td><td>aktywny</td><td>Operacyjna</td><td>Robot R</td></tr>
+                    <tr><td>Frezarka prototypowa</td><td>FP-41</td><td>3040</td><td>Wydział prototypów</td><td>Lab 1</td><td>Roland</td><td>MDX-50</td><td>2025-06-29</td><td>aktywny</td><td>Operacyjna</td><td>Robot R</td></tr>
+                    <tr><td>Stanowisko montażu SMT</td><td>SM-42</td><td>3041</td><td>Wydział elektroniki</td><td>Hala 19</td><td>Yamaha</td><td>YS12</td><td>2026-04-02</td><td>aktywny</td><td>Operacyjna</td><td>Robot S</td></tr>
+                    <tr><td>Reflow oven</td><td>RO-43</td><td>3042</td><td>Wydział elektroniki</td><td>Hala 19</td><td>Heller</td><td>1913MK5</td><td>2025-10-18</td><td>aktywny</td><td>Operacyjna</td><td>Robot S</td></tr>
+                    <tr><td>Tester ICT</td><td>TI-44</td><td>3043</td><td>Wydział elektroniki</td><td>Hala 19</td><td>Keysight</td><td>3070</td><td>2026-01-21</td><td>aktywny</td><td>Operacyjna</td><td>Robot S</td></tr>
+                    <tr><td>Linia malowania proszkowego</td><td>LP-45</td><td>3044</td><td>Wydział lakierni</td><td>Hala 8</td><td>Gema</td><td>OptiFlex</td><td>2025-12-05</td><td>aktywny</td><td>Operacyjna</td><td>Robot F</td></tr>
+                    <tr><td>Kompaktor</td><td>KP-46</td><td>3045</td><td>Wydział recyklingu</td><td>Hala 20</td><td>HSM</td><td>V-Press</td><td>2026-06-01</td><td>aktywny</td><td>Operacyjna</td><td>Robot T</td></tr>
+                    <tr><td>Zgrzewarka</td><td>ZG-47</td><td>3046</td><td>Wydział blach</td><td>Hala 6</td><td>Fronius</td><td>DeltaSpot</td><td>2025-11-27</td><td>aktywny</td><td>Operacyjna</td><td>Robot D</td></tr>
+                    <tr><td>Robot inspekcyjny</td><td>RI-48</td><td>3047</td><td>Wydział kontroli</td><td>Laboratorium</td><td>Universal</td><td>UR5</td><td>2026-02-08</td><td>aktywny</td><td>Operacyjna</td><td>Robot M</td></tr>
+                    <tr><td>Maszyna pakująca folię</td><td>PF-49</td><td>3048</td><td>Wydział pakowania</td><td>Hala 9</td><td>ULMA</td><td>FM 500</td><td>2025-08-13</td><td>aktywny</td><td>Operacyjna</td><td>Robot G</td></tr>
+                    <tr><td>Stanowisko testów ciśnieniowych</td><td>SC-50</td><td>3049</td><td>Wydział serwisu</td><td>Hala 18</td><td>WIKA</td><td>CPH6000</td><td>2026-09-03</td><td>aktywny</td><td>Operacyjna</td><td>Robot Q</td></tr>
+                </tbody>
+            </table>
+            </div>
+        </div>
+    </div>
 
-        <!-- 2 -->
-        <tr>
-            <td>05.11.2023</td>
-            <td>Zgłoszenie Danfoss 027H1489 – zawinięcie materiału</td>
-            <td>Nowak</td>
-            <td>
-                <div class="date-control date-control-small">
-                    <button class="date-btn date-btn-left">
-                        <img src="svg-folder/LeftIcon.svg" alt="Poprzedni dzień">
-                    </button>
-                    <input type="date" class="date-input">
-                    <button class="date-btn date-btn-calendar">
-                        <img src="svg-folder/CalendarIcon.svg" alt="Kalendarz">
-                    </button>
-                    <button class="date-btn date-btn-right">
-                        <img src="svg-folder/RightIcon.svg" alt="Następny dzień">
-                    </button>
-                </div>
-            </td>
-            <td>
-                <div class="weight-line list-weight">
-                    <input type="number" min="1" max="5" class="weight-input" value="1">
-                    <span class="weight-desc"></span>
-                </div>
-            </td>
-            <td>
-                <div class="date-control date-control-small">
-                    <button class="date-btn date-btn-left">
-                        <img src="svg-folder/LeftIcon.svg" alt="Poprzedni dzień">
-                    </button>
-                    <input type="date" class="date-input">
-                    <button class="date-btn date-btn-calendar">
-                        <img src="svg-folder/CalendarIcon.svg" alt="Kalendarz">
-                    </button>
-                    <button class="date-btn date-btn-right">
-                        <img src="svg-folder/RightIcon.svg" alt="Następny dzień">
-                    </button>
-                </div>
-            </td>
-            <td>
-                <div class="weight-line list-weight">
-                    <input type="number" min="1" max="5" class="weight-input" value="1">
-                    <span class="weight-desc"></span>
-                </div>
-            </td>
-            <td></td><td></td><td></td><td></td>
-        </tr>
-
-        <!-- 3 -->
-        <tr>
-            <td>18.07.2022</td>
-            <td>Reklamacja Dagat nr D/0066/2024, 36.77103.2007 (uszkodzenie mechaniczne)</td>
-            <td>Wiśniewski</td>
-            <td>
-                <div class="date-control date-control-small">
-                    <button class="date-btn date-btn-left">
-                        <img src="svg-folder/LeftIcon.svg" alt="Poprzedni dzień">
-                    </button>
-                    <input type="date" class="date-input">
-                    <button class="date-btn date-btn-calendar">
-                        <img src="svg-folder/CalendarIcon.svg" alt="Kalendarz">
-                    </button>
-                    <button class="date-btn date-btn-right">
-                        <img src="svg-folder/RightIcon.svg" alt="Następny dzień">
-                    </button>
-                </div>
-            </td>
-            <td>
-                <div class="weight-line list-weight">
-                    <input type="number" min="1" max="5" class="weight-input" value="1">
-                    <span class="weight-desc"></span>
-                </div>
-            </td>
-            <td>
-                <div class="date-control date-control-small">
-                    <button class="date-btn date-btn-left">
-                        <img src="svg-folder/LeftIcon.svg" alt="Poprzedni dzień">
-                    </button>
-                    <input type="date" class="date-input">
-                    <button class="date-btn date-btn-calendar">
-                        <img src="svg-folder/CalendarIcon.svg" alt="Kalendarz">
-                    </button>
-                    <button class="date-btn date-btn-right">
-                        <img src="svg-folder/RightIcon.svg" alt="Następny dzień">
-                    </button>
-                </div>
-            </td>
-            <td>
-                <div class="weight-line list-weight">
-                    <input type="number" min="1" max="5" class="weight-input" value="1">
-                    <span class="weight-desc"></span>
-                </div>
-            </td>
-            <td></td><td></td><td></td><td></td>
-        </tr>
-
-        <!-- 4 -->
-        <tr>
-            <td>27.09.2021</td>
-            <td>Przeprowadzenie sortowania (działanie powstrzymujące)</td>
-            <td>Wójcik</td>
-            <td>
-                <div class="date-control date-control-small">
-                    <button class="date-btn date-btn-left">
-                        <img src="svg-folder/LeftIcon.svg" alt="Poprzedni dzień">
-                    </button>
-                    <input type="date" class="date-input">
-                    <button class="date-btn date-btn-calendar">
-                        <img src="svg-folder/CalendarIcon.svg" alt="Kalendarz">
-                    </button>
-                    <button class="date-btn date-btn-right">
-                        <img src="svg-folder/RightIcon.svg" alt="Następny dzień">
-                    </button>
-                </div>
-            </td>
-            <td>
-                <div class="weight-line list-weight">
-                    <input type="number" min="1" max="5" class="weight-input" value="1">
-                    <span class="weight-desc"></span>
-                </div>
-            </td>
-            <td>
-                <div class="date-control date-control-small">
-                    <button class="date-btn date-btn-left">
-                        <img src="svg-folder/LeftIcon.svg" alt="Poprzedni dzień">
-                    </button>
-                    <input type="date" class="date-input">
-                    <button class="date-btn date-btn-calendar">
-                        <img src="svg-folder/CalendarIcon.svg" alt="Kalendarz">
-                    </button>
-                    <button class="date-btn date-btn-right">
-                        <img src="svg-folder/RightIcon.svg" alt="Następny dzień">
-                    </button>
-                </div>
-            </td>
-            <td>
-                <div class="weight-line list-weight">
-                    <input type="number" min="1" max="5" class="weight-input" value="1">
-                    <span class="weight-desc"></span>
-                </div>
-            </td>
-            <td></td><td></td><td></td><td></td>
-        </tr>
-
-        <!-- 5 -->
-        <tr>
-            <td>03.03.2020</td>
-            <td>Reklamacja Danfoss nr 200323446, 027H1487 (Pozycja 0,05 poza tolerancją)</td>
-            <td>Kowalczyk</td>
-            <td>
-                <div class="date-control date-control-small">
-                    <button class="date-btn date-btn-left">
-                        <img src="svg-folder/LeftIcon.svg" alt="Poprzedni dzień">
-                    </button>
-                    <input type="date" class="date-input">
-                    <button class="date-btn date-btn-calendar">
-                        <img src="svg-folder/CalendarIcon.svg" alt="Kalendarz">
-                    </button>
-                    <button class="date-btn date-btn-right">
-                        <img src="svg-folder/RightIcon.svg" alt="Następny dzień">
-                    </button>
-                </div>
-            </td>
-            <td>
-                <div class="weight-line list-weight">
-                    <input type="number" min="1" max="5" class="weight-input" value="1">
-                    <span class="weight-desc"></span>
-                </div>
-            </td>
-            <td>
-                <div class="date-control date-control-small">
-                    <button class="date-btn date-btn-left">
-                        <img src="svg-folder/LeftIcon.svg" alt="Poprzedni dzień">
-                    </button>
-                    <input type="date" class="date-input">
-                    <button class="date-btn date-btn-calendar">
-                        <img src="svg-folder/CalendarIcon.svg" alt="Kalendarz">
-                    </button>
-                    <button class="date-btn date-btn-right">
-                        <img src="svg-folder/RightIcon.svg" alt="Następny dzień">
-                    </button>
-                </div>
-            </td>
-            <td>
-                <div class="weight-line list-weight">
-                    <input type="number" min="1" max="5" class="weight-input" value="1">
-                    <span class="weight-desc"></span>
-                </div>
-            </td>
-            <td></td><td></td><td></td><td></td>
-        </tr>
-
-        <!-- 6 -->
-        <tr>
-            <td>09.06.2025</td>
-            <td>Wystawienie alarmu jakościowego (działanie powstrzymujące)</td>
-            <td>Kamiński</td>
-            <td>
-                <div class="date-control date-control-small">
-                    <button class="date-btn date-btn-left">
-                        <img src="svg-folder/LeftIcon.svg" alt="Poprzedni dzień">
-                    </button>
-                    <input type="date" class="date-input">
-                    <button class="date-btn date-btn-calendar">
-                        <img src="svg-folder/CalendarIcon.svg" alt="Kalendarz">
-                    </button>
-                    <button class="date-btn date-btn-right">
-                        <img src="svg-folder/RightIcon.svg" alt="Następny dzień">
-                    </button>
-                </div>
-            </td>
-            <td>
-                <div class="weight-line list-weight">
-                    <input type="number" min="1" max="5" class="weight-input" value="1">
-                    <span class="weight-desc"></span>
-                </div>
-            </td>
-            <td>
-                <div class="date-control date-control-small">
-                    <button class="date-btn date-btn-left">
-                        <img src="svg-folder/LeftIcon.svg" alt="Poprzedni dzień">
-                    </button>
-                    <input type="date" class="date-input">
-                    <button class="date-btn date-btn-calendar">
-                        <img src="svg-folder/CalendarIcon.svg" alt="Kalendarz">
-                    </button>
-                    <button class="date-btn date-btn-right">
-                        <img src="svg-folder/RightIcon.svg" alt="Następny dzień">
-                    </button>
-                </div>
-            </td>
-            <td>
-                <div class="weight-line list-weight">
-                    <input type="number" min="1" max="5" class="weight-input" value="1">
-                    <span class="weight-desc"></span>
-                </div>
-            </td>
-            <td></td><td></td><td></td><td></td>
-        </tr>
-
-        <!-- 7 -->
-        <tr>
-            <td>21.01.2024</td>
-            <td>Aktualizacja planu kontroli</td>
-            <td>Lewandowski</td>
-            <td>
-                <div class="date-control date-control-small">
-                    <button class="date-btn date-btn-left">
-                        <img src="svg-folder/LeftIcon.svg" alt="Poprzedni dzień">
-                    </button>
-                    <input type="date" class="date-input">
-                    <button class="date-btn date-btn-calendar">
-                        <img src="svg-folder/CalendarIcon.svg" alt="Kalendarz">
-                    </button>
-                    <button class="date-btn date-btn-right">
-                        <img src="svg-folder/RightIcon.svg" alt="Następny dzień">
-                    </button>
-                </div>
-            </td>
-            <td>
-                <div class="weight-line list-weight">
-                    <input type="number" min="1" max="5" class="weight-input" value="1">
-                    <span class="weight-desc"></span>
-                </div>
-            </td>
-            <td>
-                <div class="date-control date-control-small">
-                    <button class="date-btn date-btn-left">
-                        <img src="svg-folder/LeftIcon.svg" alt="Poprzedni dzień">
-                    </button>
-                    <input type="date" class="date-input">
-                    <button class="date-btn date-btn-calendar">
-                        <img src="svg-folder/CalendarIcon.svg" alt="Kalendarz">
-                    </button>
-                    <button class="date-btn date-btn-right">
-                        <img src="svg-folder/RightIcon.svg" alt="Następny dzień">
-                    </button>
-                </div>
-            </td>
-            <td>
-                <div class="weight-line list-weight">
-                    <input type="number" min="1" max="5" class="weight-input" value="1">
-                    <span class="weight-desc"></span>
-                </div>
-            </td>
-            <td></td><td></td><td></td><td></td>
-        </tr>
-
-        <!-- 8 -->
-        <tr>
-            <td>14.04.2023</td>
-            <td>Przeprowadzenie selekcji (działanie powstrzymujące)</td>
-            <td>Zieliński</td>
-            <td>
-                <div class="date-control date-control-small">
-                    <button class="date-btn date-btn-left">
-                        <img src="svg-folder/LeftIcon.svg" alt="Poprzedni dzień">
-                    </button>
-                    <input type="date" class="date-input">
-                    <button class="date-btn date-btn-calendar">
-                        <img src="svg-folder/CalendarIcon.svg" alt="Kalendarz">
-                    </button>
-                    <button class="date-btn date-btn-right">
-                        <img src="svg-folder/RightIcon.svg" alt="Następny dzień">
-                    </button>
-                </div>
-            </td>
-            <td>
-                <div class="weight-line list-weight">
-                    <input type="number" min="1" max="5" class="weight-input" value="1">
-                    <span class="weight-desc"></span>
-                </div>
-            </td>
-            <td>
-                <div class="date-control date-control-small">
-                    <button class="date-btn date-btn-left">
-                        <img src="svg-folder/LeftIcon.svg" alt="Poprzedni dzień">
-                    </button>
-                    <input type="date" class="date-input">
-                    <button class="date-btn date-btn-calendar">
-                        <img src="svg-folder/CalendarIcon.svg" alt="Kalendarz">
-                    </button>
-                    <button class="date-btn date-btn-right">
-                        <img src="svg-folder/RightIcon.svg" alt="Następny dzień">
-                    </button>
-                </div>
-            </td>
-            <td>
-                <div class="weight-line list-weight">
-                    <input type="number" min="1" max="5" class="weight-input" value="1">
-                    <span class="weight-desc"></span>
-                </div>
-            </td>
-            <td></td><td></td><td></td><td></td>
-        </tr>
-
-        <!-- 9 -->
-        <tr>
-            <td>30.08.2022</td>
-            <td>Szkolenie operatorów</td>
-            <td>Szymański</td>
-            <td>
-                <div class="date-control date-control-small">
-                    <button class="date-btn date-btn-left">
-                        <img src="svg-folder/LeftIcon.svg" alt="Poprzedni dzień">
-                    </button>
-                    <input type="date" class="date-input">
-                    <button class="date-btn date-btn-calendar">
-                        <img src="svg-folder/CalendarIcon.svg" alt="Kalendarz">
-                    </button>
-                    <button class="date-btn date-btn-right">
-                        <img src="svg-folder/RightIcon.svg" alt="Następny dzień">
-                    </button>
-                </div>
-            </td>
-            <td>
-                <div class="weight-line list-weight">
-                    <input type="number" min="1" max="5" class="weight-input" value="1">
-                    <span class="weight-desc"></span>
-                </div>
-            </td>
-            <td>
-                <div class="date-control date-control-small">
-                    <button class="date-btn date-btn-left">
-                        <img src="svg-folder/LeftIcon.svg" alt="Poprzedni dzień">
-                    </button>
-                    <input type="date" class="date-input">
-                    <button class="date-btn date-btn-calendar">
-                        <img src="svg-folder/CalendarIcon.svg" alt="Kalendarz">
-                    </button>
-                    <button class="date-btn date-btn-right">
-                        <img src="svg-folder/RightIcon.svg" alt="Następny dzień">
-                    </button>
-                </div>
-            </td>
-            <td>
-                <div class="weight-line list-weight">
-                    <input type="number" min="1" max="5" class="weight-input" value="1">
-                    <span class="weight-desc"></span>
-                </div>
-            </td>
-            <td></td><td></td><td></td><td></td>
-        </tr>
-
-        <!-- 10 -->
-        <tr>
-            <td>11.12.2021</td>
-            <td>Reklamacja Purem nr 400060017, 11271517554002D (brak gwintu)</td>
-            <td>Woźniak</td>
-            <td>
-                <div class="date-control date-control-small">
-                    <button class="date-btn date-btn-left">
-                        <img src="svg-folder/LeftIcon.svg" alt="Poprzedni dzień">
-                    </button>
-                    <input type="date" class="date-input">
-                    <button class="date-btn date-btn-calendar">
-                        <img src="svg-folder/CalendarIcon.svg" alt="Kalendarz">
-                    </button>
-                    <button class="date-btn date-btn-right">
-                        <img src="svg-folder/RightIcon.svg" alt="Następny dzień">
-                    </button>
-                </div>
-            </td>
-            <td>
-                <div class="weight-line list-weight">
-                    <input type="number" min="1" max="5" class="weight-input" value="1">
-                    <span class="weight-desc"></span>
-                </div>
-            </td>
-            <td>
-                <div class="date-control date-control-small">
-                    <button class="date-btn date-btn-left">
-                        <img src="svg-folder/LeftIcon.svg" alt="Poprzedni dzień">
-                    </button>
-                    <input type="date" class="date-input">
-                    <button class="date-btn date-btn-calendar">
-                        <img src="svg-folder/CalendarIcon.svg" alt="Kalendarz">
-                    </button>
-                    <button class="date-btn date-btn-right">
-                        <img src="svg-folder/RightIcon.svg" alt="Następny dzień">
-                    </button>
-                </div>
-            </td>
-            <td>
-                <div class="weight-line list-weight">
-                    <input type="number" min="1" max="5" class="weight-input" value="1">
-                    <span class="weight-desc"></span>
-                </div>
-            </td>
-            <td></td><td></td><td></td><td></td>
-        </tr>
-
-        <!-- 11 -->
-        <tr>
-            <td>07.05.2020</td>
-            <td>Aktualizacja programu skrawającego</td>
-            <td>Dąbrowski</td>
-            <td>
-                <div class="date-control date-control-small">
-                    <button class="date-btn date-btn-left">
-                        <img src="svg-folder/LeftIcon.svg" alt="Poprzedni dzień">
-                    </button>
-                    <input type="date" class="date-input">
-                    <button class="date-btn date-btn-calendar">
-                        <img src="svg-folder/CalendarIcon.svg" alt="Kalendarz">
-                    </button>
-                    <button class="date-btn date-btn-right">
-                        <img src="svg-folder/RightIcon.svg" alt="Następny dzień">
-                    </button>
-                </div>
-            </td>
-            <td>
-                <div class="weight-line list-weight">
-                    <input type="number" min="1" max="5" class="weight-input" value="1">
-                    <span class="weight-desc"></span>
-                </div>
-            </td>
-            <td>
-                <div class="date-control date-control-small">
-                    <button class="date-btn date-btn-left">
-                        <img src="svg-folder/LeftIcon.svg" alt="Poprzedni dzień">
-                    </button>
-                    <input type="date" class="date-input">
-                    <button class="date-btn date-btn-calendar">
-                        <img src="svg-folder/CalendarIcon.svg" alt="Kalendarz">
-                    </button>
-                    <button class="date-btn date-btn-right">
-                        <img src="svg-folder/RightIcon.svg" alt="Następny dzień">
-                    </button>
-                </div>
-            </td>
-            <td>
-                <div class="weight-line list-weight">
-                    <input type="number" min="1" max="5" class="weight-input" value="1">
-                    <span class="weight-desc"></span>
-                </div>
-            </td>
-            <td></td><td></td><td></td><td></td>
-        </tr>
-
-        <!-- 12 -->
-        <tr>
-            <td>19.09.2024</td>
-            <td>Opracowanie druku informacji o dostawcy</td>
-            <td>Krawczyk</td>
-            <td>
-                <div class="date-control date-control-small">
-                    <button class="date-btn date-btn-left">
-                        <img src="svg-folder/LeftIcon.svg" alt="Poprzedni dzień">
-                    </button>
-                    <input type="date" class="date-input">
-                    <button class="date-btn date-btn-calendar">
-                        <img src="svg-folder/CalendarIcon.svg" alt="Kalendarz">
-                    </button>
-                    <button class="date-btn date-btn-right">
-                        <img src="svg-folder/RightIcon.svg" alt="Następny dzień">
-                    </button>
-                </div>
-            </td>
-            <td>
-                <div class="weight-line list-weight">
-                    <input type="number" min="1" max="5" class="weight-input" value="1">
-                    <span class="weight-desc"></span>
-                </div>
-            </td>
-            <td>
-                <div class="date-control date-control-small">
-                    <button class="date-btn date-btn-left">
-                        <img src="svg-folder/LeftIcon.svg" alt="Poprzedni dzień">
-                    </button>
-                    <input type="date" class="date-input">
-                    <button class="date-btn date-btn-calendar">
-                        <img src="svg-folder/CalendarIcon.svg" alt="Kalendarz">
-                    </button>
-                    <button class="date-btn date-btn-right">
-                        <img src="svg-folder/RightIcon.svg" alt="Następny dzień">
-                    </button>
-                </div>
-            </td>
-            <td>
-                <div class="weight-line list-weight">
-                    <input type="number" min="1" max="5" class="weight-input" value="1">
-                    <span class="weight-desc"></span>
-                </div>
-            </td>
-            <td></td><td></td><td></td><td></td>
-        </tr>
-
-        <!-- 13 -->
-        <tr>
-            <td>23.02.2023</td>
-            <td>NC1 – nieprawidłowe raportowanie badań MT</td>
-            <td>Piotrowski</td>
-            <td>
-                <div class="date-control date-control-small">
-                    <button class="date-btn date-btn-left">
-                        <img src="svg-folder/LeftIcon.svg" alt="Poprzedni dzień">
-                    </button>
-                    <input type="date" class="date-input">
-                    <button class="date-btn date-btn-calendar">
-                        <img src="svg-folder/CalendarIcon.svg" alt="Kalendarz">
-                    </button>
-                    <button class="date-btn date-btn-right">
-                        <img src="svg-folder/RightIcon.svg" alt="Następny dzień">
-                    </button>
-                </div>
-            </td>
-            <td>
-                <div class="weight-line list-weight">
-                    <input type="number" min="1" max="5" class="weight-input" value="1">
-                    <span class="weight-desc"></span>
-                </div>
-            </td>
-            <td>
-                <div class="date-control date-control-small">
-                    <button class="date-btn date-btn-left">
-                        <img src="svg-folder/LeftIcon.svg" alt="Poprzedni dzień">
-                    </button>
-                    <input type="date" class="date-input">
-                    <button class="date-btn date-btn-calendar">
-                        <img src="svg-folder/CalendarIcon.svg" alt="Kalendarz">
-                    </button>
-                    <button class="date-btn date-btn-right">
-                        <img src="svg-folder/RightIcon.svg" alt="Następny dzień">
-                    </button>
-                </div>
-            </td>
-            <td>
-                <div class="weight-line list-weight">
-                    <input type="number" min="1" max="5" class="weight-input" value="1">
-                    <span class="weight-desc"></span>
-                </div>
-            </td>
-            <td></td><td></td><td></td><td></td>
-        </tr>
-
-        <!-- 14 -->
-        <tr>
-            <td>02.10.2022</td>
-            <td>Audyt SZJ – proces G01 – AS G01/2025/01</td>
-            <td>Grabowski</td>
-            <td>
-                <div class="date-control date-control-small">
-                    <button class="date-btn date-btn-left">
-                        <img src="svg-folder/LeftIcon.svg" alt="Poprzedni dzień">
-                    </button>
-                    <input type="date" class="date-input">
-                    <button class="date-btn date-btn-calendar">
-                        <img src="svg-folder/CalendarIcon.svg" alt="Kalendarz">
-                    </button>
-                    <button class="date-btn date-btn-right">
-                        <img src="svg-folder/RightIcon.svg" alt="Następny dzień">
-                    </button>
-                </div>
-            </td>
-            <td>
-                <div class="weight-line list-weight">
-                    <input type="number" min="1" max="5" class="weight-input" value="1">
-                    <span class="weight-desc"></span>
-                </div>
-            </td>
-            <td>
-                <div class="date-control date-control-small">
-                    <button class="date-btn date-btn-left">
-                        <img src="svg-folder/LeftIcon.svg" alt="Poprzedni dzień">
-                    </button>
-                    <input type="date" class="date-input">
-                    <button class="date-btn date-btn-calendar">
-                        <img src="svg-folder/CalendarIcon.svg" alt="Kalendarz">
-                    </button>
-                    <button class="date-btn date-btn-right">
-                        <img src="svg-folder/RightIcon.svg" alt="Następny dzień">
-                    </button>
-                </div>
-            </td>
-            <td>
-                <div class="weight-line list-weight">
-                    <input type="number" min="1" max="5" class="weight-input" value="1">
-                    <span class="weight-desc"></span>
-                </div>
-            </td>
-            <td></td><td></td><td></td><td></td>
-        </tr>
-
-        <!-- 15 -->
-        <tr>
-            <td>28.01.2021</td>
-            <td>Audyt SZJ – proces G02 – AS G02/2025/01</td>
-            <td>Zając</td>
-            <td>
-                <div class="date-control date-control-small">
-                    <button class="date-btn date-btn-left">
-                        <img src="svg-folder/LeftIcon.svg" alt="Poprzedni dzień">
-                    </button>
-                    <input type="date" class="date-input">
-                    <button class="date-btn date-btn-calendar">
-                        <img src="svg-folder/CalendarIcon.svg" alt="Kalendarz">
-                    </button>
-                    <button class="date-btn date-btn-right">
-                        <img src="svg-folder/RightIcon.svg" alt="Następny dzień">
-                    </button>
-                </div>
-            </td>
-            <td>
-                <div class="weight-line list-weight">
-                    <input type="number" min="1" max="5" class="weight-input" value="1">
-                    <span class="weight-desc"></span>
-                </div>
-            </td>
-            <td>
-                <div class="date-control date-control-small">
-                    <button class="date-btn date-btn-left">
-                        <img src="svg-folder/LeftIcon.svg" alt="Poprzedni dzień">
-                    </button>
-                    <input type="date" class="date-input">
-                    <button class="date-btn date-btn-calendar">
-                        <img src="svg-folder/CalendarIcon.svg" alt="Kalendarz">
-                    </button>
-                    <button class="date-btn date-btn-right">
-                        <img src="svg-folder/RightIcon.svg" alt="Następny dzień">
-                    </button>
-                </div>
-            </td>
-            <td>
-                <div class="weight-line list-weight">
-                    <input type="number" min="1" max="5" class="weight-input" value="1">
-                    <span class="weight-desc"></span>
-                </div>
-            </td>
-            <td></td><td></td><td></td><td></td>
-        </tr>
-
-        <!-- 16 -->
-        <tr>
-            <td>16.06.2020</td>
-            <td>Reklamacja Katcon nr QPR AC-1014-0125, 400009914 (średnica 77)</td>
-            <td>Pawlak</td>
-            <td>
-                <div class="date-control date-control-small">
-                    <button class="date-btn date-btn-left">
-                        <img src="svg-folder/LeftIcon.svg" alt="Poprzedni dzień">
-                    </button>
-                    <input type="date" class="date-input">
-                    <button class="date-btn date-btn-calendar">
-                        <img src="svg-folder/CalendarIcon.svg" alt="Kalendarz">
-                    </button>
-                    <button class="date-btn date-btn-right">
-                        <img src="svg-folder/RightIcon.svg" alt="Następny dzień">
-                    </button>
-                </div>
-            </td>
-            <td>
-                <div class="weight-line list-weight">
-                    <input type="number" min="1" max="5" class="weight-input" value="1">
-                    <span class="weight-desc"></span>
-                </div>
-            </td>
-            <td>
-                <div class="date-control date-control-small">
-                    <button class="date-btn date-btn-left">
-                        <img src="svg-folder/LeftIcon.svg" alt="Poprzedni dzień">
-                    </button>
-                    <input type="date" class="date-input">
-                    <button class="date-btn date-btn-calendar">
-                        <img src="svg-folder/CalendarIcon.svg" alt="Kalendarz">
-                    </button>
-                    <button class="date-btn date-btn-right">
-                        <img src="svg-folder/RightIcon.svg" alt="Następny dzień">
-                    </button>
-                </div>
-            </td>
-            <td>
-                <div class="weight-line list-weight">
-                    <input type="number" min="1" max="5" class="weight-input" value="1">
-                    <span class="weight-desc"></span>
-                </div>
-            </td>
-            <td></td><td></td><td></td><td></td>
-        </tr>
-
-        <!-- 17 -->
-        <tr>
-            <td>08.03.2025</td>
-            <td>Ogłoszenie alarmu jakościowego</td>
-            <td>Michalski</td>
-            <td>
-                <div class="date-control date-control-small">
-                    <button class="date-btn date-btn-left">
-                        <img src="svg-folder/LeftIcon.svg" alt="Poprzedni dzień">
-                    </button>
-                    <input type="date" class="date-input">
-                    <button class="date-btn date-btn-calendar">
-                        <img src="svg-folder/CalendarIcon.svg" alt="Kalendarz">
-                    </button>
-                    <button class="date-btn date-btn-right">
-                        <img src="svg-folder/RightIcon.svg" alt="Następny dzień">
-                    </button>
-                </div>
-            </td>
-            <td>
-                <div class="weight-line list-weight">
-                    <input type="number" min="1" max="5" class="weight-input" value="1">
-                    <span class="weight-desc"></span>
-                </div>
-            </td>
-            <td>
-                <div class="date-control date-control-small">
-                    <button class="date-btn date-btn-left">
-                        <img src="svg-folder/LeftIcon.svg" alt="Poprzedni dzień">
-                    </button>
-                    <input type="date" class="date-input">
-                    <button class="date-btn date-btn-calendar">
-                        <img src="svg-folder/CalendarIcon.svg" alt="Kalendarz">
-                    </button>
-                    <button class="date-btn date-btn-right">
-                        <img src="svg-folder/RightIcon.svg" alt="Następny dzień">
-                    </button>
-                </div>
-            </td>
-            <td>
-                <div class="weight-line list-weight">
-                    <input type="number" min="1" max="5" class="weight-input" value="1">
-                    <span class="weight-desc"></span>
-                </div>
-            </td>
-            <td></td><td></td><td></td><td></td>
-        </tr>
-
-        <!-- 18 -->
-        <tr>
-            <td>25.07.2024</td>
-            <td>Audyt SZJ – proces G02B – AS G02B/2025/01</td>
-            <td>Król</td>
-            <td>
-                <div class="date-control date-control-small">
-                    <button class="date-btn date-btn-left">
-                        <img src="svg-folder/LeftIcon.svg" alt="Poprzedni dzień">
-                    </button>
-                    <input type="date" class="date-input">
-                    <button class="date-btn date-btn-calendar">
-                        <img src="svg-folder/CalendarIcon.svg" alt="Kalendarz">
-                    </button>
-                    <button class="date-btn date-btn-right">
-                        <img src="svg-folder/RightIcon.svg" alt="Następny dzień">
-                    </button>
-                </div>
-            </td>
-            <td>
-                <div class="weight-line list-weight">
-                    <input type="number" min="1" max="5" class="weight-input" value="1">
-                    <span class="weight-desc"></span>
-                </div>
-            </td>
-            <td>
-                <div class="date-control date-control-small">
-                    <button class="date-btn date-btn-left">
-                        <img src="svg-folder/LeftIcon.svg" alt="Poprzedni dzień">
-                    </button>
-                    <input type="date" class="date-input">
-                    <button class="date-btn date-btn-calendar">
-                        <img src="svg-folder/CalendarIcon.svg" alt="Kalendarz">
-                    </button>
-                    <button class="date-btn date-btn-right">
-                        <img src="svg-folder/RightIcon.svg" alt="Następny dzień">
-                    </button>
-                </div>
-            </td>
-            <td>
-                <div class="weight-line list-weight">
-                    <input type="number" min="1" max="5" class="weight-input" value="1">
-                    <span class="weight-desc"></span>
-                </div>
-            </td>
-            <td></td><td></td><td></td><td></td>
-        </tr>
-
-        <!-- 19 -->
-        <tr>
-            <td>13.11.2023</td>
-            <td>Audyt SZJ – proces G05 – AS G05/2025/01</td>
-            <td>Wieczorek</td>
-            <td>
-                <div class="date-control date-control-small">
-                    <button class="date-btn date-btn-left">
-                        <img src="svg-folder/LeftIcon.svg" alt="Poprzedni dzień">
-                    </button>
-                    <input type="date" class="date-input">
-                    <button class="date-btn date-btn-calendar">
-                        <img src="svg-folder/CalendarIcon.svg" alt="Kalendarz">
-                    </button>
-                    <button class="date-btn date-btn-right">
-                        <img src="svg-folder/RightIcon.svg" alt="Następny dzień">
-                    </button>
-                </div>
-            </td>
-            <td>
-                <div class="weight-line list-weight">
-                    <input type="number" min="1" max="5" class="weight-input" value="1">
-                    <span class="weight-desc"></span>
-                </div>
-            </td>
-            <td>
-                <div class="date-control date-control-small">
-                    <button class="date-btn date-btn-left">
-                        <img src="svg-folder/LeftIcon.svg" alt="Poprzedni dzień">
-                    </button>
-                    <input type="date" class="date-input">
-                    <button class="date-btn date-btn-calendar">
-                        <img src="svg-folder/CalendarIcon.svg" alt="Kalendarz">
-                    </button>
-                    <button class="date-btn date-btn-right">
-                        <img src="svg-folder/RightIcon.svg" alt="Następny dzień">
-                    </button>
-                </div>
-            </td>
-            <td>
-                <div class="weight-line list-weight">
-                    <input type="number" min="1" max="5" class="weight-input" value="1">
-                    <span class="weight-desc"></span>
-                </div>
-            </td>
-            <td></td><td></td><td></td><td></td>
-        </tr>
-
-        <!-- 20 -->
-        <tr>
-            <td>04.04.2022</td>
-            <td>Ogłoszenie alarmu jakościowego (działanie powstrzymujące)</td>
-            <td>Dudek</td>
-            <td>
-                <div class="date-control date-control-small">
-                    <button class="date-btn date-btn-left">
-                        <img src="svg-folder/LeftIcon.svg" alt="Poprzedni dzień">
-                    </button>
-                    <input type="date" class="date-input">
-                    <button class="date-btn date-btn-calendar">
-                        <img src="svg-folder/CalendarIcon.svg" alt="Kalendarz">
-                    </button>
-                    <button class="date-btn date-btn-right">
-                        <img src="svg-folder/RightIcon.svg" alt="Następny dzień">
-                    </button>
-                </div>
-            </td>
-            <td>
-                <div class="weight-line list-weight">
-                    <input type="number" min="1" max="5" class="weight-input" value="1">
-                    <span class="weight-desc"></span>
-                </div>
-            </td>
-            <td>
-                <div class="date-control date-control-small">
-                    <button class="date-btn date-btn-left">
-                        <img src="svg-folder/LeftIcon.svg" alt="Poprzedni dzień">
-                    </button>
-                    <input type="date" class="date-input">
-                    <button class="date-btn date-btn-calendar">
-                        <img src="svg-folder/CalendarIcon.svg" alt="Kalendarz">
-                    </button>
-                    <button class="date-btn date-btn-right">
-                        <img src="svg-folder/RightIcon.svg" alt="Następny dzień">
-                    </button>
-                </div>
-            </td>
-            <td>
-                <div class="weight-line list-weight">
-                    <input type="number" min="1" max="5" class="weight-input" value="1">
-                    <span class="weight-desc"></span>
-                </div>
-            </td>
-            <td></td><td></td><td></td><td></td>
-        </tr>
-
-        <!-- 21 -->
-        <tr>
-            <td>29.09.2021</td>
-            <td>Przeprowadzenie selekcji u klienta (działanie powstrzymujące)</td>
-            <td>Jankowski</td>
-            <td>
-                <div class="date-control date-control-small">
-                    <button class="date-btn date-btn-left">
-                        <img src="svg-folder/LeftIcon.svg" alt="Poprzedni dzień">
-                    </button>
-                    <input type="date" class="date-input">
-                    <button class="date-btn date-btn-calendar">
-                        <img src="svg-folder/CalendarIcon.svg" alt="Kalendarz">
-                    </button>
-                    <button class="date-btn date-btn-right">
-                        <img src="svg-folder/RightIcon.svg" alt="Następny dzień">
-                    </button>
-                </div>
-            </td>
-            <td>
-                <div class="weight-line list-weight">
-                    <input type="number" min="1" max="5" class="weight-input" value="1">
-                    <span class="weight-desc"></span>
-                </div>
-            </td>
-            <td>
-                <div class="date-control date-control-small">
-                    <button class="date-btn date-btn-left">
-                        <img src="svg-folder/LeftIcon.svg" alt="Poprzedni dzień">
-                    </button>
-                    <input type="date" class="date-input">
-                    <button class="date-btn date-btn-calendar">
-                        <img src="svg-folder/CalendarIcon.svg" alt="Kalendarz">
-                    </button>
-                    <button class="date-btn date-btn-right">
-                        <img src="svg-folder/RightIcon.svg" alt="Następny dzień">
-                    </button>
-                </div>
-            </td>
-            <td>
-                <div class="weight-line list-weight">
-                    <input type="number" min="1" max="5" class="weight-input" value="1">
-                    <span class="weight-desc"></span>
-                </div>
-            </td>
-            <td></td><td></td><td></td><td></td>
-        </tr>
-
-        <!-- 22 -->
-        <tr>
-            <td>10.02.2020</td>
-            <td>Wystawienie reklamacji poddostawcy</td>
-            <td>Mazur</td>
-            <td>
-                <div class="date-control date-control-small">
-                    <button class="date-btn date-btn-left">
-                        <img src="svg-folder/LeftIcon.svg" alt="Poprzedni dzień">
-                    </button>
-                    <input type="date" class="date-input">
-                    <button class="date-btn date-btn-calendar">
-                        <img src="svg-folder/CalendarIcon.svg" alt="Kalendarz">
-                    </button>
-                    <button class="date-btn date-btn-right">
-                        <img src="svg-folder/RightIcon.svg" alt="Następny dzień">
-                    </button>
-                </div>
-            </td>
-            <td>
-                <div class="weight-line list-weight">
-                    <input type="number" min="1" max="5" class="weight-input" value="1">
-                    <span class="weight-desc"></span>
-                </div>
-            </td>
-            <td>
-                <div class="date-control date-control-small">
-                    <button class="date-btn date-btn-left">
-                        <img src="svg-folder/LeftIcon.svg" alt="Poprzedni dzień">
-                    </button>
-                    <input type="date" class="date-input">
-                    <button class="date-btn date-btn-calendar">
-                        <img src="svg-folder/CalendarIcon.svg" alt="Kalendarz">
-                    </button>
-                    <button class="date-btn date-btn-right">
-                        <img src="svg-folder/RightIcon.svg" alt="Następny dzień">
-                    </button>
-                </div>
-            </td>
-            <td>
-                <div class="weight-line list-weight">
-                    <input type="number" min="1" max="5" class="weight-input" value="1">
-                    <span class="weight-desc"></span>
-                </div>
-            </td>
-            <td></td><td></td><td></td><td></td>
-        </tr>
-
-        <!-- 23 -->
-        <tr>
-            <td>31.08.2024</td>
-            <td>Audyt SZJ – proces Z01 – AS Z01/2025/01</td>
-            <td>Malinowski</td>
-            <td>
-                <div class="date-control date-control-small">
-                    <button class="date-btn date-btn-left">
-                        <img src="svg-folder/LeftIcon.svg" alt="Poprzedni dzień">
-                    </button>
-                    <input type="date" class="date-input">
-                    <button class="date-btn date-btn-calendar">
-                        <img src="svg-folder/CalendarIcon.svg" alt="Kalendarz">
-                    </button>
-                    <button class="date-btn date-btn-right">
-                        <img src="svg-folder/RightIcon.svg" alt="Następny dzień">
-                    </button>
-                </div>
-            </td>
-            <td>
-                <div class="weight-line list-weight">
-                    <input type="number" min="1" max="5" class="weight-input" value="1">
-                    <span class="weight-desc"></span>
-                </div>
-            </td>
-            <td>
-                <div class="date-control date-control-small">
-                    <button class="date-btn date-btn-left">
-                        <img src="svg-folder/LeftIcon.svg" alt="Poprzedni dzień">
-                    </button>
-                    <input type="date" class="date-input">
-                    <button class="date-btn date-btn-calendar">
-                        <img src="svg-folder/CalendarIcon.svg" alt="Kalendarz">
-                    </button>
-                    <button class="date-btn date-btn-right">
-                        <img src="svg-folder/RightIcon.svg" alt="Następny dzień">
-                    </button>
-                </div>
-            </td>
-            <td>
-                <div class="weight-line list-weight">
-                    <input type="number" min="1" max="5" class="weight-input" value="1">
-                    <span class="weight-desc"></span>
-                </div>
-            </td>
-            <td></td><td></td><td></td><td></td>
-        </tr>
-
-        <!-- 24 -->
-        <tr>
-            <td>06.06.2023</td>
-            <td>Audyt SZJ – proces Z04 – AS Z04/2025/01</td>
-            <td>Rutkowski</td>
-            <td>
-                <div class="date-control date-control-small">
-                    <button class="date-btn date-btn-left">
-                        <img src="svg-folder/LeftIcon.svg" alt="Poprzedni dzień">
-                    </button>
-                    <input type="date" class="date-input">
-                    <button class="date-btn date-btn-calendar">
-                        <img src="svg-folder/CalendarIcon.svg" alt="Kalendarz">
-                    </button>
-                    <button class="date-btn date-btn-right">
-                        <img src="svg-folder/RightIcon.svg" alt="Następny dzień">
-                    </button>
-                </div>
-            </td>
-            <td>
-                <div class="weight-line list-weight">
-                    <input type="number" min="1" max="5" class="weight-input" value="1">
-                    <span class="weight-desc"></span>
-                </div>
-            </td>
-            <td>
-                <div class="date-control date-control-small">
-                    <button class="date-btn date-btn-left">
-                        <img src="svg-folder/LeftIcon.svg" alt="Poprzedni dzień">
-                    </button>
-                    <input type="date" class="date-input">
-                    <button class="date-btn date-btn-calendar">
-                        <img src="svg-folder/CalendarIcon.svg" alt="Kalendarz">
-                    </button>
-                    <button class="date-btn date-btn-right">
-                        <img src="svg-folder/RightIcon.svg" alt="Następny dzień">
-                    </button>
-                </div>
-            </td>
-            <td>
-                <div class="weight-line list-weight">
-                    <input type="number" min="1" max="5" class="weight-input" value="1">
-                    <span class="weight-desc"></span>
-                </div>
-            </td>
-            <td></td><td></td><td></td><td></td>
-        </tr>
-
-        <!-- 25 -->
-        <tr>
-            <td>22.03.2022</td>
-            <td>Reklamacja Temming nr 220030221, 1040103 (brak gwintu)</td>
-            <td>Majewski</td>
-            <td>
-                <div class="date-control date-control-small">
-                    <button class="date-btn date-btn-left">
-                        <img src="svg-folder/LeftIcon.svg" alt="Poprzedni dzień">
-                    </button>
-                    <input type="date" class="date-input">
-                    <button class="date-btn date-btn-calendar">
-                        <img src="svg-folder/CalendarIcon.svg" alt="Kalendarz">
-                    </button>
-                    <button class="date-btn date-btn-right">
-                        <img src="svg-folder/RightIcon.svg" alt="Następny dzień">
-                    </button>
-                </div>
-            </td>
-            <td>
-                <div class="weight-line list-weight">
-                    <input type="number" min="1" max="5" class="weight-input" value="1">
-                    <span class="weight-desc"></span>
-                </div>
-            </td>
-            <td>
-                <div class="date-control date-control-small">
-                    <button class="date-btn date-btn-left">
-                        <img src="svg-folder/LeftIcon.svg" alt="Poprzedni dzień">
-                    </button>
-                    <input type="date" class="date-input">
-                    <button class="date-btn date-btn-calendar">
-                        <img src="svg-folder/CalendarIcon.svg" alt="Kalendarz">
-                    </button>
-                    <button class="date-btn date-btn-right">
-                        <img src="svg-folder/RightIcon.svg" alt="Następny dzień">
-                    </button>
-                </div>
-            </td>
-            <td>
-                <div class="weight-line list-weight">
-                    <input type="number" min="1" max="5" class="weight-input" value="1">
-                    <span class="weight-desc"></span>
-                </div>
-            </td>
-            <td></td><td></td><td></td><td></td>
-        </tr>
-
-    </tbody>
-</table>
 </div>
 
-<!-- ===================================================== -->
-<!--  JS — WAGI (kolory, logika 1–5)                        -->
-<!-- ===================================================== -->
-
 <script>
-(function(){
-    const map = {
-        1: { text: "Zadanie mniejszej wagi", cls: "weight-blue" },
-        2: { text: "Zadanie zwykłe",         cls: "weight-blue" },
-        3: { text: "Zadanie ważne",          cls: "weight-blue" },
-        4: { text: "Bardzo ważne",           cls: "weight-yellow" },
-        5: { text: "Krytyczne",              cls: "weight-red" }
-    };
+const menu = document.getElementById("menu");
+if (menu) {
+    const buttons = Array.from(menu.querySelectorAll(".menu-btn"));
+    function activate(btn) {
+        buttons.forEach(b => b.classList.remove("is-active"));
+        btn.classList.add("is-active");
+    }
+    buttons.forEach(btn => {
+        btn.addEventListener("click", () => activate(btn));
+    });
+    const defaultBtn = buttons.find(b => b.dataset.name === "Ogólne");
+    if (defaultBtn) activate(defaultBtn);
+}
 
-    document.querySelectorAll(".weight-line").forEach(line => {
-        const input = line.querySelector(".weight-input");
-        const desc  = line.querySelector(".weight-desc");
+// Nawigacja nazwą (select + strzałki)
+const statusSelect = document.getElementById("statusSelect");
+const opStatusSelect = document.getElementById("opStatusSelect");
+function syncStatusClass() {
+    if (!statusSelect) return;
+    statusSelect.classList.remove("status-open","status-closed","status-delete");
+    const val = statusSelect.value;
+    if (val === "aktywny") statusSelect.classList.add("status-open");
+    else if (val === "nieaktywny") statusSelect.classList.add("status-closed");
+    else if (val === "usun") statusSelect.classList.add("status-delete");
+}
+if (statusSelect) {
+    statusSelect.addEventListener("change", syncStatusClass);
+    syncStatusClass();
+}
 
-        function update() {
-            const v   = parseInt(input.value, 10);
-            const cfg = map[v];
-
-            if (desc) {
-                desc.textContent = cfg ? cfg.text : "";
-                desc.className   = "weight-desc " + (cfg ? cfg.cls : "");
-            }
-
-            input.classList.remove("weight-4","weight-5");
-            if (v === 4) input.classList.add("weight-4");
-            else if (v === 5) input.classList.add("weight-5");
+// Powiązanie statusu operacyjnego ze statusem głównym
+if (statusSelect && opStatusSelect) {
+    opStatusSelect.addEventListener("change", () => {
+        const opVal = opStatusSelect.value.toLowerCase();
+        if (opVal === "operacyjna") {
+            statusSelect.value = "aktywny";
+        } else if (opVal === "rezerwa" || opVal === "serwis" || opVal === "wycofana") {
+            statusSelect.value = "nieaktywny";
         }
-
-        update();
-        input.addEventListener("input",  update);
-        input.addEventListener("change", update);
+        syncStatusClass();
     });
-})();
-</script>
+}
 
-<!-- ===================================================== -->
-<!--  JS — DATY (LEFT/RIGHT + KALENDARZ)                    -->
-<!-- ===================================================== -->
+// Po wyborze statusu pokaż wymaganie wyboru statusu operacyjnego
+if (statusSelect && opStatusSelect) {
+    statusSelect.addEventListener("change", () => {
+        if (opStatusSelect.scrollIntoView) {
+            opStatusSelect.focus();
+            opStatusSelect.size = Math.min(opStatusSelect.options.length, 5);
+        }
+    });
 
-<script>
-(function(){
+    opStatusSelect.addEventListener("change", () => {
+        opStatusSelect.size = 0;
+    });
+}
 
-    function toISODate(d) {
-        return d.toISOString().split("T")[0];
-    }
+const invInput = document.getElementById("inventoryInput");
+const btnUp = document.querySelector(".number-spin.up");
+const btnDown = document.querySelector(".number-spin.down");
+function adjustInventory(delta) {
+    if (!invInput) return;
+    const current = parseInt(invInput.value, 10) || 0;
+    invInput.value = current + delta;
+}
+if (btnUp) btnUp.addEventListener("click", () => adjustInventory(1));
+if (btnDown) btnDown.addEventListener("click", () => adjustInventory(-1));
 
-    function shiftDate(input, delta) {
-        let d = input.value ? new Date(input.value) : new Date();
-        if (isNaN(d.getTime())) d = new Date();
-        d.setDate(d.getDate() + delta);
-        input.value = toISODate(d);
-    }
+// Sortowanie tabeli po kolumnach
+const tableEl = document.querySelector(".list-table");
+const sortButtons = Array.from(document.querySelectorAll(".sort-btn"));
 
-    document.querySelectorAll(".date-control").forEach(control => {
-        const input    = control.querySelector(".date-input");
-        const btnLeft  = control.querySelector(".date-btn-left");
-        const btnRight = control.querySelector(".date-btn-right");
-        const btnCal   = control.querySelector(".date-btn-calendar");
+function sortTable(colIndex, dir) {
+    if (!tableEl) return;
+    const tbody = tableEl.querySelector("tbody");
+    if (!tbody) return;
+    const rows = Array.from(tbody.querySelectorAll("tr"));
+    rows.sort((a, b) => {
+        const av = (a.children[colIndex]?.textContent || "").trim().toLowerCase();
+        const bv = (b.children[colIndex]?.textContent || "").trim().toLowerCase();
+        const cmp = av.localeCompare(bv, "pl", { sensitivity: "base" });
+        return dir === "asc" ? cmp : -cmp;
+    });
+    rows.forEach(r => tbody.appendChild(r));
+}
 
-        if (!input.value)
-            input.value = toISODate(new Date());
-
-        btnLeft.addEventListener("click", () => shiftDate(input, -1));
-        btnRight.addEventListener("click", () => shiftDate(input, +1));
-
-        btnCal.addEventListener("click", () => {
-            if (typeof input.showPicker === "function")
-                 input.showPicker();
-            else {
-                input.click();
-                setTimeout(() => input.focus(), 0);
-            }
+sortButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+        const currentDir = btn.getAttribute("data-dir") === "asc" ? "asc" : "desc";
+        const nextDir = currentDir === "asc" ? "desc" : "asc";
+        sortButtons.forEach(b => {
+            b.setAttribute("data-dir", "asc");
+            b.classList.remove("is-active");
         });
+        btn.setAttribute("data-dir", nextDir);
+        btn.classList.add("is-active");
+        const img = btn.querySelector("img");
+        if (img) img.src = nextDir === "asc" ? "svg-folder/UpIcon.svg" : "svg-folder/DownIcon.svg";
+        const col = parseInt(btn.dataset.col, 10) || 0;
+        sortTable(col, nextDir);
+    });
+});
+
+// Date/Year nav buttons
+function attachNav(inputId, leftSel, rightSel, step = 1, isDate = false) {
+    const input = document.getElementById(inputId);
+    const left = document.querySelector(leftSel);
+    const right = document.querySelector(rightSel);
+    if (!input) return;
+
+    function shift(delta) {
+        if (isDate) {
+            const val = input.value || new Date().toISOString().slice(0,10);
+            const d = new Date(val);
+            if (isNaN(d)) return;
+            d.setDate(d.getDate() + delta);
+            input.value = d.toISOString().slice(0,10);
+        } else {
+            const v = parseInt(input.value, 10) || 0;
+            input.value = v + delta;
+        }
+    }
+
+    if (left) left.addEventListener("click", () => shift(-step));
+    if (right) right.addEventListener("click", () => shift(step));
+}
+
+attachNav("prodYear", ".date-nav-btn--left[aria-label='Poprzedni rok']", ".date-nav-btn--right[aria-label='Następny rok']", 1, false);
+attachNav("warrantyDate", ".date-nav-btn--left[aria-label='Poprzednia data']", ".date-nav-btn--right[aria-label='Następna data']", 1, true);
+
+// Klikalne wiersze tabeli z utrzymaniem zaznaczenia
+const table = document.querySelector(".list-table tbody");
+let editingRow = null;
+const editBtnIcon = document.querySelector("#editCardBtn img");
+const editBtnLabel = document.querySelector("#editCardBtn span");
+
+function setEditButtonState(isEditing) {
+    if (!editBtnIcon || !editBtnLabel) return;
+    if (isEditing) {
+        editBtnIcon.src = "svg-folder/SaveIcon.svg";
+        editBtnLabel.textContent = "Zapisz";
+        editCardBtn.classList.add("content-btn-danger");
+        editCardBtn.classList.remove("content-btn-activate");
+    } else {
+        editBtnIcon.src = "svg-folder/EditIcon.svg";
+        editBtnLabel.textContent = "Edytuj";
+        editCardBtn.classList.remove("content-btn-danger");
+        editCardBtn.classList.add("content-btn-activate");
+    }
+}
+
+function makeControlTemplate(colIdx, val, idSuffix) {
+    switch (colIdx) {
+        case 0: { // Nazwa
+            return `
+                <select>
+                    <option ${val==="Maszyna skrawająca 01"?"selected":""}>Maszyna skrawająca 01</option>
+                    <option ${val==="Maszyna nieskrawająca 02"?"selected":""}>Maszyna nieskrawająca 02</option>
+                    <option ${val==="Robot 1"?"selected":""}>Robot 1</option>
+                    <option ${val==="Robot 2"?"selected":""}>Robot 2</option>
+                    <option ${val==="Wózek widłowy"?"selected":""}>Wózek widłowy</option>
+                </select>
+            `;
+        }
+        case 2: // Nr Inwetarzowy
+            return `
+                <div class="number-control" style="max-width: 140px;">
+                    <input class="number-input" type="number" value="${val}" />
+                    <button class="number-spin up" type="button" aria-label="Więcej">
+                        <img src="svg-folder/UpIcon.svg" alt="">
+                    </button>
+                    <button class="number-spin down" type="button" aria-label="Mniej">
+                        <img src="svg-folder/DownIcon.svg" alt="">
+                    </button>
+                </div>
+            `;
+        case 7: { // Data gwarancji
+            const id = `warranty-${idSuffix}`;
+            return `
+                <div class="date-nav-wrap date-nav-wrap--date">
+                    <button class="date-nav-btn date-nav-btn--left" type="button" aria-label="Poprzednia data">
+                        <img src="svg-folder/LeftIcon.svg" alt="">
+                    </button>
+                    <input id="${id}" type="date" class="date-nav-input" value="${val}" />
+                    <button class="date-nav-btn date-nav-btn--calendar" type="button" aria-label="Wybierz datę">
+                        <img src="svg-folder/CalendarIcon.svg" alt="">
+                    </button>
+                    <button class="date-nav-btn date-nav-btn--right" type="button" aria-label="Następna data">
+                        <img src="svg-folder/RightIcon.svg" alt="">
+                    </button>
+                </div>
+            `;
+        }
+        case 8: // Status
+            return `
+                <select class="status-select">
+                    <option value="aktywny" ${val.toLowerCase()==="aktywny"?"selected":""}>Aktywny</option>
+                    <option value="nieaktywny" ${val.toLowerCase()==="nieaktywny"?"selected":""}>Nieaktywny</option>
+                    <option value="usun" ${val.toLowerCase()==="usun"?"selected":""}>usuń</option>
+                </select>
+            `;
+        case 9: // Status operacyjny
+            return `
+                <select>
+                    <option ${val==="Zakupiona"?"selected":""}>Zakupiona</option>
+                    <option ${val==="Operacyjna"?"selected":""}>Operacyjna</option>
+                    <option ${val==="Rezerwa"?"selected":""}>Rezerwa</option>
+                    <option ${val==="Serwis"?"selected":""}>Serwis</option>
+                    <option ${val==="Wycofana"?"selected":""}>Wycofana</option>
+                </select>
+            `;
+        case 10: // Maszyna nadrzędna
+            return `
+                <select>
+                    <option ${val==="Robot A"?"selected":""}>Robot A</option>
+                    <option ${val==="Robot B"?"selected":""}>Robot B</option>
+                </select>
+            `;
+        default:
+            return `<input type="text" value="${val}">`;
+    }
+}
+
+function attachRowControls(row) {
+    row.querySelectorAll(".number-control").forEach(ctrl => {
+        const input = ctrl.querySelector(".number-input");
+        const up = ctrl.querySelector(".up");
+        const down = ctrl.querySelector(".down");
+        function shift(delta) {
+            if (!input) return;
+            const current = parseInt(input.value, 10) || 0;
+            input.value = current + delta;
+        }
+        if (up) up.addEventListener("click", () => shift(1));
+        if (down) down.addEventListener("click", () => shift(-1));
     });
 
-})();
+    row.querySelectorAll(".date-nav-wrap").forEach(wrap => {
+        const input = wrap.querySelector("input[type='date']");
+        const left = wrap.querySelector(".date-nav-btn--left");
+        const right = wrap.querySelector(".date-nav-btn--right");
+        const calendar = wrap.querySelector(".date-nav-btn--calendar");
+        function shift(delta) {
+            if (!input) return;
+            const val = input.value || new Date().toISOString().slice(0,10);
+            const d = new Date(val);
+            if (isNaN(d)) return;
+            d.setDate(d.getDate() + delta);
+            input.value = d.toISOString().slice(0,10);
+        }
+        if (left) left.addEventListener("click", () => shift(-1));
+        if (right) right.addEventListener("click", () => shift(1));
+        if (calendar && input) {
+            calendar.addEventListener("click", () => input.showPicker ? input.showPicker() : input.focus());
+        }
+    });
+
+    row.querySelectorAll("select.status-select").forEach(sel => {
+        function applyStatusStyle() {
+            const val = sel.value.toLowerCase();
+            sel.classList.toggle("status-open", val === "aktywny");
+        }
+        sel.addEventListener("change", applyStatusStyle);
+        applyStatusStyle();
+    });
+}
+
+function toInputs(row) {
+    const cells = Array.from(row.children);
+    cells.forEach((cell, idx) => {
+        const val = cell.textContent.trim();
+        cell.innerHTML = makeControlTemplate(idx, val, `${Date.now()}-${idx}`);
+        const el = cell.querySelector("select, input");
+        if (el && el.tagName === "SELECT") {
+            Array.from(el.options).forEach(opt => {
+                if (opt.value.toLowerCase() === val.toLowerCase() || opt.textContent.toLowerCase() === val.toLowerCase()) {
+                    opt.selected = true;
+                }
+            });
+        } else if (el && el.type === "date" && !el.value) {
+            el.value = new Date().toISOString().slice(0,10);
+        }
+    });
+    row.classList.add("editing-row");
+    attachRowControls(row);
+}
+
+function toText(row) {
+    const cells = Array.from(row.children);
+    cells.forEach(cell => {
+        const control = cell.querySelector("input, select");
+        if (control) {
+            if (control.tagName === "SELECT") {
+                const sel = control;
+                const text = sel.options[sel.selectedIndex]?.textContent || "";
+                cell.textContent = text;
+            } else {
+                cell.textContent = control.value;
+            }
+        }
+    });
+    row.classList.remove("editing-row");
+}
+
+function startEditSelected() {
+    const selected = table?.querySelector("tr.is-selected");
+    if (!selected) return;
+    if (editingRow && editingRow !== selected) {
+        toText(editingRow);
+    }
+    toInputs(selected);
+    editingRow = selected;
+    setEditButtonState(true);
+}
+
+function saveEditingRow() {
+    if (!editingRow) return;
+    toText(editingRow);
+    editingRow = null;
+    setEditButtonState(false);
+}
+
+if (table) {
+    let lastClickTime = 0;
+    table.addEventListener("click", (e) => {
+        const row = e.target.closest("tr");
+        if (!row) return;
+        const now = Date.now();
+        const isDouble = now - lastClickTime < 300;
+        lastClickTime = now;
+        table.querySelectorAll("tr").forEach(r => r.classList.remove("is-selected"));
+        row.classList.add("is-selected");
+        if (isDouble) {
+            if (!editingRow) {
+                window.location.href = "card.html";
+            }
+        }
+    });
+}
+
+// Usuwanie maszyny - popup
+const deleteMachineBtnList = document.getElementById("deleteMachineBtnList");
+if (deleteMachineBtnList) {
+    deleteMachineBtnList.addEventListener("click", () => {
+        const confirmed = window.confirm("Czy na pewno chcesz usunąć maszynę, wariacie?");
+        if (confirmed) {
+            // Tutaj można dodać logikę usuwania wiersza
+            console.log("Maszyna została usunięta (logika do zaimplementowania).");
+        }
+    });
+}
+
+// Otwórz/Edytuj kartę
+const openCardBtn = document.getElementById("openCardBtn");
+const editCardBtn = document.getElementById("editCardBtn");
+if (openCardBtn) {
+    openCardBtn.addEventListener("click", () => {
+        window.location.href = "card.html?edit=0";
+    });
+}
+if (editCardBtn) {
+    editCardBtn.addEventListener("click", () => {
+        if (editingRow) {
+            saveEditingRow();
+        } else {
+            startEditSelected();
+        }
+    });
+}
+
+// Modale: ustawienia kolumn / filtry
+const settingsToggle = document.getElementById("settingsToggle");
+const settingsModal = document.getElementById("settingsModal");
+const settingsClose = document.getElementById("settingsClose");
+
+const filterToggle = document.getElementById("filterToggle");
+const filterModal = document.getElementById("filterModal");
+const filterClose = document.getElementById("filterClose");
+
+function setModalVisibility(modalEl, open) {
+    if (!modalEl) return;
+    modalEl.classList.toggle("is-visible", open);
+}
+
+if (settingsToggle && settingsModal) {
+    settingsToggle.addEventListener("click", () => setModalVisibility(settingsModal, true));
+}
+if (settingsClose && settingsModal) {
+    settingsClose.addEventListener("click", () => setModalVisibility(settingsModal, false));
+}
+if (settingsModal) {
+    settingsModal.addEventListener("click", (e) => {
+        if (e.target === settingsModal) setModalVisibility(settingsModal, false);
+    });
+}
+
+if (filterToggle && filterModal) {
+    filterToggle.addEventListener("click", () => setModalVisibility(filterModal, true));
+}
+if (filterClose && filterModal) {
+    filterClose.addEventListener("click", () => setModalVisibility(filterModal, false));
+}
+if (filterModal) {
+    filterModal.addEventListener("click", (e) => {
+        if (e.target === filterModal) setModalVisibility(filterModal, false);
+    });
+}
 </script>
-
-<!-- ===================================================== -->
-<!--  KONTROLKI FONTÓW – jak w content.html                 -->
-<!-- ===================================================== -->
-
-<div class="content-controls">
-    Czcionka:
-    <select id="content-font-select"></select>
-
-    Rozmiar:
-    <input id="content-font-size" type="number" min="10" max="32">
-
-    Szarość:
-    <input id="content-font-opacity" type="number" min="0" max="100">
-
-    <button id="content-refresh" class="content-refresh-button">REFRESH</button>
-</div>
-
-<!-- ===================================================== -->
-<!--  DOLNE PRZYCISKI – jak w content.html                  -->
-<!-- ===================================================== -->
-
-<div class="content-buttons">
-    <button class="content-btn content-btn-ok">OK</button>
-    <button class="content-btn content-btn-activate">AKTYWUJ</button>
-    <button class="content-btn content-btn-stop">STOP</button>
-    <button class="content-btn content-btn-no">NIE</button>
-    <button class="content-btn content-btn-cancel">CANCEL</button>
-    <button class="content-btn content-btn-add">DODAJ</button>
-</div>
-
-<!-- ===================================================== -->
-<!--  JS — KONTROLKI FONTÓW (kopiowane z content.html)      -->
-<!-- ===================================================== -->
-
-<script>
-(function(){
-
-    const defaultFont    = "Open Sans";
-    const defaultSize    = 14;
-    const defaultOpacity = 100;
-
-    const fonts = [
-        "FrutigerNeue Bold","FrutigerNeue Light",
-        "Inconsolata Condensed Medium","Inconsolata Condensed Regular",
-        "Inconsolata Condensed SemiBold",
-        "Open Sans","Samsung Sans","Satoshi","Inter",
-        "Geograph","DieGrotesk","Manrope","Larke Neue Thin",
-        "Liberation Sans","Libra Sans","Opening Hours Sans",
-        "Sora","Poppins Light","Plus Jakarta Sans","Nimbus Sans",
-        "Minecraftia","Ubuntu Light","Roboto","Segoe UI Thin",
-        "Cantarell","Exo 2","Aileron Light","Montserrat Light"
-    ];
-
-    const fontSelect   = document.getElementById("content-font-select");
-    const sizeInput    = document.getElementById("content-font-size");
-    const opacityInput = document.getElementById("content-font-opacity");
-    const refreshBtn   = document.getElementById("content-refresh");
-
-    fontSelect.innerHTML = fonts
-        .map(f => `<option value="${f}">${f}</option>`)
-        .join("");
-
-    const STORAGE_KEY = "contentFrameSettings";
-
-    function loadSettings() {
-        try { return JSON.parse(localStorage.getItem(STORAGE_KEY)); }
-        catch(e){ return null; }
-    }
-
-    function saveSettings(settings) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
-    }
-
-    function apply(settings) {
-        document.documentElement.style.setProperty("--content-font-family", settings.font);
-        document.documentElement.style.setProperty("--content-font-size", settings.size + "px");
-        document.documentElement.style.setProperty("--content-opacity", settings.opacity / 100);
-    }
-
-    function refresh() {
-        const settings = {
-            font: fontSelect.value || defaultFont,
-            size: parseInt(sizeInput.value, 10) || defaultSize,
-            opacity: Math.min(100, Math.max(0, parseInt(opacityInput.value, 10) || defaultOpacity))
-        };
-        saveSettings(settings);
-        apply(settings);
-    }
-
-    const initial = loadSettings() || {
-        font: defaultFont, size: defaultSize, opacity: defaultOpacity
-    };
-
-    fontSelect.value   = initial.font;
-    sizeInput.value    = initial.size;
-    opacityInput.value = initial.opacity;
-
-    apply(initial);
-    refreshBtn.addEventListener("click", refresh);
-
-})();
-</script>
-
 </body>
 </html>

@@ -40,20 +40,68 @@
         .button-group { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
         .icon-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; }
         .icon-btn {
-            border: 1px solid #c6c9d1;
-            background: #fff;
-            border-radius: 6px;
+            border: none;
+            background: transparent;
+            border-radius: 4px;
             width: 24px;
             height: 24px;
-            padding: 3px;
+            padding: 0;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: box-shadow .12s ease, transform .12s ease;
+            transition: transform .1s ease, background-color .15s ease;
         }
-        .icon-btn:hover { box-shadow: 0 2px 6px rgba(0,0,0,0.08); transform: translateY(-1px); }
-        .icon-btn img { width: 18px; height: 18px; display: block; }
+        .icon-btn:hover { background: rgba(0,0,0,0.05); }
+        .icon-btn:active { transform: scale(.97); box-shadow: 0 0 0 1px rgba(0,0,0,0.3); }
+        .icon-btn img {
+            width: 16px;
+            height: 16px;
+            display: block;
+            transition: opacity .15s ease;
+        }
+        .icon-btn:hover img { opacity: .6; }
+        .icon-divider {
+            width: 1px;
+            height: 24px;
+            background: #c6c9d1;
+        }
+        .search-input {
+            height: 32px;
+            padding: 6px 10px;
+            border: 1px solid #c6c9d1;
+            border-radius: 6px;
+            font-size: 13px;
+            min-width: 180px;
+        }
+        .menu-check {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font: inherit;
+            font-weight: 600;
+            color: #0f1b2d;
+        }
+        .menu-check input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            margin: 0;
+            appearance: checkbox;
+            -webkit-appearance: checkbox;
+            -moz-appearance: checkbox;
+            accent-color: #1f2937;
+            cursor: pointer;
+        }
+        .filter-checkbox {
+            width: 16px;
+            height: 16px;
+            margin: 0;
+            appearance: checkbox;
+            -webkit-appearance: checkbox;
+            -moz-appearance: checkbox;
+            accent-color: #1f2937;
+            cursor: pointer;
+        }
         .modal-backdrop {
             position: fixed;
             inset: 0;
@@ -250,17 +298,19 @@
                             </button>
                         </div>
                         <div class="icon-actions">
-                            <button class="icon-btn" type="button" aria-label="Eksport do XLS">
-                                <img src="svg-folder/ExcelIcon.svg" alt="XLS">
-                            </button>
-                            <button class="icon-btn" type="button" aria-label="Eksport do PDF">
-                                <img src="svg-folder/PDFIcon.svg" alt="PDF">
-                            </button>
+                            <input id="schemaSearch" class="search-input" type="search" placeholder="Szukaj..." aria-label="Szukaj w schemacie">
                             <button id="filterToggle" class="icon-btn" type="button" aria-label="Filtruj">
                                 <img src="svg-folder/FilterIcon.svg" alt="Filtruj">
                             </button>
                             <button id="settingsToggle" class="icon-btn" type="button" aria-label="Ustawienia kolumn">
                                 <img src="svg-folder/SettingsIcon.svg" alt="Ustawienia">
+                            </button>
+                            <span class="icon-divider" aria-hidden="true"></span>
+                            <button class="icon-btn" type="button" aria-label="Eksport do XLS">
+                                <img src="svg-folder/ExcelIcon.svg" alt="XLS">
+                            </button>
+                            <button class="icon-btn" type="button" aria-label="Eksport do PDF">
+                                <img src="svg-folder/PDFIcon.svg" alt="PDF">
                             </button>
                         </div>
                     </div>
@@ -306,21 +356,21 @@
             <button class="modal-close" type="button" aria-label="Zamknij" id="filterClose">✕</button>
         </div>
         <div class="checkbox-grid" style="margin-bottom:12px;">
-            <label class="menu-check"><input type="checkbox" />Aktywne</label>
-            <label class="menu-check"><input type="checkbox" />Nieaktywne</label>
-            <label class="menu-check"><input type="checkbox" />Operacyjne</label>
-            <label class="menu-check"><input type="checkbox" />Wycofane</label>
-            <label class="menu-check"><input type="checkbox" />Tylko pod moim nadzorem</label>
-            <label class="menu-check"><input type="checkbox" />W serwisie</label>
-            <label class="menu-check"><input type="checkbox" />Zepsute</label>
-            <label class="menu-check"><input type="checkbox" />Do wyrzucenia</label>
-            <label class="menu-check"><input type="checkbox" />Bez zdjęć</label>
-            <label class="menu-check"><input type="checkbox" />Po gwarancji</label>
-            <label class="menu-check"><input type="checkbox" />W Leasingu</label>
+            <label class="menu-check"><input type="checkbox" class="filter-checkbox" />Aktywne</label>
+            <label class="menu-check"><input type="checkbox" class="filter-checkbox" />Nieaktywne</label>
+            <label class="menu-check"><input type="checkbox" class="filter-checkbox" />Operacyjne</label>
+            <label class="menu-check"><input type="checkbox" class="filter-checkbox" />Wycofane</label>
+            <label class="menu-check"><input type="checkbox" class="filter-checkbox" />Tylko pod moim nadzorem</label>
+            <label class="menu-check"><input type="checkbox" class="filter-checkbox" />W serwisie</label>
+            <label class="menu-check"><input type="checkbox" class="filter-checkbox" />Zepsute</label>
+            <label class="menu-check"><input type="checkbox" class="filter-checkbox" />Do wyrzucenia</label>
+            <label class="menu-check"><input type="checkbox" class="filter-checkbox" />Bez zdjęć</label>
+            <label class="menu-check"><input type="checkbox" class="filter-checkbox" />Po gwarancji</label>
+            <label class="menu-check"><input type="checkbox" class="filter-checkbox" />W Leasingu</label>
         </div>
         <div class="field" style="margin-bottom:10px;">
             <label style="display:flex; align-items:center; gap:8px;">
-                <input type="checkbox" />
+                <input type="checkbox" class="filter-checkbox" />
                 <span>Powiązane z zadaniem:</span>
             </label>
             <select class="status-select">
@@ -331,7 +381,7 @@
         </div>
         <div class="field" style="margin-bottom:10px;">
             <label style="display:flex; align-items:center; gap:8px;">
-                <input type="checkbox" />
+                <input type="checkbox" class="filter-checkbox" />
                 <span>Odpowiedzialny:</span>
             </label>
             <select class="status-select">
@@ -342,7 +392,7 @@
         </div>
         <div class="field">
             <label style="display:flex; align-items:center; gap:8px;">
-                <input type="checkbox" />
+                <input type="checkbox" class="filter-checkbox" />
                 <span>Z etykietą:</span>
             </label>
             <select class="status-select">
