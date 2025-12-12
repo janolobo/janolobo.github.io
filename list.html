@@ -11,7 +11,6 @@
             --panel-bg: #fff;
             --panel-text: #1a1a1a;
         }
-        /* tabelę styli dopasowujemy niżej */
 
         * { box-sizing: border-box; }
 
@@ -112,23 +111,12 @@
             font-weight: 600;
             color: #0f1b2d;
         }
-        .menu-check input[type="checkbox"] {
+        .menu-check input {
             width: 16px;
             height: 16px;
-            margin: 0;
-            appearance: checkbox;
-            -webkit-appearance: checkbox;
-            -moz-appearance: checkbox;
-            accent-color: #1f2937;
-            cursor: pointer;
-        }
-        .filter-checkbox {
-            width: 16px;
-            height: 16px;
-            margin: 0;
-            appearance: checkbox;
-            -webkit-appearance: checkbox;
-            -moz-appearance: checkbox;
+            appearance: auto;
+            -webkit-appearance: auto;
+            -moz-appearance: auto;
             accent-color: #1f2937;
             cursor: pointer;
         }
@@ -150,60 +138,26 @@
             margin-left: auto;
         }
         .icon-btn {
-            border: none;
-            background: transparent;
-            border-radius: 4px;
+            border: 1px solid #c6c9d1;
+            background: #fff;
+            border-radius: 6px;
             width: 24px;
             height: 24px;
-            padding: 0;
+            padding: 3px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: transform .1s ease, background-color .15s ease;
+            transition: box-shadow .12s ease, transform .12s ease;
         }
-        .icon-btn:hover { background: rgba(0,0,0,0.05); }
-        .icon-btn:active { transform: scale(.97); box-shadow: 0 0 0 1px rgba(0,0,0,0.3); }
+        .icon-btn:hover {
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            transform: translateY(-1px);
+        }
         .icon-btn img {
-            width: 16px;
-            height: 16px;
-            display: block;
-            transition: opacity .15s ease;
-        }
-        .icon-btn:hover img { opacity: .6; }
-        .icon-divider {
-            width: 1px;
-            height: 24px;
-            background: #c6c9d1;
-        }
-        .search-input {
-            height: 32px;
-            padding: 6px 10px;
-            border: 1px solid #c6c9d1;
-            border-radius: 6px;
-            font-size: 13px;
-            min-width: 180px;
-        }
-        .sort-btn {
-            border: none;
-            background: transparent;
-            padding: 2px;
-            margin-left: 4px;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
+            width: 18px;
             height: 18px;
-            vertical-align: middle;
-        }
-        .sort-btn img {
-            width: 12px;
-            height: 12px;
             display: block;
-        }
-        .sort-btn.is-active {
-            background: rgba(0,0,0,0.08);
-            border-radius: 4px;
         }
         .modal-backdrop {
             position: fixed;
@@ -455,11 +409,6 @@
             border-radius: 0;
         }
 
-        .table-scroll {
-            max-height: 480px;
-            overflow-y: auto;
-            overflow-x: auto;
-        }
         .list-table {
             width: 100%;
             border-collapse: separate;
@@ -483,103 +432,23 @@
         .list-table tbody tr {
             cursor: pointer;
             transition: background-color .12s ease, box-shadow .12s ease;
-            background: #fff;
-            border: none;
-            border-radius: 6px;
+            border: 1px solid #d2d8e5;
+            border-radius: 10px;
             overflow: hidden;
-        }
-        .list-table tbody td {
-            background: transparent;
-            border: none;
-            padding: 8px 10px;
-        }
-        .list-table tbody td:first-child {
-            border-top-left-radius: 6px;
-            border-bottom-left-radius: 6px;
-        }
-        .list-table tbody td:last-child {
-            border-top-right-radius: 6px;
-            border-bottom-right-radius: 6px;
+            background: #fff;
         }
         .list-table tbody tr:hover {
             background: #eef2fb;
-            box-shadow: 0 0 0 1px #d2d8e5;
         }
-        .list-table tbody tr:hover td { background: #eef2fb; }
         .list-table tbody tr.is-selected {
             background: #dfe7ff;
             box-shadow: 0 0 0 1px #9bb7ff inset;
         }
-        .list-table tbody tr.is-selected td { background: #dfe7ff; }
-        .list-table tbody td { background: #fff; }
-        .list-table tbody tr.editing-row {
-            background: #fff0f0;
-            box-shadow: 0 0 0 1px rgba(210,34,34,0.6);
-        }
-        .list-table tbody tr.editing-row td { background: #fff0f0; }
-        .list-table tbody input,
-        .list-table tbody select {
-            width: 100%;
-            padding: 6px 10px;
-            border: 1px solid var(--frame-gray);
-            border-radius: 6px;
-            font: inherit;
-            background: #fff url("svg-folder/DownIcon.svg") no-repeat right 10px center;
-            background-size: 12px;
-            appearance: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-        }
-        .list-table tbody select.status-open {
-            border-color: #2fa44f;
-            background-color: rgba(47,164,79,0.08);
-            color: #0b5b2e;
-        }
-        .list-table tbody input[type="date"] {
-            background-image: none;
-        }
-        .list-table tbody input {
-            background-image: none;
-        }
-        .list-table tbody .number-control {
-            max-width: 180px;
-        }
-        .list-table tbody .number-input {
-            padding: 8px 40px 8px 10px;
-        }
-        .list-table tbody .date-nav-wrap {
-            position: relative;
-            display: inline-flex;
-            width: 220px;
-        }
-        .list-table tbody .date-nav-input {
-            width: 100%;
-            padding: 8px 60px 8px 34px;
-            border: 1px solid var(--frame-gray);
-            border-radius: 6px;
-            background: #fff;
-        }
-        .list-table tbody .date-nav-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 24px;
-            height: 24px;
-            border: none;
+        .list-table tbody tr td:first-child { border-top-left-radius: 10px; border-bottom-left-radius: 10px; }
+        .list-table tbody tr td:last-child  { border-top-right-radius: 10px; border-bottom-right-radius: 10px; }
+
+        .list-table tbody td {
             background: transparent;
-            padding: 0;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .list-table tbody .date-nav-btn img { width: 16px; height: 16px; }
-        .list-table tbody .date-nav-btn--left { left: 6px; }
-        .list-table tbody .date-nav-btn--right { right: 6px; }
-        .list-table tbody .date-nav-btn--calendar { right: 34px; }
-        .list-table tbody select {
-            background-position: right 8px center;
-            padding-right: 28px;
         }
     </style>
 </head>
@@ -616,19 +485,17 @@
                             </button>
                         </div>
                         <div class="icon-actions">
-                            <input id="listSearch" class="search-input" type="search" placeholder="Szukaj..." aria-label="Szukaj w tabeli">
+                            <button class="icon-btn" type="button" aria-label="Eksport do XLS">
+                                <img src="svg-folder/ExcelIcon.svg" alt="XLS">
+                            </button>
+                            <button class="icon-btn" type="button" aria-label="Eksport do PDF">
+                                <img src="svg-folder/PDFIcon.svg" alt="PDF">
+                            </button>
                             <button id="filterToggle" class="icon-btn" type="button" aria-label="Filtruj">
                                 <img src="svg-folder/FilterIcon.svg" alt="Filtruj">
                             </button>
                             <button id="settingsToggle" class="icon-btn settings-btn" type="button" aria-label="Ustawienia kolumn">
                                 <img src="svg-folder/SettingsIcon.svg" alt="Ustawienia">
-                            </button>
-                            <span class="icon-divider" aria-hidden="true"></span>
-                            <button class="icon-btn" type="button" aria-label="Eksport do XLS">
-                                <img src="svg-folder/xExportXlsIcon.svg" alt="XLS">
-                            </button>
-                            <button class="icon-btn" type="button" aria-label="Eksport do PDF">
-                                <img src="svg-folder/xExportPdfIcon.svg" alt="PDF">
                             </button>
                         </div>
                     </div>
@@ -667,21 +534,21 @@
                 <button class="modal-close" type="button" aria-label="Zamknij" id="filterClose">✕</button>
             </div>
             <div class="checkbox-grid" style="margin-bottom:12px;">
-                <label class="menu-check"><input type="checkbox" class="filter-checkbox" />Aktywne</label>
-                <label class="menu-check"><input type="checkbox" class="filter-checkbox" />Nieaktywne</label>
-                <label class="menu-check"><input type="checkbox" class="filter-checkbox" />Operacyjne</label>
-                <label class="menu-check"><input type="checkbox" class="filter-checkbox" />Wycofane</label>
-                <label class="menu-check"><input type="checkbox" class="filter-checkbox" />Tylko pod moim nadzorem</label>
-                <label class="menu-check"><input type="checkbox" class="filter-checkbox" />W serwisie</label>
-                <label class="menu-check"><input type="checkbox" class="filter-checkbox" />Zepsute</label>
-                <label class="menu-check"><input type="checkbox" class="filter-checkbox" />Do wyrzucenia</label>
-                <label class="menu-check"><input type="checkbox" class="filter-checkbox" />Bez zdjęć</label>
-                <label class="menu-check"><input type="checkbox" class="filter-checkbox" />Po gwarancji</label>
-                <label class="menu-check"><input type="checkbox" class="filter-checkbox" />W Leasingu</label>
+                <label class="menu-check"><input type="checkbox" />Aktywne</label>
+                <label class="menu-check"><input type="checkbox" />Nieaktywne</label>
+                <label class="menu-check"><input type="checkbox" />Operacyjne</label>
+                <label class="menu-check"><input type="checkbox" />Wycofane</label>
+                <label class="menu-check"><input type="checkbox" />Tylko pod moim nadzorem</label>
+                <label class="menu-check"><input type="checkbox" />W serwisie</label>
+                <label class="menu-check"><input type="checkbox" />Zepsute</label>
+                <label class="menu-check"><input type="checkbox" />Do wyrzucenia</label>
+                <label class="menu-check"><input type="checkbox" />Bez zdjęć</label>
+                <label class="menu-check"><input type="checkbox" />Po gwarancji</label>
+                <label class="menu-check"><input type="checkbox" />W Leasingu</label>
             </div>
             <div class="field" style="margin-bottom:10px;">
                 <label style="display:flex; align-items:center; gap:8px;">
-                    <input type="checkbox" class="filter-checkbox" />
+                    <input type="checkbox" />
                     <span>Powiązane z zadaniem:</span>
                 </label>
                 <select class="status-select">
@@ -692,7 +559,7 @@
             </div>
             <div class="field" style="margin-bottom:10px;">
                 <label style="display:flex; align-items:center; gap:8px;">
-                    <input type="checkbox" class="filter-checkbox" />
+                    <input type="checkbox" />
                     <span>Odpowiedzialny:</span>
                 </label>
                 <select class="status-select">
@@ -703,7 +570,7 @@
             </div>
             <div class="field">
                 <label style="display:flex; align-items:center; gap:8px;">
-                    <input type="checkbox" class="filter-checkbox" />
+                    <input type="checkbox" />
                     <span>Z etykietą:</span>
                 </label>
                 <select class="status-select">
@@ -718,21 +585,20 @@
     <div class="panel panel--tall">
         <span class="panel-label">Lista</span>
         <div class="panel-content">
-            <div class="table-scroll">
             <table class="list-table">
                 <thead>
                     <tr>
-                        <th>Nazwa <button class="sort-btn" type="button" data-col="0" data-dir="asc" aria-label="Sortuj Nazwa"><img src="svg-folder/UpIcon.svg" alt=""></button></th>
-                        <th>Skrót <button class="sort-btn" type="button" data-col="1" data-dir="asc" aria-label="Sortuj Skrót"><img src="svg-folder/UpIcon.svg" alt=""></button></th>
-                        <th>Nr Inwetarzowy <button class="sort-btn" type="button" data-col="2" data-dir="asc" aria-label="Sortuj Nr Inwetarzowy"><img src="svg-folder/UpIcon.svg" alt=""></button></th>
-                        <th>Wydział <button class="sort-btn" type="button" data-col="3" data-dir="asc" aria-label="Sortuj Wydział"><img src="svg-folder/UpIcon.svg" alt=""></button></th>
-                        <th>Lokalizacja <button class="sort-btn" type="button" data-col="4" data-dir="asc" aria-label="Sortuj Lokalizacja"><img src="svg-folder/UpIcon.svg" alt=""></button></th>
-                        <th>Producent <button class="sort-btn" type="button" data-col="5" data-dir="asc" aria-label="Sortuj Producent"><img src="svg-folder/UpIcon.svg" alt=""></button></th>
-                        <th>Model <button class="sort-btn" type="button" data-col="6" data-dir="asc" aria-label="Sortuj Model"><img src="svg-folder/UpIcon.svg" alt=""></button></th>
-                        <th>Data upływu gwarancji <button class="sort-btn" type="button" data-col="7" data-dir="asc" aria-label="Sortuj Data gwarancji"><img src="svg-folder/UpIcon.svg" alt=""></button></th>
-                        <th>Status <button class="sort-btn" type="button" data-col="8" data-dir="asc" aria-label="Sortuj Status"><img src="svg-folder/UpIcon.svg" alt=""></button></th>
-                        <th>Status operacyjny <button class="sort-btn" type="button" data-col="9" data-dir="asc" aria-label="Sortuj Status operacyjny"><img src="svg-folder/UpIcon.svg" alt=""></button></th>
-                        <th>Maszyna nadrzędna <button class="sort-btn" type="button" data-col="10" data-dir="asc" aria-label="Sortuj Maszyna nadrzędna"><img src="svg-folder/UpIcon.svg" alt=""></button></th>
+                        <th>Nazwa</th>
+                        <th>Skrót</th>
+                        <th>Nr Inwetarzowy</th>
+                        <th>Wydział</th>
+                        <th>Lokalizacja</th>
+                        <th>Producent</th>
+                        <th>Model</th>
+                        <th>Data upływu gwarancji</th>
+                        <th>Status</th>
+                        <th>Status operacyjny</th>
+                        <th>Maszyna nadrzędna</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -751,57 +617,8 @@
                     <tr>
                         <td>Wózek widłowy</td><td>WW-01</td><td>3001</td><td>Wydział maszyn</td><td>Magazyn</td><td>Linde</td><td>E16</td><td>2024-11-30</td><td>nieaktywny</td><td>Serwis</td><td>Robot B</td>
                     </tr>
-                    <tr><td>Tokarka precyzyjna</td><td>TP-03</td><td>3002</td><td>Wydział maszyn</td><td>Hala 3</td><td>Haas</td><td>ST-20Y</td><td>2026-02-10</td><td>aktywny</td><td>Operacyjna</td><td>Robot C</td></tr>
-                    <tr><td>Frezarka CNC</td><td>FC-04</td><td>3003</td><td>Wydział maszyn</td><td>Hala 3</td><td>DMG Mori</td><td>DMU 50</td><td>2025-07-18</td><td>aktywny</td><td>Operacyjna</td><td>Robot C</td></tr>
-                    <tr><td>Prasa hydrauliczna</td><td>PH-05</td><td>3004</td><td>Wydział pras</td><td>Hala 4</td><td>Schuler</td><td>PX 100</td><td>2024-12-01</td><td>aktywny</td><td>Rezerwa</td><td>Robot D</td></tr>
-                    <tr><td>Szlifierka</td><td>SZ-06</td><td>3005</td><td>Wydział maszyn</td><td>Hala 2</td><td>Okamoto</td><td>ACC-63</td><td>2027-03-22</td><td>aktywny</td><td>Operacyjna</td><td>Robot A</td></tr>
-                    <tr><td>Wiertarka kolumnowa</td><td>WK-07</td><td>3006</td><td>Wydział narzędzi</td><td>Hala 1</td><td>Bosch</td><td>GSM 25</td><td>2025-01-12</td><td>aktywny</td><td>Operacyjna</td><td>Robot B</td></tr>
-                    <tr><td>Piła taśmowa</td><td>PT-08</td><td>3007</td><td>Wydział maszyn</td><td>Hala 5</td><td>Bomar</td><td>Workline 410</td><td>2026-09-14</td><td>aktywny</td><td>Operacyjna</td><td>Robot C</td></tr>
-                    <tr><td>Laser tnący</td><td>LT-09</td><td>3008</td><td>Wydział blach</td><td>Hala 6</td><td>Trumpf</td><td>TruLaser 3030</td><td>2025-04-30</td><td>aktywny</td><td>Operacyjna</td><td>Robot D</td></tr>
-                    <tr><td>Giętarka</td><td>GT-10</td><td>3009</td><td>Wydział blach</td><td>Hala 6</td><td>Amada</td><td>HFE 3i</td><td>2026-11-20</td><td>aktywny</td><td>Operacyjna</td><td>Robot D</td></tr>
-                    <tr><td>Robot spawalniczy</td><td>RS-11</td><td>3010</td><td>Wydział spaw</td><td>Hala 7</td><td>Fanuc</td><td>ARC Mate 120i</td><td>2027-05-05</td><td>aktywny</td><td>Operacyjna</td><td>Robot E</td></tr>
-                    <tr><td>Robot malarski</td><td>RM-12</td><td>3011</td><td>Wydział lakierni</td><td>Hala 8</td><td>KUKA</td><td>KR AGILUS</td><td>2025-08-19</td><td>aktywny</td><td>Operacyjna</td><td>Robot F</td></tr>
-                    <tr><td>Pakowarka</td><td>PK-13</td><td>3012</td><td>Wydział pakowania</td><td>Hala 9</td><td>Multivac</td><td>T 300</td><td>2026-01-01</td><td>aktywny</td><td>Operacyjna</td><td>Robot G</td></tr>
-                    <tr><td>Etykieciarka</td><td>ET-14</td><td>3013</td><td>Wydział pakowania</td><td>Hala 9</td><td>Markem</td><td>9400</td><td>2025-06-06</td><td>aktywny</td><td>Operacyjna</td><td>Robot G</td></tr>
-                    <tr><td>Taśmociąg</td><td>TC-15</td><td>3014</td><td>Wydział logistyczny</td><td>Hala 10</td><td>Interroll</td><td>Light 60</td><td>2027-02-14</td><td>aktywny</td><td>Operacyjna</td><td>Robot H</td></tr>
-                    <tr><td>Sorter</td><td>SR-16</td><td>3015</td><td>Wydział logistyczny</td><td>Hala 10</td><td>Siemens</td><td>SRT-200</td><td>2026-10-01</td><td>aktywny</td><td>Operacyjna</td><td>Robot H</td></tr>
-                    <tr><td>Podnośnik nożycowy</td><td>PN-17</td><td>3016</td><td>Wydział utrzymania</td><td>Magazyn</td><td>JLG</td><td>3246ES</td><td>2025-03-03</td><td>aktywny</td><td>Rezerwa</td><td>Robot I</td></tr>
-                    <tr><td>Wózek AGV</td><td>AGV-18</td><td>3017</td><td>Wydział logistyczny</td><td>Hala 11</td><td>MiR</td><td>MiR200</td><td>2026-04-25</td><td>aktywny</td><td>Operacyjna</td><td>Robot H</td></tr>
-                    <tr><td>Chłodnia</td><td>CH-19</td><td>3018</td><td>Wydział spożywczy</td><td>Hala 12</td><td>Carrier</td><td>UltraCool</td><td>2025-09-09</td><td>aktywny</td><td>Operacyjna</td><td>Robot J</td></tr>
-                    <tr><td>Suszarnia</td><td>SS-20</td><td>3019</td><td>Wydział chemiczny</td><td>Hala 13</td><td>Bosch</td><td>DryX</td><td>2026-07-07</td><td>aktywny</td><td>Operacyjna</td><td>Robot K</td></tr>
-                    <tr><td>Pompa próżniowa</td><td>PP-21</td><td>3020</td><td>Wydział chemiczny</td><td>Hala 13</td><td>Busch</td><td>RA 0630</td><td>2025-12-24</td><td>aktywny</td><td>Operacyjna</td><td>Robot K</td></tr>
-                    <tr><td>Separator</td><td>SP-22</td><td>3021</td><td>Wydział chemiczny</td><td>Hala 13</td><td>GEA</td><td>Westfalia</td><td>2026-08-08</td><td>aktywny</td><td>Operacyjna</td><td>Robot K</td></tr>
-                    <tr><td>Mieszalnik</td><td>MS-23</td><td>3022</td><td>Wydział chemiczny</td><td>Hala 14</td><td>IKA</td><td>Mixomat</td><td>2025-05-15</td><td>aktywny</td><td>Operacyjna</td><td>Robot L</td></tr>
-                    <tr><td>Pakowarka próżniowa</td><td>PP-24</td><td>3023</td><td>Wydział spożywczy</td><td>Hala 12</td><td>Ulma</td><td>Atlantis</td><td>2026-12-12</td><td>aktywny</td><td>Operacyjna</td><td>Robot J</td></tr>
-                    <tr><td>Robot paletyzujący</td><td>RP-25</td><td>3024</td><td>Wydział logistyczny</td><td>Hala 10</td><td>ABB</td><td>IRB 460</td><td>2025-11-11</td><td>aktywny</td><td>Operacyjna</td><td>Robot H</td></tr>
-                    <tr><td>Skaner 3D</td><td>SK-26</td><td>3025</td><td>Wydział kontroli</td><td>Laboratorium</td><td>Zeiss</td><td>ATOS</td><td>2026-01-30</td><td>aktywny</td><td>Operacyjna</td><td>Robot M</td></tr>
-                    <tr><td>Koordynatograf</td><td>KO-27</td><td>3026</td><td>Wydział kontroli</td><td>Laboratorium</td><td>Hexagon</td><td>Global S</td><td>2025-10-02</td><td>aktywny</td><td>Operacyjna</td><td>Robot M</td></tr>
-                    <tr><td>Kompresor</td><td>KM-28</td><td>3027</td><td>Wydział utrzymania</td><td>Magazyn</td><td>Atlas Copco</td><td>GA 18</td><td>2026-06-16</td><td>aktywny</td><td>Operacyjna</td><td>Robot I</td></tr>
-                    <tr><td>Agregat prądotwórczy</td><td>AP-29</td><td>3028</td><td>Wydział utrzymania</td><td>Magazyn</td><td>Cummins</td><td>C90D5</td><td>2025-08-01</td><td>aktywny</td><td>Rezerwa</td><td>Robot I</td></tr>
-                    <tr><td>Wentylator przemysłowy</td><td>WP-30</td><td>3029</td><td>Wydział wentylacji</td><td>Hala 15</td><td>Systemair</td><td>DV 600</td><td>2026-09-09</td><td>aktywny</td><td>Operacyjna</td><td>Robot N</td></tr>
-                    <tr><td>Klimatyzator</td><td>KL-31</td><td>3030</td><td>Wydział wentylacji</td><td>Hala 15</td><td>Daikin</td><td>VRV IV</td><td>2025-04-18</td><td>aktywny</td><td>Operacyjna</td><td>Robot N</td></tr>
-                    <tr><td>Podajnik śrub</td><td>PS-32</td><td>3031</td><td>Wydział montażu</td><td>Hala 16</td><td>DEPRAG</td><td>AutoFeed</td><td>2026-10-25</td><td>aktywny</td><td>Operacyjna</td><td>Robot O</td></tr>
-                    <tr><td>Wkrętak elektryczny</td><td>WK-33</td><td>3032</td><td>Wydział montażu</td><td>Hala 16</td><td>Atlas Copco</td><td>Tensor</td><td>2025-07-07</td><td>aktywny</td><td>Operacyjna</td><td>Robot O</td></tr>
-                    <tr><td>Tester szczelności</td><td>TS-34</td><td>3033</td><td>Wydział montażu</td><td>Hala 16</td><td>ATEQ</td><td>F620</td><td>2026-03-19</td><td>aktywny</td><td>Operacyjna</td><td>Robot O</td></tr>
-                    <tr><td>Stanowisko testowe</td><td>ST-35</td><td>3034</td><td>Wydział montażu</td><td>Hala 16</td><td>Siemens</td><td>TestBench</td><td>2025-02-14</td><td>aktywny</td><td>Operacyjna</td><td>Robot O</td></tr>
-                    <tr><td>Myjka ultradźwiękowa</td><td>MU-36</td><td>3035</td><td>Wydział czyszczeń</td><td>Hala 17</td><td>Elma</td><td>X-tra 450</td><td>2026-11-11</td><td>aktywny</td><td>Operacyjna</td><td>Robot P</td></tr>
-                    <tr><td>Wanna odtłuszczająca</td><td>WO-37</td><td>3036</td><td>Wydział czyszczeń</td><td>Hala 17</td><td>Pero</td><td>R1</td><td>2025-05-05</td><td>aktywny</td><td>Operacyjna</td><td>Robot P</td></tr>
-                    <tr><td>Wyważarka</td><td>WW-38</td><td>3037</td><td>Wydział serwisu</td><td>Hala 18</td><td>Schenck</td><td>Pasio</td><td>2026-08-28</td><td>aktywny</td><td>Operacyjna</td><td>Robot Q</td></tr>
-                    <tr><td>Stanowisko kalibracji</td><td>SK-39</td><td>3038</td><td>Wydział serwisu</td><td>Hala 18</td><td>Keysight</td><td>CalPro</td><td>2025-09-30</td><td>aktywny</td><td>Operacyjna</td><td>Robot Q</td></tr>
-                    <tr><td>Drukarka 3D</td><td>D3-40</td><td>3039</td><td>Wydział prototypów</td><td>Lab 1</td><td>Ultimaker</td><td>S5</td><td>2026-07-17</td><td>aktywny</td><td>Operacyjna</td><td>Robot R</td></tr>
-                    <tr><td>Frezarka prototypowa</td><td>FP-41</td><td>3040</td><td>Wydział prototypów</td><td>Lab 1</td><td>Roland</td><td>MDX-50</td><td>2025-06-29</td><td>aktywny</td><td>Operacyjna</td><td>Robot R</td></tr>
-                    <tr><td>Stanowisko montażu SMT</td><td>SM-42</td><td>3041</td><td>Wydział elektroniki</td><td>Hala 19</td><td>Yamaha</td><td>YS12</td><td>2026-04-02</td><td>aktywny</td><td>Operacyjna</td><td>Robot S</td></tr>
-                    <tr><td>Reflow oven</td><td>RO-43</td><td>3042</td><td>Wydział elektroniki</td><td>Hala 19</td><td>Heller</td><td>1913MK5</td><td>2025-10-18</td><td>aktywny</td><td>Operacyjna</td><td>Robot S</td></tr>
-                    <tr><td>Tester ICT</td><td>TI-44</td><td>3043</td><td>Wydział elektroniki</td><td>Hala 19</td><td>Keysight</td><td>3070</td><td>2026-01-21</td><td>aktywny</td><td>Operacyjna</td><td>Robot S</td></tr>
-                    <tr><td>Linia malowania proszkowego</td><td>LP-45</td><td>3044</td><td>Wydział lakierni</td><td>Hala 8</td><td>Gema</td><td>OptiFlex</td><td>2025-12-05</td><td>aktywny</td><td>Operacyjna</td><td>Robot F</td></tr>
-                    <tr><td>Kompaktor</td><td>KP-46</td><td>3045</td><td>Wydział recyklingu</td><td>Hala 20</td><td>HSM</td><td>V-Press</td><td>2026-06-01</td><td>aktywny</td><td>Operacyjna</td><td>Robot T</td></tr>
-                    <tr><td>Zgrzewarka</td><td>ZG-47</td><td>3046</td><td>Wydział blach</td><td>Hala 6</td><td>Fronius</td><td>DeltaSpot</td><td>2025-11-27</td><td>aktywny</td><td>Operacyjna</td><td>Robot D</td></tr>
-                    <tr><td>Robot inspekcyjny</td><td>RI-48</td><td>3047</td><td>Wydział kontroli</td><td>Laboratorium</td><td>Universal</td><td>UR5</td><td>2026-02-08</td><td>aktywny</td><td>Operacyjna</td><td>Robot M</td></tr>
-                    <tr><td>Maszyna pakująca folię</td><td>PF-49</td><td>3048</td><td>Wydział pakowania</td><td>Hala 9</td><td>ULMA</td><td>FM 500</td><td>2025-08-13</td><td>aktywny</td><td>Operacyjna</td><td>Robot G</td></tr>
-                    <tr><td>Stanowisko testów ciśnieniowych</td><td>SC-50</td><td>3049</td><td>Wydział serwisu</td><td>Hala 18</td><td>WIKA</td><td>CPH6000</td><td>2026-09-03</td><td>aktywny</td><td>Operacyjna</td><td>Robot Q</td></tr>
                 </tbody>
             </table>
-            </div>
         </div>
     </div>
 
@@ -876,41 +693,6 @@ function adjustInventory(delta) {
 if (btnUp) btnUp.addEventListener("click", () => adjustInventory(1));
 if (btnDown) btnDown.addEventListener("click", () => adjustInventory(-1));
 
-// Sortowanie tabeli po kolumnach
-const tableEl = document.querySelector(".list-table");
-const sortButtons = Array.from(document.querySelectorAll(".sort-btn"));
-
-function sortTable(colIndex, dir) {
-    if (!tableEl) return;
-    const tbody = tableEl.querySelector("tbody");
-    if (!tbody) return;
-    const rows = Array.from(tbody.querySelectorAll("tr"));
-    rows.sort((a, b) => {
-        const av = (a.children[colIndex]?.textContent || "").trim().toLowerCase();
-        const bv = (b.children[colIndex]?.textContent || "").trim().toLowerCase();
-        const cmp = av.localeCompare(bv, "pl", { sensitivity: "base" });
-        return dir === "asc" ? cmp : -cmp;
-    });
-    rows.forEach(r => tbody.appendChild(r));
-}
-
-sortButtons.forEach(btn => {
-    btn.addEventListener("click", () => {
-        const currentDir = btn.getAttribute("data-dir") === "asc" ? "asc" : "desc";
-        const nextDir = currentDir === "asc" ? "desc" : "asc";
-        sortButtons.forEach(b => {
-            b.setAttribute("data-dir", "asc");
-            b.classList.remove("is-active");
-        });
-        btn.setAttribute("data-dir", nextDir);
-        btn.classList.add("is-active");
-        const img = btn.querySelector("img");
-        if (img) img.src = nextDir === "asc" ? "svg-folder/UpIcon.svg" : "svg-folder/DownIcon.svg";
-        const col = parseInt(btn.dataset.col, 10) || 0;
-        sortTable(col, nextDir);
-    });
-});
-
 // Date/Year nav buttons
 function attachNav(inputId, leftSel, rightSel, step = 1, isDate = false) {
     const input = document.getElementById(inputId);
@@ -940,211 +722,12 @@ attachNav("warrantyDate", ".date-nav-btn--left[aria-label='Poprzednia data']", "
 
 // Klikalne wiersze tabeli z utrzymaniem zaznaczenia
 const table = document.querySelector(".list-table tbody");
-let editingRow = null;
-const editBtnIcon = document.querySelector("#editCardBtn img");
-const editBtnLabel = document.querySelector("#editCardBtn span");
-
-function setEditButtonState(isEditing) {
-    if (!editBtnIcon || !editBtnLabel) return;
-    if (isEditing) {
-        editBtnIcon.src = "svg-folder/SaveIcon.svg";
-        editBtnLabel.textContent = "Zapisz";
-        editCardBtn.classList.add("content-btn-danger");
-        editCardBtn.classList.remove("content-btn-activate");
-    } else {
-        editBtnIcon.src = "svg-folder/EditIcon.svg";
-        editBtnLabel.textContent = "Edytuj";
-        editCardBtn.classList.remove("content-btn-danger");
-        editCardBtn.classList.add("content-btn-activate");
-    }
-}
-
-function makeControlTemplate(colIdx, val, idSuffix) {
-    switch (colIdx) {
-        case 0: { // Nazwa
-            return `
-                <select>
-                    <option ${val==="Maszyna skrawająca 01"?"selected":""}>Maszyna skrawająca 01</option>
-                    <option ${val==="Maszyna nieskrawająca 02"?"selected":""}>Maszyna nieskrawająca 02</option>
-                    <option ${val==="Robot 1"?"selected":""}>Robot 1</option>
-                    <option ${val==="Robot 2"?"selected":""}>Robot 2</option>
-                    <option ${val==="Wózek widłowy"?"selected":""}>Wózek widłowy</option>
-                </select>
-            `;
-        }
-        case 2: // Nr Inwetarzowy
-            return `
-                <div class="number-control" style="max-width: 140px;">
-                    <input class="number-input" type="number" value="${val}" />
-                    <button class="number-spin up" type="button" aria-label="Więcej">
-                        <img src="svg-folder/UpIcon.svg" alt="">
-                    </button>
-                    <button class="number-spin down" type="button" aria-label="Mniej">
-                        <img src="svg-folder/DownIcon.svg" alt="">
-                    </button>
-                </div>
-            `;
-        case 7: { // Data gwarancji
-            const id = `warranty-${idSuffix}`;
-            return `
-                <div class="date-nav-wrap date-nav-wrap--date">
-                    <button class="date-nav-btn date-nav-btn--left" type="button" aria-label="Poprzednia data">
-                        <img src="svg-folder/LeftIcon.svg" alt="">
-                    </button>
-                    <input id="${id}" type="date" class="date-nav-input" value="${val}" />
-                    <button class="date-nav-btn date-nav-btn--calendar" type="button" aria-label="Wybierz datę">
-                        <img src="svg-folder/CalendarIcon.svg" alt="">
-                    </button>
-                    <button class="date-nav-btn date-nav-btn--right" type="button" aria-label="Następna data">
-                        <img src="svg-folder/RightIcon.svg" alt="">
-                    </button>
-                </div>
-            `;
-        }
-        case 8: // Status
-            return `
-                <select class="status-select">
-                    <option value="aktywny" ${val.toLowerCase()==="aktywny"?"selected":""}>Aktywny</option>
-                    <option value="nieaktywny" ${val.toLowerCase()==="nieaktywny"?"selected":""}>Nieaktywny</option>
-                    <option value="usun" ${val.toLowerCase()==="usun"?"selected":""}>usuń</option>
-                </select>
-            `;
-        case 9: // Status operacyjny
-            return `
-                <select>
-                    <option ${val==="Zakupiona"?"selected":""}>Zakupiona</option>
-                    <option ${val==="Operacyjna"?"selected":""}>Operacyjna</option>
-                    <option ${val==="Rezerwa"?"selected":""}>Rezerwa</option>
-                    <option ${val==="Serwis"?"selected":""}>Serwis</option>
-                    <option ${val==="Wycofana"?"selected":""}>Wycofana</option>
-                </select>
-            `;
-        case 10: // Maszyna nadrzędna
-            return `
-                <select>
-                    <option ${val==="Robot A"?"selected":""}>Robot A</option>
-                    <option ${val==="Robot B"?"selected":""}>Robot B</option>
-                </select>
-            `;
-        default:
-            return `<input type="text" value="${val}">`;
-    }
-}
-
-function attachRowControls(row) {
-    row.querySelectorAll(".number-control").forEach(ctrl => {
-        const input = ctrl.querySelector(".number-input");
-        const up = ctrl.querySelector(".up");
-        const down = ctrl.querySelector(".down");
-        function shift(delta) {
-            if (!input) return;
-            const current = parseInt(input.value, 10) || 0;
-            input.value = current + delta;
-        }
-        if (up) up.addEventListener("click", () => shift(1));
-        if (down) down.addEventListener("click", () => shift(-1));
-    });
-
-    row.querySelectorAll(".date-nav-wrap").forEach(wrap => {
-        const input = wrap.querySelector("input[type='date']");
-        const left = wrap.querySelector(".date-nav-btn--left");
-        const right = wrap.querySelector(".date-nav-btn--right");
-        const calendar = wrap.querySelector(".date-nav-btn--calendar");
-        function shift(delta) {
-            if (!input) return;
-            const val = input.value || new Date().toISOString().slice(0,10);
-            const d = new Date(val);
-            if (isNaN(d)) return;
-            d.setDate(d.getDate() + delta);
-            input.value = d.toISOString().slice(0,10);
-        }
-        if (left) left.addEventListener("click", () => shift(-1));
-        if (right) right.addEventListener("click", () => shift(1));
-        if (calendar && input) {
-            calendar.addEventListener("click", () => input.showPicker ? input.showPicker() : input.focus());
-        }
-    });
-
-    row.querySelectorAll("select.status-select").forEach(sel => {
-        function applyStatusStyle() {
-            const val = sel.value.toLowerCase();
-            sel.classList.toggle("status-open", val === "aktywny");
-        }
-        sel.addEventListener("change", applyStatusStyle);
-        applyStatusStyle();
-    });
-}
-
-function toInputs(row) {
-    const cells = Array.from(row.children);
-    cells.forEach((cell, idx) => {
-        const val = cell.textContent.trim();
-        cell.innerHTML = makeControlTemplate(idx, val, `${Date.now()}-${idx}`);
-        const el = cell.querySelector("select, input");
-        if (el && el.tagName === "SELECT") {
-            Array.from(el.options).forEach(opt => {
-                if (opt.value.toLowerCase() === val.toLowerCase() || opt.textContent.toLowerCase() === val.toLowerCase()) {
-                    opt.selected = true;
-                }
-            });
-        } else if (el && el.type === "date" && !el.value) {
-            el.value = new Date().toISOString().slice(0,10);
-        }
-    });
-    row.classList.add("editing-row");
-    attachRowControls(row);
-}
-
-function toText(row) {
-    const cells = Array.from(row.children);
-    cells.forEach(cell => {
-        const control = cell.querySelector("input, select");
-        if (control) {
-            if (control.tagName === "SELECT") {
-                const sel = control;
-                const text = sel.options[sel.selectedIndex]?.textContent || "";
-                cell.textContent = text;
-            } else {
-                cell.textContent = control.value;
-            }
-        }
-    });
-    row.classList.remove("editing-row");
-}
-
-function startEditSelected() {
-    const selected = table?.querySelector("tr.is-selected");
-    if (!selected) return;
-    if (editingRow && editingRow !== selected) {
-        toText(editingRow);
-    }
-    toInputs(selected);
-    editingRow = selected;
-    setEditButtonState(true);
-}
-
-function saveEditingRow() {
-    if (!editingRow) return;
-    toText(editingRow);
-    editingRow = null;
-    setEditButtonState(false);
-}
-
 if (table) {
-    let lastClickTime = 0;
     table.addEventListener("click", (e) => {
         const row = e.target.closest("tr");
         if (!row) return;
-        const now = Date.now();
-        const isDouble = now - lastClickTime < 300;
-        lastClickTime = now;
         table.querySelectorAll("tr").forEach(r => r.classList.remove("is-selected"));
         row.classList.add("is-selected");
-        if (isDouble) {
-            if (!editingRow) {
-                window.location.href = "card.html";
-            }
-        }
     });
 }
 
@@ -1170,11 +753,7 @@ if (openCardBtn) {
 }
 if (editCardBtn) {
     editCardBtn.addEventListener("click", () => {
-        if (editingRow) {
-            saveEditingRow();
-        } else {
-            startEditSelected();
-        }
+        window.location.href = "card.html?edit=1";
     });
 }
 
