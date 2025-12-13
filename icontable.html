@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8" />
+    <title>Ikony – interaktywny podgląd</title>
+    <link rel="stylesheet" href="content.css" />
+    <style>
+        :root { --icon-gap: 8px; }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Open Sans", system-ui, sans-serif;
+        }
+
+        .page {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: var(--icon-gap);
+        }
+
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: var(--icon-gap);
+            flex-wrap: wrap;
+            font-family: "FrutigerNeue LTW1G Regular", "FrutigerNeue Light", system-ui, sans-serif;
+        }
+
+        .control-label {
+            font-weight: 700;
+            color: #1c2436;
+        }
+
+        .gap-control {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .gap-input {
+            width: 88px;
+            padding: 0 38px 0 10px;
+            border: 1px solid #d2d8e5;
+            border-radius: 8px;
+            background: #fff;
+            font-weight: 700;
+            text-align: center;
+            height: 32px;
+            line-height: 32px;
+            appearance: textfield;
+            -moz-appearance: textfield;
+        }
+
+        .gap-input::-webkit-inner-spin-button,
+        .gap-input::-webkit-outer-spin-button {
+            appearance: none;
+            margin: 0;
+        }
+
+        .gap-spin {
+            position: absolute;
+            right: 6px;
+            width: 24px;
+            height: 16px;
+            padding: 0;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gap-spin img {
+            width: 14px;
+            height: 14px;
+            display: block;
+        }
+
+        .gap-spin--up { top: 4px; }
+        .gap-spin--down { bottom: 4px; }
+
+        .icon-rows {
+            display: flex;
+            flex-direction: column;
+            gap: 24px; /* odstęp między rzędami */
+        }
+
+        .icon-row {
+            display: grid;
+            grid-auto-flow: column;
+            grid-auto-columns: max-content;
+            column-gap: var(--icon-gap); /* gap tylko w rzędzie */
+            align-items: center;
+        }
+
+        .icon-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            border: none;
+            border-radius: 4px;
+            background: transparent;
+            cursor: pointer;
+            padding: 0;
+            transition: transform .1s ease, background-color .15s ease;
+        }
+
+        .icon-btn:hover { background: rgba(0,0,0,0.05); }
+        .icon-btn:active { transform: scale(.97); box-shadow: 0 0 0 1px rgba(0,0,0,0.3); }
+
+        .icon-btn img {
+            width: 16px;
+            height: 16px;
+            display: block;
+            transition: opacity .15s ease;
+        }
+
+        .icon-btn:hover img { opacity: .6; } /* jak sidebar/topbar */
+
+        .icon-tile {
+            width: 16px;
+            height: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .footer {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: var(--icon-gap);
+        }
+
+        .footer-title {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -0.2px;
+            color: #0f1b2d;
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+    <div id="iconRows" class="icon-rows"></div>
+
+    <div class="footer">
+        <h3 class="footer-title">Test sąsiedztwa ikon</h3>
+        <div class="controls">
+            <span class="control-label">Gap (px):</span>
+            <div class="gap-control">
+                <input id="gapInput" class="gap-input" type="number" min="0" max="48" step="1" value="12" />
+                <button id="gapUp" class="gap-spin gap-spin--up" type="button" title="Zwiększ odstęp">
+                    <img src="svg-folder/UpIcon.svg" alt="up" />
+                </button>
+                <button id="gapDown" class="gap-spin gap-spin--down" type="button" title="Zmniejsz odstęp">
+                    <img src="svg-folder/DownIcon.svg" alt="down" />
+                </button>
+            </div>
+            <button id="shuffle" class="icon-btn" title="Wylosuj układ">
+                <img src="svg-folder/SortingIcon.svg" alt="shuffle" />
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+const ICONS = [
+  "5WhyIcon.svg","8DReportIcon.svg","BookmarksIcon.svg","CalendarIcon.svg",
+  "ChatIcon.svg","CompetencesIcon.svg","ComponentsIcon.svg","ContractorsIcon.svg",
+  "CostsSummaryIcon.svg","CustomersIcon.svg","DepartmentsIcon.svg",
+  "DescriptionFieldIcon.svg","DocumentsIcon.svg","EmployeesIcon.svg",
+  "EnclosurementAddIcon.svg","EnclosurementIcon.svg","ExcelIcon.svg",
+  "ExclamationIcon.svg","FileIcon.svg","HRIcon.svg","ImprovementIcon.svg",
+  "IshikawaIcon.svg","ListIcon.svg","LocationsIcon.svg","MachinesIcon.svg",
+  "MaintenanceIcon.svg","MiniCalendarIcon.svg","NotificationsIcon_mono.svg",
+  "OrganisationIcon.svg","PDFIcon.svg","PictureIcon.svg","PositionsIcon.svg",
+  "PrivateTaskIcon.svg","ProductionIcon.svg","ProgramIcon.svg","PromotIcon.svg",
+  "PurposeIcon.svg","QmsProcessesIcon.svg","QualityAlertIcon.svg",
+  "RootcauseIcon.svg","SettingsIcon.svg","SimpleSubtaskIcon.svg",
+  "SortingIcon.svg","SubtaskIcon.svg","SuppliersIcon.svg","TasksIcon.svg",
+  "TeamIcon.svg","TechnologyIcon.svg","UsersIcon.svg","ValidationIcon.svg",
+  "WorkstationsIcon.svg","xNotificationIcon.svg","xCalendarIcon.svg",
+  "xChatIcon.svg","xMyTasksIcon.svg","xSettingsIcon.svg","xAvatarIcon.svg"
+];
+
+const rowsContainer = document.getElementById("iconRows");
+const shuffleBtn = document.getElementById("shuffle");
+const gapInput = document.getElementById("gapInput");
+const gapUp = document.getElementById("gapUp");
+const gapDown = document.getElementById("gapDown");
+const ROW_MIN = 3;
+const ROW_MAX = 15;
+const TOTAL_ROWS = 10;
+
+function shuffle(list) {
+  const arr = [...list];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function render() {
+  rowsContainer.innerHTML = "";
+
+  const rowsConfig = [];
+  while (rowsConfig.length < TOTAL_ROWS) {
+    rowsConfig.push(Math.floor(Math.random() * (ROW_MAX - ROW_MIN + 1)) + ROW_MIN);
+  }
+
+  const neededIcons = rowsConfig.reduce((a, b) => a + b, 0);
+  const pool = [];
+  while (pool.length < neededIcons) {
+    pool.push(...shuffle(ICONS));
+  }
+  const iconPool = pool.slice(0, neededIcons);
+
+  let cursor = 0;
+  rowsConfig.forEach(len => {
+    const row = document.createElement("div");
+    row.className = "icon-row";
+
+    const slice = iconPool.slice(cursor, cursor + len);
+    cursor += len;
+
+    slice.forEach(name => {
+      const btn = document.createElement("button");
+      btn.className = "icon-btn";
+      btn.title = name.replace(".svg", "");
+
+      const img = document.createElement("img");
+      img.src = `svg-folder/${name}`;
+      img.alt = name;
+      img.className = "icon-tile";
+
+      btn.appendChild(img);
+      row.appendChild(btn);
+    });
+
+    rowsContainer.appendChild(row);
+  });
+}
+
+function applyGap(value) {
+  const gap = Math.max(0, Math.min(48, value));
+  rowsContainer.style.setProperty("--icon-gap", `${gap}px`);
+  gapInput.value = gap;
+}
+
+gapInput.addEventListener("input", () => applyGap(parseInt(gapInput.value, 10) || 0));
+gapUp.addEventListener("click", () => applyGap((parseInt(gapInput.value, 10) || 0) + 1));
+gapDown.addEventListener("click", () => applyGap((parseInt(gapInput.value, 10) || 0) - 1));
+shuffleBtn.addEventListener("click", render);
+render();
+applyGap(parseInt(gapInput.value, 10) || 12);
+</script>
+</body>
+</html>

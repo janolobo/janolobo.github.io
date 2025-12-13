@@ -1,0 +1,1891 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8" />
+    <title>Schemat maszyn — kompakt</title>
+    <link rel="stylesheet" href="content.css" />
+    <style>
+        :root {
+            --panel-radius: 8px;
+            --panel-border: 1px solid #c6c9d1;
+            --panel-bg: #fff;
+            --panel-text: #0f1b2d;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            padding: 12px;
+            background: #fff;
+            font-family: "FrutigerNeue Light", system-ui, sans-serif;
+            color: var(--panel-text);
+        }
+        .card-layout {
+            display: grid;
+            grid-template-rows: auto auto 1fr;
+            gap: 12px;
+        }
+        .cardheader-box {
+            background: #f5f6f8;
+            border: 1px solid #c6c9d1;
+            border-radius: 8px 8px 0 0;
+            padding: 12px 16px 10px;
+        }
+        .cardheader-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+        /* MENU CARD */
+        .menu {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            padding: 8px 0;
+        }
+
+        .menu-btn {
+            position: relative;
+            border: none;
+            background: transparent;
+            padding: 6px 0;
+            font: inherit;
+            font-weight: 700;
+            cursor: pointer;
+            color: #0f1b2d;
+        }
+
+        .menu-btn::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 4px;
+            background: transparent;
+            transition: background-color .15s ease;
+        }
+
+        .menu-btn:hover::after { background: #b0b0b0; }
+        .menu-btn.is-active::after { background: #000; }
+        .field { display: flex; flex-direction: column; gap: 6px; }
+        .button-bar { display: flex; align-items: center; gap: 8px; margin-top: 4px; }
+        .button-group { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .icon-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+        .content-btn-danger { background:#ffe5e5; border:1px solid #d22; color:#b00000; }
+        .icon-btn {
+            border: none;
+            background: transparent;
+            border-radius: 4px;
+            width: 24px;
+            height: 24px;
+            padding: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform .1s ease, background-color .15s ease;
+        }
+        .icon-btn:hover { background: rgba(0,0,0,0.05); }
+        .icon-btn:active { transform: scale(.97); box-shadow: 0 0 0 1px rgba(0,0,0,0.3); }
+        .icon-btn img {
+            width: 16px;
+            height: 16px;
+            display: block;
+            transition: opacity .15s ease;
+        }
+        .icon-btn:hover img { opacity: .6; }
+        .icon-divider {
+            width: 1px;
+            height: 24px;
+            background: #c6c9d1;
+        }
+        .search-input {
+            height: 32px;
+            padding: 6px 10px;
+            border: 1px solid #c6c9d1;
+            border-radius: 6px;
+            font-size: 13px;
+            min-width: 180px;
+        }
+        .menu-check {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font: inherit;
+            font-weight: 600;
+            color: #0f1b2d;
+        }
+        .menu-check input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            margin: 0;
+            appearance: checkbox;
+            -webkit-appearance: checkbox;
+            -moz-appearance: checkbox;
+            accent-color: #1f2937;
+            cursor: pointer;
+        }
+        .filter-checkbox {
+            width: 16px;
+            height: 16px;
+            margin: 0;
+            appearance: checkbox;
+            -webkit-appearance: checkbox;
+            -moz-appearance: checkbox;
+            accent-color: #1f2937;
+            cursor: pointer;
+        }
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(15,27,45,0.36);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            z-index: 1000;
+        }
+        .modal-backdrop.is-visible { display: flex; }
+        .modal {
+            background: #fff;
+            border: 1px solid #c6c9d1;
+            border-radius: 12px;
+            max-width: 480px;
+            width: 100%;
+            box-shadow: 0 12px 36px rgba(0,0,0,0.18);
+            padding: 16px;
+        }
+        .modal-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        .modal-title {
+            font-size: 16px;
+            font-weight: 800;
+            color: #0f1b2d;
+        }
+        .modal-close {
+            border: none;
+            background: transparent;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 4px;
+            line-height: 1;
+        }
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 8px 12px;
+        }
+
+        .panel {
+            position: relative;
+            background: var(--panel-bg);
+            border: var(--panel-border);
+            border-radius: var(--panel-radius);
+            min-height: 96px;
+            padding: 12px;
+        }
+        .panel-label {
+            position: absolute;
+            top: -10px;
+            left: 16px;
+            padding: 0 8px;
+            background: var(--panel-bg);
+            font-weight: 800;
+            font-size: 14px;
+            color: #444;
+        }
+        .panel-content { padding-top: 8px; }
+        /* Widok GiGanta (lista) */
+        .group-table {
+            border: 1px solid #d2d8e5;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #fff;
+            box-shadow: 0 6px 16px rgba(15,27,45,0.05);
+            margin-bottom: 12px;
+        }
+        .group-head {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: #f5f6f8;
+            border-bottom: 1px solid #d2d8e5;
+            cursor: pointer;
+        }
+        .group-thumb {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 1px solid #d2d8e5;
+        }
+        .group-title { font-size: 16px; font-weight: 800; color: #0f1b2d; }
+        .group-meta { font-size: 12px; color: #555; display: flex; flex-wrap: wrap; gap: 8px 12px; }
+        .badge-row { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; }
+        .badge {
+            padding: 6px 8px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            border: 1px solid #d7def1;
+            background: #eef2fb;
+            color: #0f1b2d;
+        }
+        .badge.status--active { background: rgba(60,140,255,0.15); border-color: rgba(60,140,255,0.25); color: #0c4a9a; }
+        .badge.status--inactive { background: rgba(255,65,65,0.15); border-color: rgba(255,65,65,0.25); color: #9a0c0c; }
+        .badge.status--service { background: rgba(255,165,70,0.18); border-color: rgba(255,165,70,0.3); color: #9a5a0c; }
+        .table-wrap { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        thead tr { background: #fafbfe; }
+        th, td { padding: 10px; border-bottom: 1px solid #eef1f6; text-align: left; }
+        tbody tr:hover { background: #f7f9ff; }
+        .thumb-mini { width: 36px; height: 36px; border-radius: 8px; object-fit: cover; border: 1px solid #d2d8e5; }
+        .giganta-row.is-selected,
+        .group-head.is-selected {
+            background: #dfe7ff;
+            box-shadow: inset 0 0 0 1px #9bb7ff;
+        }
+        .giganta-row.editing-row { background: #fff0f0; }
+        /* Widok Babelkowaty */
+        .bubble-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px;
+        }
+        .bubble-card {
+            border-radius: 14px;
+            box-shadow: 0 8px 18px rgba(15,27,45,0.08);
+            transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+            background: radial-gradient(circle at 20% 20%, #f5f8ff, #fff);
+            border: 1px solid #d2d8e5;
+        }
+        .bubble-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(15,27,45,0.12);
+        }
+        .bubble-card.is-selected {
+            border-color: #9bb7ff;
+            box-shadow: 0 0 0 1px #9bb7ff inset, 0 10px 22px rgba(15,27,45,0.12);
+        }
+        .bubble-card .card-head { gap: 10px; }
+        .bubble-card .thumb {
+            width: 64px;
+            height: 64px;
+            border-radius: 14px;
+            border: 1px solid #d2d8e5;
+        }
+        .bubble-card .title { font-size: 15px; }
+        .bubble-card .meta { font-size: 11px; }
+        .bubble-card .tags,
+        .bubble-card .pill-row { gap: 6px; }
+
+        .groups {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .group {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 12px;
+            align-items: start;
+        }
+        .parent-card,
+        .child-card {
+            border: 1px solid #d2d8e5;
+            border-radius: 10px;
+            background: #fff;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            box-shadow: 0 6px 16px rgba(15,27,45,0.05);
+        }
+        .is-selected {
+            border-color: #9bb7ff;
+            box-shadow: 0 0 0 1px #9bb7ff inset, 0 6px 16px rgba(15,27,45,0.08);
+        }
+        .is-editing .parent-card,
+        .is-editing .child-card {
+            border-color: #d22;
+            box-shadow: 0 0 0 1px rgba(210,34,34,0.35);
+        }
+        .card-head {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .thumb {
+            width: 56px;
+            height: 56px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 1px solid #d2d8e5;
+        }
+        .title {
+            font-size: 16px;
+            font-weight: 800;
+            color: #0f1b2d;
+        }
+        .meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 12px;
+            font-size: 12px;
+            color: #555;
+        }
+        .meta span { white-space: nowrap; }
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .tag {
+            padding: 6px 8px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            border: 1px solid rgba(0,0,0,0.08);
+            background: #f7f8fb;
+            color: #0f1b2d;
+        }
+        .tag.status--active { background: rgba(60,140,255,0.15); border-color: rgba(60,140,255,0.2); color: #0c4a9a; }
+        .tag.status--inactive { background: rgba(255,65,65,0.15); border-color: rgba(255,65,65,0.2); color: #9a0c0c; }
+        .tag.status--service { background: rgba(255,165,70,0.18); border-color: rgba(255,165,70,0.3); color: #9a5a0c; }
+        .pill.status--active { background: rgba(60,140,255,0.15); border-color: rgba(60,140,255,0.2); color: #0c4a9a; }
+        .pill.status--inactive { background: rgba(255,65,65,0.15); border-color: rgba(255,65,65,0.2); color: #9a0c0c; }
+        .pill.status--service { background: rgba(255,165,70,0.18); border-color: rgba(255,165,70,0.3); color: #9a5a0c; }
+
+        .children-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 10px;
+        }
+        .child-card .title { font-size: 14px; }
+        .child-card .meta { font-size: 11px; }
+        .pill-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .pill {
+            padding: 4px 8px;
+            border-radius: 12px;
+            background: #f0f3f8;
+            font-size: 11px;
+            color: #0f1b2d;
+            border: 1px solid #dce1ec;
+        }
+        .editing-card {
+            border: 1px solid rgba(210,34,34,0.6) !important;
+            box-shadow: 0 0 0 1px rgba(210,34,34,0.25);
+            background: #fff0f0;
+        }
+        .schema-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 10px 14px;
+            margin-top: 6px;
+        }
+        .schema-line {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            font-size: 13px;
+        }
+        .schema-line strong { font-size: 12px; color: #4a5565; }
+        /* Kontrolki jak w liście/kartach */
+        .number-control {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            width: 100%;
+            max-width: 180px;
+        }
+        .number-input {
+            width: 100%;
+            padding: 8px 40px 8px 10px;
+            border: 1px solid var(--frame-gray);
+            border-radius: 6px;
+            background: #fff;
+        }
+        .number-spin {
+            position: absolute;
+            right: 6px;
+            width: 24px;
+            height: 18px;
+            padding: 0;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .number-spin img { width: 14px; height: 14px; display: block; }
+        .number-spin.up { top: 6px; }
+        .number-spin.down { bottom: 6px; }
+
+        .date-nav-wrap {
+            position: relative;
+            display: inline-flex;
+            width: 220px;
+        }
+        .date-nav-input {
+            width: 100%;
+            padding: 8px 60px 8px 34px;
+            border: 1px solid var(--frame-gray);
+            border-radius: 6px;
+            background: #fff;
+            font: inherit;
+        }
+        .date-nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 24px;
+            border: none;
+            background: transparent;
+            padding: 0;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .date-nav-btn img { width: 16px; height: 16px; display: block; }
+        .date-nav-btn--left { left: 6px; }
+        .date-nav-btn--right { right: 6px; }
+        .date-nav-btn--calendar { right: 34px; }
+
+        .schema-info select,
+        .schema-info input[type="text"],
+        .schema-info input[type="number"],
+        .schema-info input[type="date"] {
+            border: 1px solid var(--frame-gray);
+            border-radius: 6px;
+            padding: 6px 10px;
+            font: inherit;
+            background: #fff;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("svg-folder/DownIcon.svg");
+            background-repeat: no-repeat;
+            background-position: right 8px center;
+            background-size: 12px;
+        }
+        .schema-info input[type="text"],
+        .schema-info input[type="number"],
+        .schema-info input[type="date"] {
+            background-image: none;
+        }
+        .pill.status--active { background: rgba(60,140,255,0.15); border-color: rgba(60,140,255,0.2); color: #0c4a9a; }
+        .pill.status--inactive { background: rgba(255,65,65,0.15); border-color: rgba(255,65,65,0.2); color: #9a0c0c; }
+        .pill.status--service { background: rgba(255,165,70,0.18); border-color: rgba(255,165,70,0.3); color: #9a5a0c; }
+    </style>
+</head>
+<body>
+<div class="card-layout">
+    <div class="cardheader-box">
+        <div class="panel-content">
+            <div class="cardheader-grid">
+                <div class="field">
+                    <label style="font-weight: 800; font-family: 'FrutigerNeue LTW1G Regular','FrutigerNeue Light',system-ui,sans-serif;">Schemat maszyn — kompakt</label>
+                    <div class="button-bar">
+                        <div class="button-group" style="margin-left:12px;">
+                            <button id="openCardBtnScheme" class="content-btn content-btn-activate" type="button" style="padding:6px 12px; display:flex; align-items:center; gap:8px;">
+                                <img src="svg-folder/CardViewIcon.svg" alt="" style="width:16px;height:16px;">
+                                <span>Otwórz</span>
+                            </button>
+                            <button id="editToggleBtn" class="content-btn content-btn-activate" type="button" style="padding:6px 12px; display:flex; align-items:center; gap:8px;">
+                                <img src="svg-folder/EditIcon.svg" alt="" style="width:16px;height:16px;">
+                                <span id="editToggleLabel">Edytuj</span>
+                            </button>
+                            <button id="duplicateMachineBtnScheme" class="content-btn content-btn-activate" type="button" style="padding:6px 12px; display:flex; align-items:center; gap:8px;">
+                                <img src="svg-folder/DuplicateIcon.svg" alt="" style="width:16px;height:16px;">
+                                <span>Duplikuj</span>
+                            </button>
+                            <button id="deleteMachineBtnScheme" class="content-btn content-btn-danger" type="button" style="padding:6px 12px; display:flex; align-items:center; gap:8px; background:#ffe5e5; border:1px solid #d22; color:#b00000;">
+                                <img src="svg-folder/DeleteIcon.svg" alt="" style="width:16px;height:16px;">
+                                <span>Usuń maszynę</span>
+                            </button>
+                            <span style="display:inline-block; width:1px; height:28px; background:#c6c9d1; margin:0 8px;"></span>
+                            <button id="addMachineBtnScheme" class="content-btn content-btn-add" type="button" style="padding:6px 12px; display:flex; align-items:center; gap:8px;">
+                                <img src="svg-folder/AddIcon.svg" alt="" style="width:16px;height:16px;">
+                                <span>Dodaj nową maszynę</span>
+                            </button>
+                        </div>
+                        <div class="icon-actions">
+                            <input id="schemaSearch" class="search-input" type="search" placeholder="Szukaj..." aria-label="Szukaj w schemacie">
+                            <button id="filterToggle" class="icon-btn" type="button" aria-label="Filtruj">
+                                <img src="svg-folder/FilterIcon.svg" alt="Filtruj">
+                            </button>
+                            <button id="settingsToggle" class="icon-btn" type="button" aria-label="Ustawienia kolumn">
+                                <img src="svg-folder/SettingsIcon.svg" alt="Ustawienia">
+                            </button>
+                            <span class="icon-divider" aria-hidden="true"></span>
+                            <button class="icon-btn" type="button" aria-label="Eksport do XLS">
+                                <img src="svg-folder/xExportXlsIcon.svg" alt="XLS">
+                            </button>
+                            <button class="icon-btn" type="button" aria-label="Eksport do PDF">
+                                <img src="svg-folder/xExportPdfIcon.svg" alt="PDF">
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="menu-box" style="padding:0 0 4px 0;">
+        <div class="menu" id="menuScheme">
+            <button class="menu-btn" data-name="Schemat kompakt">Schemat kompakt</button>
+            <button class="menu-btn" data-name="Schemat Babelkowaty">Schemat Babelkowaty</button>
+            <button class="menu-btn" data-name="Schemat GiGanta">Schemat GiGanta</button>
+        </div>
+    </div>
+
+        <div class="panel panel--tall">
+            <span class="panel-label">Schemat (kompakt)</span>
+            <div class="panel-content">
+                <div id="viewCompact">
+                    <div class="groups" id="groups"></div>
+                </div>
+                <div id="viewGiganta" style="display:none;">
+                <div id="tables"></div>
+                </div>
+                <div id="viewBubble" style="display:none;">
+                    <div class="bubble-grid" id="bubbleGrid"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div class="modal-backdrop" id="settingsModal">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+        <div class="modal-head">
+            <div class="modal-title" id="settingsTitle">Widoczne kolumny</div>
+            <button class="modal-close" type="button" aria-label="Zamknij" id="settingsClose">✕</button>
+        </div>
+        <div class="checkbox-grid">
+            <label class="menu-check"><input type="checkbox" checked />Nazwa</label>
+            <label class="menu-check"><input type="checkbox" checked />Skrót</label>
+            <label class="menu-check"><input type="checkbox" checked />Nr Inwetarzowy</label>
+            <label class="menu-check"><input type="checkbox" checked />Wydział</label>
+            <label class="menu-check"><input type="checkbox" checked />Lokalizacja</label>
+            <label class="menu-check"><input type="checkbox" checked />Producent</label>
+            <label class="menu-check"><input type="checkbox" checked />Model</label>
+            <label class="menu-check"><input type="checkbox" checked />Data upływu gwarancji</label>
+            <label class="menu-check"><input type="checkbox" checked />Status</label>
+            <label class="menu-check"><input type="checkbox" checked />Status operacyjny</label>
+            <label class="menu-check"><input type="checkbox" checked />Maszyna nadrzędna</label>
+        </div>
+    </div>
+</div>
+
+<div class="modal-backdrop" id="filterModal">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="filterTitle">
+        <div class="modal-head">
+            <div class="modal-title" id="filterTitle">Wyświetl maszyny:</div>
+            <button class="modal-close" type="button" aria-label="Zamknij" id="filterClose">✕</button>
+        </div>
+        <div class="checkbox-grid" style="margin-bottom:12px;">
+            <label class="menu-check"><input type="checkbox" class="filter-checkbox" />Aktywne</label>
+            <label class="menu-check"><input type="checkbox" class="filter-checkbox" />Nieaktywne</label>
+            <label class="menu-check"><input type="checkbox" class="filter-checkbox" />Operacyjne</label>
+            <label class="menu-check"><input type="checkbox" class="filter-checkbox" />Wycofane</label>
+            <label class="menu-check"><input type="checkbox" class="filter-checkbox" />Tylko pod moim nadzorem</label>
+            <label class="menu-check"><input type="checkbox" class="filter-checkbox" />W serwisie</label>
+            <label class="menu-check"><input type="checkbox" class="filter-checkbox" />Zepsute</label>
+            <label class="menu-check"><input type="checkbox" class="filter-checkbox" />Do wyrzucenia</label>
+            <label class="menu-check"><input type="checkbox" class="filter-checkbox" />Bez zdjęć</label>
+            <label class="menu-check"><input type="checkbox" class="filter-checkbox" />Po gwarancji</label>
+            <label class="menu-check"><input type="checkbox" class="filter-checkbox" />W Leasingu</label>
+        </div>
+        <div class="field" style="margin-bottom:10px;">
+            <label style="display:flex; align-items:center; gap:8px;">
+                <input type="checkbox" class="filter-checkbox" />
+                <span>Powiązane z zadaniem:</span>
+            </label>
+            <select class="status-select">
+                <option>Zadanie A</option>
+                <option>Zadanie B</option>
+                <option>Zadanie C</option>
+            </select>
+        </div>
+        <div class="field" style="margin-bottom:10px;">
+            <label style="display:flex; align-items:center; gap:8px;">
+                <input type="checkbox" class="filter-checkbox" />
+                <span>Odpowiedzialny:</span>
+            </label>
+            <select class="status-select">
+                <option>Ja</option>
+                <option>Jan</option>
+                <option>Janek</option>
+            </select>
+        </div>
+        <div class="field">
+            <label style="display:flex; align-items:center; gap:8px;">
+                <input type="checkbox" class="filter-checkbox" />
+                <span>Z etykietą:</span>
+            </label>
+            <select class="status-select">
+                <option>E1</option>
+                <option>E2</option>
+                <option>E3</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<script>
+const groups = [
+    {
+        parent: {
+            name: "Robot A",
+            short: "RB-01",
+            inv: "2001",
+            dept: "Wydział robotów",
+            loc: "Hala 1",
+            maker: "ABB",
+            model: "IRB 6700",
+            warranty: "2026-03-05",
+            status: "aktywny",
+            op: "Operacyjna",
+            thumb: "pictures/m3_thumb.jpg"
+        },
+        children: [
+            { name: "Maszyna skrawająca 01", short:"MS-01", inv:"1001", dept:"Wydział maszyn", loc:"Hala 1", maker:"Mazak", model:"Integrex i-200", warranty:"2025-12-31", status:"aktywny", op:"Operacyjna", parent:"Robot A", thumb:"pictures/m1_thumb.jpg" },
+            { name: "Robot 1", short:"RB-01", inv:"2001", dept:"Wydział robotów", loc:"Hala 1", maker:"ABB", model:"IRB 6700", warranty:"2026-03-05", status:"aktywny", op:"Operacyjna", parent:"Robot A", thumb:"pictures/m3_thumb.jpg" }
+        ]
+    },
+    {
+        parent: {
+            name: "Robot B",
+            short: "RB-02",
+            inv: "2002",
+            dept: "Wydział robotów",
+            loc: "Hala 2",
+            maker: "Fanuc",
+            model: "M-20iA",
+            warranty: "2025-06-20",
+            status: "aktywny",
+            op: "Operacyjna",
+            thumb: "pictures/m4_thumb.jpg"
+        },
+        children: [
+            { name: "Maszyna nieskrawająca 02", short:"MN-02", inv:"1002", dept:"Wydział robotów", loc:"Hala 2", maker:"KUKA", model:"KR 10", warranty:"2024-09-15", status:"aktywny", op:"Operacyjna", parent:"Robot B", thumb:"pictures/m2_thumb.jpg" },
+            { name: "Robot 2", short:"RB-02", inv:"2002", dept:"Wydział robotów", loc:"Hala 2", maker:"Fanuc", model:"M-20iA", warranty:"2025-06-20", status:"aktywny", op:"Operacyjna", parent:"Robot B", thumb:"pictures/m4_thumb.jpg" },
+            { name: "Wózek widłowy", short:"WW-01", inv:"3001", dept:"Wydział maszyn", loc:"Magazyn", maker:"Linde", model:"E16", warranty:"2024-11-30", status:"nieaktywny", op:"Serwis", parent:"Robot B", thumb:"pictures/m5_thumb.jpg" }
+        ]
+    }
+];
+
+let currentView = "compact";
+const viewCompact = document.getElementById("viewCompact");
+const viewGiganta = document.getElementById("viewGiganta");
+const tablesWrap = document.getElementById("tables");
+const viewBubble = document.getElementById("viewBubble");
+const bubbleGrid = document.getElementById("bubbleGrid");
+
+// Menu aktywacji zakładek (trzy opcje)
+const menuScheme = document.getElementById("menuScheme");
+if (menuScheme) {
+    const buttons = Array.from(menuScheme.querySelectorAll(".menu-btn"));
+    function activate(btn) {
+        buttons.forEach(b => b.classList.remove("is-active"));
+        btn.classList.add("is-active");
+        const name = btn.dataset.name || "";
+        const lower = name.toLowerCase();
+        if (lower.includes("giganta")) switchView("giganta");
+        else if (lower.includes("babel")) switchView("bubble");
+        else switchView("compact");
+    }
+    buttons.forEach(btn => {
+        btn.addEventListener("click", () => activate(btn));
+    });
+    if (buttons.length) activate(buttons[0]);
+}
+
+function formatDisplayDate(value) {
+    if (!value) return "dd.mm.rrrr";
+    const parsed = new Date(value);
+    if (!isNaN(parsed)) {
+        const d = String(parsed.getDate()).padStart(2, "0");
+        const m = String(parsed.getMonth() + 1).padStart(2, "0");
+        const y = parsed.getFullYear();
+        return `${d}.${m}.${y}`;
+    }
+    const parts = value.split("-");
+    if (parts.length === 3 && parts[0].length === 4) {
+        return `${parts[2]}.${parts[1]}.${parts[0]}`;
+    }
+    return value;
+}
+
+function escapeRegex(str) {
+    return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function makeUniqueName(baseName, existingNames) {
+    const cleanBase = baseName.replace(/\s*\(kopia\s*\d+\)$/i, "").trim() || "Nowa maszyna";
+    let max = 0;
+    const re = new RegExp(`^${escapeRegex(cleanBase)}\\s*\\(kopia\\s*(\\d+)\\)$`, "i");
+    existingNames.forEach(n => {
+        const m = n.match(re);
+        if (m) max = Math.max(max, parseInt(m[1], 10) || 0);
+    });
+    return `${cleanBase} (kopia ${max + 1})`;
+}
+
+function collectDataFromCompact() {
+    const groupEls = Array.from(document.querySelectorAll(".group"));
+    return groupEls.map(g => {
+        const parent = g.querySelector(".parent-card");
+        const children = Array.from(g.querySelectorAll(".child-card"));
+        const parentData = getCardData(parent) || {};
+        const childData = children.map(ch => getCardData(ch) || {});
+        return { parent: parentData, children: childData };
+    });
+}
+
+function renderGigantaGroups(dataArr) {
+    if (!tablesWrap) return;
+    const html = dataArr.map(item => {
+        const parent = item.parent;
+        const rows = item.children.map(ch => `
+            <tr class="giganta-row" data-type="child" data-name="${ch.name}" data-parent="${ch.parent}" data-short="${ch.short}" data-inv="${ch.inv}" data-dept="${ch.dept}" data-loc="${ch.loc}" data-maker="${ch.maker}" data-model="${ch.model}" data-warranty="${ch.warranty}" data-status="${ch.status}" data-op="${ch.op}" data-thumb="${ch.thumb}">
+                <td><img class="thumb-mini" src="${ch.thumb}" alt="${ch.name}"></td>
+                <td>${ch.name}</td>
+                <td>${ch.short}</td>
+                <td>${ch.inv}</td>
+                <td>${ch.dept}</td>
+                <td>${ch.loc}</td>
+                <td>${ch.maker} ${ch.model}</td>
+                <td>${formatDisplayDate(ch.warranty)}</td>
+                <td><span class="status-pill ${statusClass(ch.status)}">${ch.status}</span></td>
+                <td><span class="tag">${ch.op}</span></td>
+                <td>${ch.parent || "-"}</td>
+            </tr>
+        `).join("");
+
+        return `
+            <div class="group-table">
+                <div class="group-head giganta-parent" data-type="parent" data-name="${parent.name}" data-short="${parent.short}" data-inv="${parent.inv}" data-dept="${parent.dept}" data-loc="${parent.loc}" data-maker="${parent.maker}" data-model="${parent.model}" data-warranty="${parent.warranty}" data-status="${parent.status}" data-op="${parent.op}" data-thumb="${parent.thumb}">
+                    <img class="group-thumb" src="${parent.thumb}" alt="${parent.name}">
+                    <div>
+                        <div class="group-title">${parent.name}</div>
+                        <div class="group-meta">
+                            <span>${parent.short}</span>
+                            <span>Inv: ${parent.inv}</span>
+                            <span>${parent.dept}</span>
+                            <span>${parent.loc}</span>
+                            <span>${parent.maker} ${parent.model}</span>
+                            <span>Gwarancja: ${formatDisplayDate(parent.warranty)}</span>
+                        </div>
+                    </div>
+                    <div class="badge-row">
+                        <span class="badge ${statusClass(parent.status)}">${parent.status}</span>
+                        <span class="badge">${parent.op}</span>
+                    </div>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Nazwa</th>
+                                <th>Skrót</th>
+                                <th>Inv</th>
+                                <th>Wydział</th>
+                                <th>Lokalizacja</th>
+                                <th>Producent / model</th>
+                                <th>Gwarancja</th>
+                                <th>Status</th>
+                                <th>Operacyjny</th>
+                                <th>Nadrzędna</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${rows}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        `;
+    }).join("");
+    tablesWrap.innerHTML = html;
+    attachGigantaSelection();
+}
+
+function switchView(view) {
+    currentView = view;
+    if (view === "giganta") {
+        const data = collectDataFromCompact();
+        renderGigantaGroups(data);
+        if (viewCompact) viewCompact.style.display = "none";
+        if (viewBubble) viewBubble.style.display = "none";
+        if (viewGiganta) viewGiganta.style.display = "block";
+    } else if (view === "bubble") {
+        const data = collectDataFromCompact();
+        renderBubbleCards(data);
+        if (viewCompact) viewCompact.style.display = "none";
+        if (viewGiganta) viewGiganta.style.display = "none";
+        if (viewBubble) viewBubble.style.display = "block";
+    } else {
+        if (viewCompact) viewCompact.style.display = "block";
+        if (viewGiganta) viewGiganta.style.display = "none";
+        if (viewBubble) viewBubble.style.display = "none";
+    }
+}
+
+function statusClass(status) {
+    const val = (status || "").toLowerCase();
+    if (val.includes("nieaktywn")) return "status--inactive";
+    if (val.includes("serwis") || val.includes("rezerwa") || val.includes("wycof")) return "status--service";
+    return "status--active";
+}
+
+function renderGroup(group) {
+    const parent = group.parent;
+    const childCards = group.children.map(ch => `
+        <div class="schema-card child-card"
+             data-type="child"
+             data-name="${ch.name}"
+             data-short="${ch.short}"
+             data-inv="${ch.inv}"
+             data-dept="${ch.dept}"
+             data-loc="${ch.loc}"
+             data-maker="${ch.maker}"
+             data-model="${ch.model}"
+             data-warranty="${ch.warranty}"
+             data-status="${ch.status}"
+             data-op="${ch.op}"
+             data-parent="${ch.parent}"
+             data-thumb="${ch.thumb}">
+            <div class="card-head">
+                <img class="thumb" src="${ch.thumb}" alt="${ch.name}">
+                <div>
+                    <div class="title">${ch.name}</div>
+                    <div class="meta">
+                        <span>${ch.short}</span>
+                        <span>Inv: ${ch.inv}</span>
+                        <span>${ch.dept}</span>
+                        <span>${ch.loc}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="pill-row">
+                <span class="pill">${ch.maker} ${ch.model}</span>
+                <span class="pill">Gwarancja: ${formatDisplayDate(ch.warranty)}</span>
+                <span class="pill ${statusClass(ch.status)}">${ch.status}</span>
+                <span class="pill">${ch.op}</span>
+                <span class="pill">Nadrzędna: ${ch.parent}</span>
+            </div>
+        </div>
+    `).join("");
+
+    return `
+        <div class="group">
+            <div class="schema-card parent-card"
+                 data-type="parent"
+                 data-name="${parent.name}"
+                 data-short="${parent.short}"
+                 data-inv="${parent.inv}"
+                 data-dept="${parent.dept}"
+                 data-loc="${parent.loc}"
+                 data-maker="${parent.maker}"
+                 data-model="${parent.model}"
+                 data-warranty="${parent.warranty}"
+                 data-status="${parent.status}"
+                 data-op="${parent.op}"
+                 data-thumb="${parent.thumb}">
+                <div class="card-head">
+                    <img class="thumb" src="${parent.thumb}" alt="${parent.name}">
+                    <div>
+                        <div class="title">${parent.name}</div>
+                        <div class="meta">
+                            <span>${parent.short}</span>
+                            <span>Inv: ${parent.inv}</span>
+                            <span>${parent.dept}</span>
+                            <span>${parent.loc}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="tags">
+                    <span class="tag ${statusClass(parent.status)}">${parent.status}</span>
+                    <span class="tag">${parent.op}</span>
+                    <span class="tag">${parent.maker} ${parent.model}</span>
+                    <span class="tag">Gwarancja: ${formatDisplayDate(parent.warranty)}</span>
+                </div>
+            </div>
+            <div class="children-grid">${childCards}</div>
+        </div>
+    `;
+}
+
+const groupsWrap = document.getElementById("groups");
+if (groupsWrap) {
+    groupsWrap.innerHTML = groups.map(renderGroup).join("");
+}
+
+function renderBubbleCards(dataArr) {
+    if (!bubbleGrid) return;
+    const items = [];
+    dataArr.forEach(g => {
+        items.push({ ...g.parent, type: "parent" });
+        g.children.forEach(ch => items.push({ ...ch, type: "child" }));
+    });
+    bubbleGrid.innerHTML = items.map(item => `
+        <div class="schema-card bubble-card ${item.type === "parent" ? "parent-card" : "child-card"}"
+             data-type="${item.type}"
+             data-name="${item.name}"
+             data-short="${item.short}"
+             data-inv="${item.inv}"
+             data-dept="${item.dept}"
+             data-loc="${item.loc}"
+             data-maker="${item.maker}"
+             data-model="${item.model}"
+             data-warranty="${item.warranty}"
+             data-status="${item.status}"
+             data-op="${item.op}"
+             data-parent="${item.parent || ""}"
+             data-thumb="${item.thumb}">
+            ${renderCardView(item)}
+        </div>
+    `).join("");
+    attachSelection();
+}
+
+// Aktywacje i tryb edycji + logika przycisków jak w oryginalnym scheme.html
+const parentCards = () => Array.from(document.querySelectorAll(".parent-card"));
+const childCards = () => Array.from(document.querySelectorAll(".child-card"));
+
+function clearSelection() {
+    parentCards().forEach(c => c.classList.remove("is-selected"));
+    childCards().forEach(c => c.classList.remove("is-selected"));
+}
+
+function attachCardSelection(card) {
+    if (!card) return;
+    card.onclick = () => {
+        clearSelection();
+        card.classList.add("is-selected");
+    };
+}
+
+function attachSelection() {
+    parentCards().forEach(attachCardSelection);
+    childCards().forEach(attachCardSelection);
+}
+
+attachSelection();
+
+// Wybór w widoku GiGanta
+let editingRowGiganta = null;
+
+function attachGigantaSelection() {
+    const rows = Array.from(document.querySelectorAll("#viewGiganta .giganta-row"));
+    const parents = Array.from(document.querySelectorAll("#viewGiganta .giganta-parent"));
+    function deselectAll() {
+        rows.forEach(r => r.classList.remove("is-selected"));
+        parents.forEach(p => p.classList.remove("is-selected"));
+    }
+    rows.forEach(r => {
+        r.onclick = () => {
+            deselectAll();
+            r.classList.add("is-selected");
+        };
+    });
+    parents.forEach(p => {
+        p.onclick = () => {
+            deselectAll();
+            p.classList.add("is-selected");
+        };
+    });
+}
+
+function getSelectedGigantaRow() {
+    return document.querySelector("#viewGiganta .giganta-row.is-selected");
+}
+function getSelectedGigantaParent() {
+    return document.querySelector("#viewGiganta .giganta-parent.is-selected");
+}
+
+function makeGigantaControl(idx, val, row) {
+    switch (idx) {
+        case 1: // nazwa
+            return `<input type="text" value="${val}">`;
+        case 2: // skrót
+        case 3: // inv
+        case 4: // dept
+        case 5: // loc
+            return `<input type="text" value="${val}">`;
+        case 6: { // maker/model
+            const [maker = "", model = ""] = (val || "").split(" ");
+            return `<input type="text" value="${val}">`;
+        }
+        case 7: { // warranty
+            return `<input type="date" class="date-nav-input" value="${row?.dataset.warranty || ""}" placeholder="dd.mm.rrrr">`;
+        }
+        case 8: { // status
+            return `
+                <select>
+                    <option value="aktywny" ${val.toLowerCase()==="aktywny"?"selected":""}>aktywny</option>
+                    <option value="nieaktywny" ${val.toLowerCase()==="nieaktywny"?"selected":""}>nieaktywny</option>
+                    <option value="serwis" ${val.toLowerCase()==="serwis"?"selected":""}>serwis</option>
+                </select>
+            `;
+        }
+        case 9: { // op
+            return `
+                <select>
+                    <option ${val==="Operacyjna"?"selected":""}>Operacyjna</option>
+                    <option ${val==="Rezerwa"?"selected":""}>Rezerwa</option>
+                    <option ${val==="Serwis"?"selected":""}>Serwis</option>
+                    <option ${val==="Wycofana"?"selected":""}>Wycofana</option>
+                </select>
+            `;
+        }
+        case 10: { // parent
+            const parents = Array.from(document.querySelectorAll(".giganta-parent")).map(p => p.dataset.name || "");
+            const opts = parents.map(p => `<option ${p===val?"selected":""}>${p}</option>`).join("");
+            return `<select>${opts}</select>`;
+        }
+        default:
+            return val;
+    }
+}
+
+function gigantaParentToInputs(parentEl) {
+    if (!parentEl) return;
+    const name = parentEl.dataset.name || "";
+    const short = parentEl.dataset.short || "";
+    const inv = parentEl.dataset.inv || "";
+    const dept = parentEl.dataset.dept || "";
+    const loc = parentEl.dataset.loc || "";
+    const maker = parentEl.dataset.maker || "";
+    const model = parentEl.dataset.model || "";
+    const warranty = parentEl.dataset.warranty || "";
+    const status = parentEl.dataset.status || "";
+    const op = parentEl.dataset.op || "";
+    parentEl.dataset.prevName = name;
+    parentEl.innerHTML = `
+        <img class="group-thumb" src="${parentEl.dataset.thumb || "pictures/m1_thumb.jpg"}" alt="${name}">
+        <div>
+            <div class="group-title">Edytuj maszynę nadrzędną</div>
+            <div class="group-meta">
+                <span>${makeGigantaParentControl("name", name)}</span>
+                <span>${makeGigantaParentControl("short", short)}</span>
+                <span>${makeGigantaParentControl("inv", inv)}</span>
+                <span>${makeGigantaParentControl("dept", dept)}</span>
+                <span>${makeGigantaParentControl("loc", loc)}</span>
+                <span>${makeGigantaParentControl("maker", maker)} ${makeGigantaParentControl("model", model)}</span>
+                <span>${makeGigantaParentControl("warranty", warranty)}</span>
+                <span>Status: ${makeGigantaParentControl("status", status)}</span>
+                <span>Operacyjny: ${makeGigantaParentControl("op", op)}</span>
+            </div>
+        </div>
+        <div class="badge-row">
+            <span class="badge">${status}</span>
+            <span class="badge">${op}</span>
+        </div>
+    `;
+    parentEl.classList.add("editing-row");
+    document.body.classList.add("is-editing");
+    editingRowGiganta = parentEl;
+}
+
+function syncCompactParentFromGiganta(data, prevName) {
+    const card = document.querySelector(`.schema-card.parent-card[data-name="${prevName}"]`);
+    if (!card) return;
+    Object.keys(data).forEach(k => { card.dataset[k] = data[k]; });
+    card.innerHTML = renderCardView(data);
+    attachCardSelection(card);
+    attachSelection();
+}
+
+function gigantaParentToText(parentEl) {
+    if (!parentEl) return;
+    const inputs = Array.from(parentEl.querySelectorAll("input, select"));
+    const data = {
+        name: parentEl.dataset.name || "",
+        short: parentEl.dataset.short || "",
+        inv: parentEl.dataset.inv || "",
+        dept: parentEl.dataset.dept || "",
+        loc: parentEl.dataset.loc || "",
+        maker: parentEl.dataset.maker || "",
+        model: parentEl.dataset.model || "",
+        warranty: parentEl.dataset.warranty || "",
+        status: parentEl.dataset.status || "",
+        op: parentEl.dataset.op || "",
+        thumb: parentEl.dataset.thumb || ""
+    };
+    inputs.forEach(inp => {
+        const val = inp.value;
+        switch (inp.parentElement?.textContent?.trim()?.toLowerCase().split(":")[0]) {
+            default:
+                break;
+        }
+        const label = inp.parentElement?.textContent || "";
+        if (label.includes("Status:")) data.status = val;
+        else if (label.includes("Operacyjny")) data.op = val;
+    });
+    // map by index order
+    const mapped = inputs.map(i => i.value);
+    data.name = mapped[0] || data.name;
+    data.short = mapped[1] || data.short;
+    data.inv = mapped[2] || data.inv;
+    data.dept = mapped[3] || data.dept;
+    data.loc = mapped[4] || data.loc;
+    data.maker = mapped[5] || data.maker;
+    data.model = mapped[6] || data.model;
+    data.warranty = mapped[7] || data.warranty;
+    data.status = mapped[8] || data.status;
+    data.op = mapped[9] || data.op;
+
+    parentEl.dataset.name = data.name;
+    parentEl.dataset.short = data.short;
+    parentEl.dataset.inv = data.inv;
+    parentEl.dataset.dept = data.dept;
+    parentEl.dataset.loc = data.loc;
+    parentEl.dataset.maker = data.maker;
+    parentEl.dataset.model = data.model;
+    parentEl.dataset.warranty = data.warranty;
+    parentEl.dataset.status = data.status;
+    parentEl.dataset.op = data.op;
+
+    parentEl.innerHTML = `
+        <img class="group-thumb" src="${data.thumb}" alt="${data.name}">
+        <div>
+            <div class="group-title">${data.name}</div>
+            <div class="group-meta">
+                <span>${data.short}</span>
+                <span>Inv: ${data.inv}</span>
+                <span>${data.dept}</span>
+                <span>${data.loc}</span>
+                <span>${data.maker} ${data.model}</span>
+                <span>Gwarancja: ${formatDisplayDate(data.warranty)}</span>
+            </div>
+        </div>
+        <div class="badge-row">
+            <span class="badge ${statusClass(data.status)}">${data.status}</span>
+            <span class="badge">${data.op}</span>
+        </div>
+    `;
+    parentEl.classList.remove("editing-row");
+    document.body.classList.remove("is-editing");
+    const prevName = parentEl.dataset.prevName || data.name;
+    syncCompactParentFromGiganta(data, prevName);
+    parentEl.dataset.prevName = "";
+    editingRowGiganta = null;
+}
+function makeGigantaParentControl(idx, val) {
+    switch (idx) {
+        case "name": return `<input type="text" value="${val}">`;
+        case "short": return `<input type="text" value="${val}">`;
+        case "inv": return `<input type="text" value="${val}">`;
+        case "dept": return `<input type="text" value="${val}">`;
+        case "loc": return `<input type="text" value="${val}">`;
+        case "maker": return `<input type="text" value="${val}">`;
+        case "model": return `<input type="text" value="${val}">`;
+        case "warranty": return `<input type="date" class="date-nav-input" value="${val}" placeholder="dd.mm.rrrr">`;
+        case "status":
+            return `
+                <select>
+                    <option value="aktywny" ${val.toLowerCase()==="aktywny"?"selected":""}>aktywny</option>
+                    <option value="nieaktywny" ${val.toLowerCase()==="nieaktywny"?"selected":""}>nieaktywny</option>
+                    <option value="serwis" ${val.toLowerCase()==="serwis"?"selected":""}>serwis</option>
+                </select>
+            `;
+        case "op":
+            return `
+                <select>
+                    <option ${val==="Operacyjna"?"selected":""}>Operacyjna</option>
+                    <option ${val==="Rezerwa"?"selected":""}>Rezerwa</option>
+                    <option ${val==="Serwis"?"selected":""}>Serwis</option>
+                    <option ${val==="Wycofana"?"selected":""}>Wycofana</option>
+                </select>
+            `;
+        default:
+            return val;
+    }
+}
+
+function gigantaRowToInputs(row) {
+    if (!row) return;
+    row.dataset.prevName = row.dataset.name || "";
+    Array.from(row.children).forEach((cell, idx) => {
+        if (idx === 0) return;
+        const val = cell.textContent.trim();
+        cell.innerHTML = makeGigantaControl(idx, val, row);
+    });
+    row.classList.add("editing-row");
+    document.body.classList.add("is-editing");
+    editingRowGiganta = row;
+}
+
+function updateCompactCardFromGiganta(data, prevName) {
+    const card = document.querySelector(`.schema-card.child-card[data-name="${prevName}"]`);
+    if (!card) return;
+    Object.keys(data).forEach(k => { card.dataset[k] = data[k]; });
+    card.innerHTML = renderCardView(data);
+    attachCardSelection(card);
+    attachSelection();
+}
+
+function gigantaRowToText(row) {
+    if (!row) return;
+    const cells = Array.from(row.children);
+    const data = {
+        name: "",
+        short: "",
+        inv: "",
+        dept: "",
+        loc: "",
+        maker: "",
+        model: "",
+        warranty: row.dataset.warranty || "",
+        status: row.dataset.status || "",
+        op: row.dataset.op || "",
+        parent: row.dataset.parent || "",
+        thumb: row.dataset.thumb || ""
+    };
+    cells.forEach((cell, idx) => {
+        const control = cell.querySelector("input, select");
+        if (!control || idx === 0) return;
+        let value = "";
+        if (control.tagName === "SELECT") {
+            value = control.value;
+        } else if (control.type === "date") {
+            value = control.value;
+            data.warranty = value;
+        } else {
+            value = control.value;
+        }
+        switch (idx) {
+            case 1: data.name = value; break;
+            case 2: data.short = value; break;
+            case 3: data.inv = value; break;
+            case 4: data.dept = value; break;
+            case 5: data.loc = value; break;
+            case 6: {
+                data.maker = value.split(" ")[0] || "";
+                data.model = value.slice(data.maker.length).trim();
+                break;
+            }
+            case 7: data.warranty = value; break;
+            case 8: data.status = value; break;
+            case 9: data.op = value; break;
+            case 10: data.parent = value; break;
+        }
+    });
+    row.dataset.name = data.name;
+    row.dataset.short = data.short;
+    row.dataset.inv = data.inv;
+    row.dataset.dept = data.dept;
+    row.dataset.loc = data.loc;
+    row.dataset.maker = data.maker;
+    row.dataset.model = data.model;
+    row.dataset.warranty = data.warranty;
+    row.dataset.status = data.status;
+    row.dataset.op = data.op;
+    row.dataset.parent = data.parent;
+
+    cells.forEach((cell, idx) => {
+        if (idx === 0) return;
+        switch (idx) {
+            case 1: cell.textContent = data.name; break;
+            case 2: cell.textContent = data.short; break;
+            case 3: cell.textContent = data.inv; break;
+            case 4: cell.textContent = data.dept; break;
+            case 5: cell.textContent = data.loc; break;
+            case 6: cell.textContent = `${data.maker} ${data.model}`.trim(); break;
+            case 7: cell.textContent = formatDisplayDate(data.warranty); break;
+            case 8: cell.innerHTML = `<span class="status-pill ${statusClass(data.status)}">${data.status}</span>`; break;
+            case 9: cell.innerHTML = `<span class="tag">${data.op}</span>`; break;
+            case 10: cell.textContent = data.parent || "-"; break;
+        }
+    });
+    const prevName = row.dataset.prevName || data.name;
+    updateCompactCardFromGiganta(data, prevName);
+    row.classList.remove("editing-row");
+    row.dataset.prevName = "";
+    editingRowGiganta = null;
+    document.body.classList.remove("is-editing");
+}
+
+function startGigantaEditing() {
+    const selRow = getSelectedGigantaRow();
+    const selParent = getSelectedGigantaParent();
+    if (!selRow && !selParent) return;
+    if (selRow) {
+        gigantaRowToInputs(selRow);
+    } else if (selParent) {
+        gigantaParentToInputs(selParent);
+    }
+}
+
+function saveGigantaEditing() {
+    if (!editingRowGiganta) return;
+    if (editingRowGiganta.classList.contains("giganta-row")) {
+        gigantaRowToText(editingRowGiganta);
+    } else if (editingRowGiganta.classList.contains("giganta-parent")) {
+        gigantaParentToText(editingRowGiganta);
+    }
+}
+
+function getGigantaNames() {
+    return Array.from(document.querySelectorAll("#viewGiganta .giganta-row")).map(r => r.dataset.name || "").filter(Boolean);
+}
+
+function duplicateSelectedGiganta() {
+    const sel = getSelectedGigantaRow();
+    if (!sel) return;
+    if (editingRowGiganta && editingRowGiganta !== sel) {
+        saveGigantaEditing();
+    }
+    const names = getGigantaNames();
+    const newName = makeUniqueName(sel.dataset.name || "Nowa maszyna", names);
+    const clone = sel.cloneNode(true);
+    clone.dataset.name = newName;
+    clone.classList.remove("is-selected", "editing-row");
+    const nameCell = clone.children[1];
+    if (nameCell) nameCell.textContent = newName;
+    sel.insertAdjacentElement("afterend", clone);
+    attachGigantaSelection();
+    clone.classList.add("is-selected");
+    gigantaRowToInputs(clone);
+}
+
+function addNewGigantaRow() {
+    const firstParent = document.querySelector("#viewGiganta .giganta-parent");
+    const parentName = firstParent?.dataset.name || "Robot A";
+    const newData = createNewMachineData(parentName);
+    const tableBody = document.querySelector("#viewGiganta table tbody");
+    if (!tableBody) return;
+    const tr = document.createElement("tr");
+    tr.className = "giganta-row";
+    tr.dataset.type = "child";
+    Object.keys(newData).forEach(k => { tr.dataset[k] = newData[k]; });
+    tr.innerHTML = `
+        <td><img class="thumb-mini" src="${newData.thumb}" alt="${newData.name}"></td>
+        <td>${newData.name}</td>
+        <td>${newData.short}</td>
+        <td>${newData.inv}</td>
+        <td>${newData.dept}</td>
+        <td>${newData.loc}</td>
+        <td>${newData.maker} ${newData.model}</td>
+        <td>${formatDisplayDate(newData.warranty)}</td>
+        <td><span class="status-pill ${statusClass(newData.status)}">${newData.status}</span></td>
+        <td><span class="tag">${newData.op}</span></td>
+        <td>${newData.parent}</td>
+    `;
+    tableBody.prepend(tr);
+    attachGigantaSelection();
+    tr.classList.add("is-selected");
+    gigantaRowToInputs(tr);
+}
+
+// Otwórz/Edytuj/Usuń z poziomu schematu
+const openCardBtnScheme = document.getElementById("openCardBtnScheme");
+const editCardBtnScheme = document.getElementById("editToggleBtn");
+const deleteMachineBtnScheme = document.getElementById("deleteMachineBtnScheme");
+const addMachineBtnScheme = document.getElementById("addMachineBtnScheme");
+const duplicateMachineBtnScheme = document.getElementById("duplicateMachineBtnScheme");
+
+if (openCardBtnScheme) {
+    openCardBtnScheme.addEventListener("click", () => {
+        window.location.href = "card.html?edit=0";
+    });
+}
+if (addMachineBtnScheme) {
+    addMachineBtnScheme.addEventListener("click", () => {
+        if (currentView === "giganta") {
+            addNewGigantaRow();
+        } else if (currentView === "bubble") {
+            addNewMachineCard();
+            switchView("bubble");
+        } else {
+            addNewMachineCard();
+        }
+    });
+}
+if (duplicateMachineBtnScheme) {
+    duplicateMachineBtnScheme.addEventListener("click", () => {
+        if (currentView === "giganta") {
+            duplicateSelectedGiganta();
+        } else if (currentView === "bubble") {
+            duplicateSelectedCard();
+            switchView("bubble");
+        } else {
+            duplicateSelectedCard();
+        }
+    });
+}
+
+let isEditing = false;
+const editLabel = document.getElementById("editToggleLabel");
+let editingCard = null;
+
+const nameOptions = ["Robot A", "Robot B", "Maszyna skrawająca 01", "Maszyna nieskrawająca 02", "Wózek widłowy"];
+const deptOptions = ["Wydział robotów", "Wydział maszyn", "Hala 1", "Hala 2", "Magazyn"];
+const locOptions = ["Hala 1", "Hala 2", "Magazyn", "Strefa A"];
+const parentOptions = ["Robot A", "Robot B"];
+
+function optionList(list, value) {
+    const vals = list.includes(value) ? list : [value, ...list];
+    return vals.map(v => `<option ${v === value ? "selected" : ""}>${v}</option>`).join("");
+}
+
+function getCardData(card) {
+    if (!card) return null;
+    return {
+        type: card.dataset.type || "parent",
+        name: card.dataset.name || "",
+        short: card.dataset.short || "",
+        inv: card.dataset.inv || "",
+        dept: card.dataset.dept || "",
+        loc: card.dataset.loc || "",
+        maker: card.dataset.maker || "",
+        model: card.dataset.model || "",
+        warranty: card.dataset.warranty || "",
+        status: card.dataset.status || "",
+        op: card.dataset.op || "",
+        parent: card.dataset.parent || "",
+        thumb: card.dataset.thumb || ""
+    };
+}
+
+function getAllCardNames() {
+    return Array.from(document.querySelectorAll(".schema-card")).map(c => (c.dataset.name || "").trim()).filter(Boolean);
+}
+
+function renderCardView(data) {
+    const thumb = data.thumb || "pictures/m1_thumb.jpg";
+    if (data.type === "child") {
+        return `
+            <div class="card-head">
+                <img class="thumb" src="${thumb}" alt="${data.name}">
+                <div>
+                    <div class="title">${data.name}</div>
+                    <div class="meta">
+                        <span>${data.short}</span>
+                        <span>Inv: ${data.inv}</span>
+                        <span>${data.dept}</span>
+                        <span>${data.loc}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="pill-row">
+                <span class="pill">${data.maker} ${data.model}</span>
+                <span class="pill">Gwarancja: ${data.warranty}</span>
+                <span class="pill ${statusClass(data.status)}">${data.status}</span>
+                <span class="pill">${data.op}</span>
+                <span class="pill">Nadrzędna: ${data.parent || "-"}</span>
+            </div>
+        `;
+    }
+    return `
+        <div class="card-head">
+            <img class="thumb" src="${thumb}" alt="${data.name}">
+            <div>
+                <div class="title">${data.name}</div>
+                <div class="meta">
+                    <span>${data.short}</span>
+                    <span>Inv: ${data.inv}</span>
+                    <span>${data.dept}</span>
+                    <span>${data.loc}</span>
+                </div>
+            </div>
+        </div>
+        <div class="tags">
+            <span class="tag ${statusClass(data.status)}">${data.status}</span>
+            <span class="tag">${data.op}</span>
+            <span class="tag">${data.maker} ${data.model}</span>
+            <span class="tag">Gwarancja: ${data.warranty}</span>
+        </div>
+    `;
+}
+
+function renderCardEdit(data) {
+    const thumb = data.thumb || "pictures/m1_thumb.jpg";
+    return `
+        <div class="card-head">
+            <img class="thumb" src="${thumb}" alt="${data.name}">
+            <div>
+                <div class="title" style="font-weight:700;">Edytuj kartę</div>
+                <div class="meta"><span>${data.type === "child" ? "Podrzędna" : "Nadrzędna"} maszyna</span></div>
+            </div>
+        </div>
+        <div class="schema-info">
+            <div class="schema-line">
+                <strong>Nazwa</strong>
+                <select id="field-name">${optionList(nameOptions, data.name)}</select>
+            </div>
+            <div class="schema-line">
+                <strong>Skrót</strong>
+                <input id="field-short" type="text" value="${data.short}">
+            </div>
+            <div class="schema-line">
+                <strong>Nr inwetarzowy</strong>
+                <div class="number-control">
+                    <input id="field-inv" class="number-input" type="number" value="${data.inv}">
+                    <button class="number-spin up" type="button" aria-label="Więcej"><img src="svg-folder/UpIcon.svg" alt=""></button>
+                    <button class="number-spin down" type="button" aria-label="Mniej"><img src="svg-folder/DownIcon.svg" alt=""></button>
+                </div>
+            </div>
+            <div class="schema-line">
+                <strong>Wydział</strong>
+                <select id="field-dept">${optionList(deptOptions, data.dept)}</select>
+            </div>
+            <div class="schema-line">
+                <strong>Lokalizacja</strong>
+                <select id="field-loc">${optionList(locOptions, data.loc)}</select>
+            </div>
+            <div class="schema-line">
+                <strong>Producent</strong>
+                <input id="field-maker" type="text" value="${data.maker}">
+            </div>
+            <div class="schema-line">
+                <strong>Model</strong>
+                <input id="field-model" type="text" value="${data.model}">
+            </div>
+            <div class="schema-line">
+                <strong>Data upływu gwarancji</strong>
+                <div class="date-nav-wrap">
+                    <button class="date-nav-btn date-nav-btn--left" type="button" aria-label="Poprzednia data">
+                        <img src="svg-folder/LeftIcon.svg" alt="">
+                    </button>
+                    <input id="field-warranty" type="date" class="date-nav-input" value="${data.warranty}" placeholder="dd.mm.rrrr">
+                    <button class="date-nav-btn date-nav-btn--calendar" type="button" aria-label="Wybierz datę">
+                        <img src="svg-folder/CalendarIcon.svg" alt="">
+                    </button>
+                    <button class="date-nav-btn date-nav-btn--right" type="button" aria-label="Następna data">
+                        <img src="svg-folder/RightIcon.svg" alt="">
+                    </button>
+                </div>
+            </div>
+            <div class="schema-line">
+                <strong>Status</strong>
+                <select id="field-status">
+                    <option value="aktywny" ${data.status.toLowerCase()==="aktywny"?"selected":""}>aktywny</option>
+                    <option value="nieaktywny" ${data.status.toLowerCase()==="nieaktywny"?"selected":""}>nieaktywny</option>
+                </select>
+            </div>
+            <div class="schema-line">
+                <strong>Status operacyjny</strong>
+                <select id="field-op">
+                    <option ${data.op==="Operacyjna"?"selected":""}>Operacyjna</option>
+                    <option ${data.op==="Rezerwa"?"selected":""}>Rezerwa</option>
+                    <option ${data.op==="Serwis"?"selected":""}>Serwis</option>
+                    <option ${data.op==="Wycofana"?"selected":""}>Wycofana</option>
+                </select>
+            </div>
+            ${data.type === "child" ? `
+            <div class="schema-line">
+                <strong>Maszyna nadrzędna</strong>
+                <select id="field-parent">${optionList(parentOptions, data.parent)}</select>
+            </div>` : ""}
+        </div>
+    `;
+}
+
+function attachInlineControls(card) {
+    card.querySelectorAll(".number-control").forEach(ctrl => {
+        const input = ctrl.querySelector(".number-input");
+        const up = ctrl.querySelector(".up");
+        const down = ctrl.querySelector(".down");
+        const shift = (delta) => {
+            if (!input) return;
+            const current = parseInt(input.value, 10) || 0;
+            input.value = current + delta;
+        };
+        if (up) up.addEventListener("click", () => shift(1));
+        if (down) down.addEventListener("click", () => shift(-1));
+    });
+    card.querySelectorAll(".date-nav-wrap").forEach(wrap => {
+        const input = wrap.querySelector("input[type='date']");
+        const left = wrap.querySelector(".date-nav-btn--left");
+        const right = wrap.querySelector(".date-nav-btn--right");
+        const calendar = wrap.querySelector(".date-nav-btn--calendar");
+        const shift = (delta) => {
+            if (!input) return;
+            const val = input.value || new Date().toISOString().slice(0,10);
+            const d = new Date(val);
+            if (isNaN(d)) return;
+            d.setDate(d.getDate() + delta);
+            input.value = d.toISOString().slice(0,10);
+        };
+        if (left) left.addEventListener("click", () => shift(-1));
+        if (right) right.addEventListener("click", () => shift(1));
+        if (calendar && input) {
+            calendar.addEventListener("click", () => input.showPicker ? input.showPicker() : input.focus());
+        }
+    });
+}
+
+function duplicateCardElement(selected) {
+    if (!selected) return;
+    const data = getCardData(selected);
+    if (!data) return;
+    const names = getAllCardNames();
+    const newName = makeUniqueName(data.name || "Nowa maszyna", names);
+    const newData = { ...data, name: newName };
+
+    if (data.type === "child") {
+        const grid = selected.closest(".group")?.querySelector(".children-grid");
+        if (!grid) return;
+        const newCard = document.createElement("div");
+        newCard.className = "schema-card child-card editing-card is-selected";
+        Object.keys(newData).forEach(k => { newCard.dataset[k] = newData[k]; });
+        newCard.innerHTML = renderCardEdit(newData);
+        selected.insertAdjacentElement("afterend", newCard);
+        clearSelection();
+        newCard.classList.add("is-selected");
+        attachInlineControls(newCard);
+        attachCardSelection(newCard);
+        editingCard = newCard;
+        isEditing = true;
+        if (editLabel) editLabel.textContent = "Zapisz";
+        editCardBtnScheme?.classList.add("content-btn-danger");
+        editCardBtnScheme?.classList.remove("content-btn-activate");
+        return;
+    }
+
+    const group = selected.closest(".group");
+    if (!group || !groupsWrap) return;
+    const newGroup = document.createElement("div");
+    newGroup.className = "group";
+    const newParent = document.createElement("div");
+    newParent.className = "schema-card parent-card editing-card is-selected";
+    Object.keys(newData).forEach(k => { newParent.dataset[k] = newData[k]; });
+    newParent.innerHTML = renderCardEdit(newData);
+    const childrenGrid = document.createElement("div");
+    childrenGrid.className = "children-grid";
+    newGroup.appendChild(newParent);
+    newGroup.appendChild(childrenGrid);
+    group.insertAdjacentElement("afterend", newGroup);
+    clearSelection();
+    newParent.classList.add("is-selected");
+    attachInlineControls(newParent);
+    attachCardSelection(newParent);
+    attachSelection();
+    editingCard = newParent;
+    isEditing = true;
+    if (editLabel) editLabel.textContent = "Zapisz";
+    editCardBtnScheme?.classList.add("content-btn-danger");
+    editCardBtnScheme?.classList.remove("content-btn-activate");
+}
+
+function duplicateSelectedCard() {
+    let selected = document.querySelector(".schema-card.is-selected");
+    if (!selected) return;
+    if (selected.closest("#viewBubble") && !selected.closest(".group")) {
+        const compactRef = document.querySelector(`#viewCompact .schema-card[data-name="${selected.dataset.name}"]`);
+        if (compactRef) {
+            selected.classList.remove("is-selected");
+            compactRef.classList.add("is-selected");
+            selected = compactRef;
+        }
+    }
+    if (editingCard && editingCard !== selected) {
+        saveEditingCard(editingCard);
+    }
+    duplicateCardElement(selected);
+}
+
+function createNewMachineData(parentName) {
+    return {
+        type: "child",
+        name: nameOptions[0] || "Nowa maszyna",
+        short: "",
+        inv: "",
+        dept: deptOptions[0] || "",
+        loc: locOptions[0] || "",
+        maker: "",
+        model: "",
+        warranty: "",
+        status: "aktywny",
+        op: "Operacyjna",
+        parent: parentName || parentOptions[0] || "",
+        thumb: "pictures/m1_thumb.jpg"
+    };
+}
+
+function addNewMachineCard() {
+    const targetParent = document.querySelector(".parent-card.is-selected") || document.querySelector(".parent-card");
+    if (!targetParent) return;
+    const childrenGrid = targetParent.parentElement?.querySelector(".children-grid");
+    if (!childrenGrid) return;
+    if (editingCard) {
+        saveEditingCard(editingCard);
+    }
+    clearSelection();
+    const parentName = targetParent.dataset.name || "";
+    const newData = createNewMachineData(parentName);
+    const newCard = document.createElement("div");
+    newCard.className = "schema-card child-card editing-card is-selected";
+    Object.keys(newData).forEach(k => newCard.dataset[k] = newData[k]);
+    newCard.innerHTML = renderCardEdit(newData);
+    childrenGrid.prepend(newCard);
+    attachInlineControls(newCard);
+    attachCardSelection(newCard);
+    editingCard = newCard;
+    isEditing = true;
+    if (editLabel) editLabel.textContent = "Zapisz";
+    editCardBtnScheme?.classList.add("content-btn-danger");
+    editCardBtnScheme?.classList.remove("content-btn-activate");
+}
+
+function startEditingCard(card) {
+    if (!card) return;
+    if (editingCard && editingCard !== card) {
+        saveEditingCard(editingCard, { keepMode: true });
+    }
+    card.dataset.prevName = card.dataset.name || "";
+    const data = getCardData(card);
+    card.classList.add("editing-card", "is-selected");
+    card.innerHTML = renderCardEdit(data);
+    attachInlineControls(card);
+    attachCardSelection(card);
+    editingCard = card;
+    isEditing = true;
+    if (editLabel) editLabel.textContent = "Zapisz";
+    editCardBtnScheme?.classList.add("content-btn-danger");
+    editCardBtnScheme?.classList.remove("content-btn-activate");
+}
+
+function saveEditingCard(card, { keepMode = false } = {}) {
+    if (!card) return;
+    const data = getCardData(card) || {};
+    data.name = card.querySelector("#field-name")?.value || data.name;
+    data.short = card.querySelector("#field-short")?.value || data.short;
+    data.inv = card.querySelector("#field-inv")?.value || data.inv;
+    data.dept = card.querySelector("#field-dept")?.value || data.dept;
+    data.loc = card.querySelector("#field-loc")?.value || data.loc;
+    data.maker = card.querySelector("#field-maker")?.value || data.maker;
+    data.model = card.querySelector("#field-model")?.value || data.model;
+    data.warranty = card.querySelector("#field-warranty")?.value || data.warranty;
+    data.status = card.querySelector("#field-status")?.value || data.status;
+    data.op = card.querySelector("#field-op")?.value || data.op;
+    if (data.type === "child") {
+        data.parent = card.querySelector("#field-parent")?.value || data.parent;
+    }
+
+    // zapisz do dataset
+    Object.keys(data).forEach(key => { card.dataset[key] = data[key]; });
+
+    const prevName = card.dataset.prevName || data.name;
+    if (!card.closest("#viewCompact")) {
+        const target = document.querySelector(`#viewCompact .schema-card[data-name="${prevName}"]`);
+        if (target) {
+            Object.keys(data).forEach(key => { target.dataset[key] = data[key]; });
+            target.innerHTML = renderCardView(data);
+            attachCardSelection(target);
+            attachSelection();
+        }
+    }
+
+    card.innerHTML = renderCardView(data);
+    card.classList.remove("editing-card");
+    card.classList.add("is-selected");
+    attachCardSelection(card);
+    attachSelection();
+    editingCard = keepMode ? card : null;
+    card.dataset.prevName = "";
+    if (!keepMode) {
+        isEditing = false;
+        if (editLabel) editLabel.textContent = "Edytuj";
+        editCardBtnScheme?.classList.remove("content-btn-danger");
+        editCardBtnScheme?.classList.add("content-btn-activate");
+    }
+}
+
+if (editCardBtnScheme) {
+    editCardBtnScheme.addEventListener("click", () => {
+        if (currentView === "giganta") {
+            if (editingRowGiganta) {
+                saveGigantaEditing();
+                editCardBtnScheme.classList.remove("content-btn-danger");
+                editCardBtnScheme.classList.add("content-btn-activate");
+                if (editLabel) editLabel.textContent = "Edytuj";
+            } else {
+                startGigantaEditing();
+                if (editingRowGiganta) {
+                    editCardBtnScheme.classList.add("content-btn-danger");
+                    editCardBtnScheme.classList.remove("content-btn-activate");
+                    if (editLabel) editLabel.textContent = "Zapisz";
+                }
+            }
+            return;
+        }
+        const selected = document.querySelector(".schema-card.is-selected");
+        if (!isEditing) {
+            if (selected) startEditingCard(selected);
+        } else {
+            if (editingCard) saveEditingCard(editingCard);
+        }
+    });
+}
+if (deleteMachineBtnScheme) {
+    deleteMachineBtnScheme.addEventListener("click", () => {
+        const confirmed = window.confirm("Czy na pewno chcesz usunąć maszynę, wariacie?");
+        if (confirmed) {
+            console.log("Maszyna została usunięta (logika do zaimplementowania).");
+        }
+    });
+}
+
+// Modale: ustawienia kolumn / filtry
+const settingsToggle = document.getElementById("settingsToggle");
+const settingsModal = document.getElementById("settingsModal");
+const settingsClose = document.getElementById("settingsClose");
+
+const filterToggle = document.getElementById("filterToggle");
+const filterModal = document.getElementById("filterModal");
+const filterClose = document.getElementById("filterClose");
+
+function setModalVisibility(modalEl, open) {
+    if (!modalEl) return;
+    modalEl.classList.toggle("is-visible", open);
+}
+
+if (settingsToggle && settingsModal) {
+    settingsToggle.addEventListener("click", () => setModalVisibility(settingsModal, true));
+}
+if (settingsClose && settingsModal) {
+    settingsClose.addEventListener("click", () => setModalVisibility(settingsModal, false));
+}
+if (settingsModal) {
+    settingsModal.addEventListener("click", (e) => {
+        if (e.target === settingsModal) setModalVisibility(settingsModal, false);
+    });
+}
+
+if (filterToggle && filterModal) {
+    filterToggle.addEventListener("click", () => setModalVisibility(filterModal, true));
+}
+if (filterClose && filterModal) {
+    filterClose.addEventListener("click", () => setModalVisibility(filterModal, false));
+}
+if (filterModal) {
+    filterModal.addEventListener("click", (e) => {
+        if (e.target === filterModal) setModalVisibility(filterModal, false);
+    });
+}
+
+// Ikony eksportu (placeholder do rozbudowy)
+const exportXlsBtn = document.querySelector(".icon-actions .icon-btn:nth-child(1)");
+const exportPdfBtn = document.querySelector(".icon-actions .icon-btn:nth-child(2)");
+if (exportXlsBtn) exportXlsBtn.addEventListener("click", () => console.log("Eksport XLS"));
+if (exportPdfBtn) exportPdfBtn.addEventListener("click", () => console.log("Eksport PDF"));
+</script>
+</body>
+</html>
